@@ -1,3 +1,8 @@
+body {
+  margin-top: 5em;
+  margin-left: 3em;
+}
+
 /*english text, meant for reading*/
 p, ul, ol, blockquote, table, label, h1, h2, h3, h4, a {
   font-family:Georgia;
@@ -6,6 +11,20 @@ p, ul, ol, blockquote, table, label, h1, h2, h3, h4, a {
   text-align: justify;
 }
 
+h1, h2, h3, h4, b {
+  margin-top: 1.5em;
+  color: #444;
+}
+
+tt {
+  font-size: 110%; 
+}
+
+/*
+h2 {
+  padding: 10px;
+}
+*/
 
 .p-link {
   text-decoration: underline;
@@ -24,16 +43,18 @@ p, ul, ol, blockquote, table, label, h1, h2, h3, h4, a {
 .output {
   font-family: monospace;
   font-style: italic;
+  font-size: 110%; 
   padding: 0pt 4pt;
+  color: #444;
 }
 
 .input {
   font-style: italic;
 }
 
-.exercise{
+.exercise {
   background-color: #D8E5E8;
-  padding: 10pt;
+  padding: 1.5em;
 }
 
 /*ticks and crosses*/
@@ -66,13 +87,17 @@ p, ul, ol, blockquote, table, label, h1, h2, h3, h4, a {
     height:100%;
 }
 
+#scheme-scratch {
+  margin-top: 2.5em;
+}
+
 #sidebox .content {
     background:#bada55;
 }
 
 #sidebox .content {
     float:right;
-    width:95%;
+    width:92%;
     height:100%;
 }
 
@@ -80,7 +105,7 @@ p, ul, ol, blockquote, table, label, h1, h2, h3, h4, a {
     background:#bada55;
     cursor:pointer;
     float:left;
-    width:5%;
+    width:8%;
     height:100%;
 }
 
@@ -88,7 +113,8 @@ p, ul, ol, blockquote, table, label, h1, h2, h3, h4, a {
   width: 60%;
   float: left;
   border-top: 1px solid gray;
-  padding: 10px;
+  margin-bottom: 3em;
+/*  padding: 10px;  */
 }
 
 /*identifying editable portions*/

@@ -1,0 +1,29 @@
+/* trigger button */
+a.footnote {
+  color: #841;
+  cursor: default;
+}
+
+/* mouseover state */
+a.footnote:hover {
+  color: #481;
+}
+
+/* tooltip styling */
+.tooltip {
+  display:none;
+  font-family: Georgia;
+  font-size: 100%;
+  line-height: 1.5em;
+  text-align: justify;
+  background: #e8e8e8;
+  padding: 2em;
+  width: 70ex;
+  float: left;
+  color:#333;
+  box-shadow: 8px 8px 4px #777;
+}
+
+.tooltip a {
+  color:#841;
+}

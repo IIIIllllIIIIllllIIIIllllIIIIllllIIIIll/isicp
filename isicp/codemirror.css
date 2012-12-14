@@ -1,6 +1,7 @@
 .CodeMirror {
-  line-height: 1em;
+  line-height: 1.5em;
   font-family: monospace;
+  font-size: 110%;
 
   /* Necessary so the scrollbar can be absolutely positioned within the wrapper on Lion. */
   position: relative;
@@ -132,20 +133,20 @@ div.CodeMirror-selected { background: #d9d9d9; }
 
 .cm-s-default span.cm-keyword {color: #708;}
 .cm-s-default span.cm-atom {color: #219;}
-.cm-s-default span.cm-number {color: #164;}
+.cm-s-default span.cm-number {color: #481;}  /* #164 */
 .cm-s-default span.cm-def {color: #00f;}
-.cm-s-default span.cm-variable {color: black;}
+.cm-s-default span.cm-variable {color: #333;}  /* black */
 .cm-s-default span.cm-variable-2 {color: #05a;}
 .cm-s-default span.cm-variable-3 {color: #085;}
-.cm-s-default span.cm-property {color: black;}
-.cm-s-default span.cm-operator {color: black;}
+.cm-s-default span.cm-property {color: #333;}  /* black */
+.cm-s-default span.cm-operator {color: #333;}  /* black */
 .cm-s-default span.cm-comment {color: #a50;}
 .cm-s-default span.cm-string {color: #a11;}
 .cm-s-default span.cm-string-2 {color: #f50;}
 .cm-s-default span.cm-meta {color: #555;}
 .cm-s-default span.cm-error {color: #f00;}
 .cm-s-default span.cm-qualifier {color: #555;}
-.cm-s-default span.cm-builtin {color: #30a;}
+.cm-s-default span.cm-builtin {color: #148;}  /* #30a */
 .cm-s-default span.cm-bracket {color: #997;}
 .cm-s-default span.cm-tag {color: #170;}
 .cm-s-default span.cm-attribute {color: #00c;}
