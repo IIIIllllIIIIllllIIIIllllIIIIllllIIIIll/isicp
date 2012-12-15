@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="codemirror.css" />
 <link rel="stylesheet" type="text/css" href="isicp.css" />
 <link rel="stylesheet" type="text/css" href="footnote/footnote.css" />
+<link rel="stylesheet" type="text/css" href="theme.css" />
 
 <script src="biwascheme.js"> </script>
 <script src="codemirror/lib/codemirror.js"></script>
@@ -111,12 +112,12 @@ $(document).ready(function() {
 
 </ul>
 
-<p> In programming, we deal with two kinds of elements: procedures and data. (Later we will discover that they are really not so distinct.) Informally, data is "stuff" that we want to manipulate, and procedures are descriptions of the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive procedures and should have methods for combining and abstracting procedures and data.
+<p> In programming, we deal with two kinds of elements: procedures and data. (Later we will discover that they are really not so distinct.) Informally, data is &ldquo;stuff&thinsp;&rdquo; that we want to manipulate, and procedures are descriptions of the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive procedures and should have methods for combining and abstracting procedures and data.
 
 <p> In this chapter we will deal only with simple numerical data so that we can focus on the rules for building procedures.<a id="f4" class="footnote"><sup>4</sup></a> In later chapters we will see that these same rules allow us to build procedures to manipulate compound data as well.
 
 <div class="tooltip"> 
-The characterization of numbers as ``simple data'' is a barefaced bluff.
+The characterization of numbers as &ldquo;simple data&rdquo; is a barefaced bluff.
 In fact, the treatment of numbers is one of the trickiest and most
 confusing aspects of any programming language.  Some typical issues
 involved are these:
@@ -128,7 +129,7 @@ divided by 2 produce 3, or 3.0?  How large a number can we represent?
 How many decimal places of accuracy can we represent?  Is the range of
 integers the same as the range of real numbers?  Above and beyond
 these questions, of course, lies a collection of issues concerning
-roundoff and truncation errors -- the entire science of numerical
+roundoff and truncation errors &mdash; the entire science of numerical
 analysis.  Since our focus in this book is on large-scale program
 design rather than on numerical techniques, we are going to ignore
 these problems.  The numerical examples in this chapter will exhibit

@@ -16,10 +16,6 @@ h1, h2, h3, h4, b {
   color: #444;
 }
 
-tt {
-  font-size: 110%; 
-}
-
 /*
 h2 {
   padding: 10px;
@@ -43,7 +39,6 @@ h2 {
 .output {
   font-family: monospace;
   font-style: italic;
-  font-size: 110%; 
   padding: 0pt 4pt;
   color: #444;
 }

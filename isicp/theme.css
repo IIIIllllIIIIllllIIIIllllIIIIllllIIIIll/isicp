@@ -1,0 +1,8 @@
+/* Default theme domesticated */
+
+.cm-s-default span.cm-number {color: #481;}  /* was #164 */
+.cm-s-default span.cm-variable {color: #333;}  /* black */
+.cm-s-default span.cm-property {color: #333;}  /* black */
+.cm-s-default span.cm-operator {color: #333;}  /* black */
+.cm-s-default span.cm-builtin {color: #148;}  /* #30a */
+
