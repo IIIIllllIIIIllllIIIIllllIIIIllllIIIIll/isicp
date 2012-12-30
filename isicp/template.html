@@ -5,17 +5,15 @@
 
 <link rel="stylesheet" type="text/css" href="codemirror.css" />
 <link rel="stylesheet" type="text/css" href="isicp.css" />
-<link rel="stylesheet" type="text/css" href="footnote/footnote.css" />
-<link rel="stylesheet" type="text/css" href="theme.css" />
+<link rel="stylesheet" type="text/css" href="lib/footnotes.css" />
+<link rel="stylesheet" type="text/css" href="lib/theme.css" />
 
 <script src="biwascheme.js"> </script>
 <script src="codemirror/lib/codemirror.js"></script>
 <script src="codemirror/mode/scheme/scheme.js"></script>
 <script src="jquery.min.js"></script>
 <script src="coding.js"> </script>
-<script src="footnote/tooltip.js"></script>
-<script src="footnote/tooltip.dynamic.js"></script>
-<script src="footnote/footnote.js"></script>
+<script src="lib/footnotes.js"></script>
 
 {{title}}
 <script type="text/javascript">
@@ -125,6 +123,8 @@ if (deferDraw) {
 <div id="main">
 
 {{main_text}}
+
+{{footnotes}}
 
 <hr>
 

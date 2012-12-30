@@ -5,17 +5,15 @@
 
 <link rel="stylesheet" type="text/css" href="codemirror.css" />
 <link rel="stylesheet" type="text/css" href="isicp.css" />
-<link rel="stylesheet" type="text/css" href="footnote/footnote.css" />
-<link rel="stylesheet" type="text/css" href="theme.css" />
+<link rel="stylesheet" type="text/css" href="lib/footnotes.css" />
+<link rel="stylesheet" type="text/css" href="lib/theme.css" />
 
 <script src="biwascheme.js"> </script>
 <script src="codemirror/lib/codemirror.js"></script>
 <script src="codemirror/mode/scheme/scheme.js"></script>
 <script src="jquery.min.js"></script>
 <script src="coding.js"> </script>
-<script src="footnote/tooltip.js"></script>
-<script src="footnote/tooltip.dynamic.js"></script>
-<script src="footnote/footnote.js"></script>
+<script src="lib/footnotes.js"></script>
 
 <title>iSICP 1.1 - The Elements of Programming</title>
 <script type="text/javascript">
@@ -139,11 +137,7 @@ if (deferDraw) {
 
 <p> In programming, we deal with two kinds of elements: procedures and data. (Later we will discover that they are really not so distinct.) Informally, data is &ldquo;stuff&thinsp;&rdquo; that we want to manipulate, and procedures are descriptions of the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive procedures and should have methods for combining and abstracting procedures and data.
 
-<p> In this chapter we will deal only with simple numerical data so that we can focus on the rules for building <span class="footnote_trigger">procedures.<a name="footnote_1-4" class="footnote_marker">4</a></span> In later chapters we will see that these same rules allow us to build procedures to manipulate compound data as well.
-
-<div id="footnote_1-4" class="footnote"> 
-The characterization of numbers as &ldquo;simple data&rdquo; is a barefaced bluff.  In fact, the treatment of numbers is one of the trickiest and most confusing aspects of any programming language.  Some typical issues involved are these: Some computer systems distinguish <em>integers</em>, such as 2, from <em>real numbers</em>, such as 2.71.  Is the real number 2.00 different from the integer 2?  Are the arithmetic operations used for integers the same as the operations used for real numbers?  Does 6 divided by 2 produce 3, or 3.0?  How large a number can we represent?  How many decimal places of accuracy can we represent?  Is the range of integers the same as the range of real numbers?  Above and beyond these questions, of course, lies a collection of issues concerning roundoff and truncation errors &mdash; the entire science of numerical analysis.  Since our focus in this book is on large-scale program design rather than on numerical techniques, we are going to ignore these problems.  The numerical examples in this chapter will exhibit the usual roundoff behavior that one observes when using arithmetic operations that preserve a limited number of decimal places of accuracy in noninteger operations.
-</div>
+<p> In this chapter we will deal only with simple numerical data so that we can focus on the rules for building procedures.<a name="footnote_link_1-4" class="footnote_link" href="#footnote_1-4">4</a> In later chapters we will see that these same rules allow us to build procedures to manipulate compound data as well.
 
 <h3> Expressions </h3>
 
@@ -155,11 +149,7 @@ The characterization of numbers as &ldquo;simple data&rdquo; is a barefaced bluf
 486
 </div>
 
-<p> the interpreter will respond by <span class="footnote_trigger">printing<a name="footnote_1-5" class="footnote_marker">5</a></span>
-
-<div id="footnote_1-5" class="footnote"> 
-Throughout this book, when we wish to emphasize the distinction between the input typed by the user and the response printed by the interpreter, we will show the latter in slanted characters.
-</div>
+<p> the interpreter will respond by printing<a name="footnote_link_1-5" class="footnote_link" href="#footnote_1-5">5</a>
 
 <div id="scheme-number-output" class="output"> </div>
 <script>
@@ -250,11 +240,7 @@ linkEditor("scheme-number", "scheme-number-output", function(x, y) {return eval_
 <div id="scheme-long-tree-pp-output" class="output"> </div>
 <script> prompt("scheme-long-tree-pp"); </script>
 
-<p> following a formatting convention known as pretty-printing, in which each long combination is written so that the operands are aligned vertically. The resulting indentations display clearly the structure of the <span class="footnote_trigger">expression.<a name="footnote_1-6" class="footnote_marker">6</a></span>
-
-<div id="footnote_1-6" class="footnote"> 
-Lisp systems typically provide features to aid the user in formatting expressions.  Two especially useful features are one that automatically indents to the proper pretty-print position whenever a new line is started and one that highlights the matching left parenthesis whenever a right parenthesis is typed.
-</div>
+<p> following a formatting convention known as pretty-printing, in which each long combination is written so that the operands are aligned vertically. The resulting indentations display clearly the structure of the expression.<a name="footnote_link_1-6" class="footnote_link" href="#footnote_1-6">6</a>
 
 <p> Even with complex expressions, the interpreter always operates in the same basic cycle: It reads an expression from the terminal, evaluates the expression, and prints the result. This mode of operation is often expressed by saying that the interpreter runs in a read-eval-print loop. Observe in particular that it is not necessary to explicitly instruct the interpreter to print the value of the expression.
 
@@ -1475,7 +1461,30 @@ prompt("scheme-define-sqrt-block");
 prompt("scheme-define-sqrt-no-x");
 </script>
 
-<p> We will use block structure extensively to help us break up large programs into tractable pieces. The idea of block structure originated with the programming language Algol 60. It appears in most advanced programming languages and is an important tool for helping to organize the construction of large programs. 
+<p> We will use block structure extensively to help us break up large programs into tractable pieces. The idea of block structure originated with the programming language Algol 60. It appears in most advanced programming languages and is an important tool for helping to organize the construction of large programs.
+
+<hr>
+
+<div id="footnotes">
+
+<h3 id='Notes'> Notes </h3>
+
+<div id="footnote_1-4" class="footnote"> 
+<p><a href="#footnote_link_1-4" class="footnote_backlink">4</a>
+The characterization of numbers as &ldquo;simple data&rdquo; is a barefaced bluff.  In fact, the treatment of numbers is one of the trickiest and most confusing aspects of any programming language.  Some typical issues involved are these: Some computer systems distinguish <em>integers</em>, such as 2, from <em>real numbers</em>, such as 2.71.  Is the real number 2.00 different from the integer 2?  Are the arithmetic operations used for integers the same as the operations used for real numbers?  Does 6 divided by 2 produce 3, or 3.0?  How large a number can we represent?  How many decimal places of accuracy can we represent?  Is the range of integers the same as the range of real numbers?  Above and beyond these questions, of course, lies a collection of issues concerning roundoff and truncation errors &mdash; the entire science of numerical analysis.  Since our focus in this book is on large-scale program design rather than on numerical techniques, we are going to ignore these problems.  The numerical examples in this chapter will exhibit the usual roundoff behavior that one observes when using arithmetic operations that preserve a limited number of decimal places of accuracy in noninteger operations.
+</p></div>
+
+<div id="footnote_1-5" class="footnote">
+<p><a href="#footnote_link_1-5" class="footnote_backlink">5</a>
+Throughout this book, when we wish to emphasize the distinction between the input typed by the user and the response printed by the interpreter, we will show the latter in slanted characters.
+</p></div>
+
+<div id="footnote_1-6" class="footnote">
+<p><a href="#footnote_link_1-6" class="footnote_backlink">6</a>
+Lisp systems typically provide features to aid the user in formatting expressions.  Two especially useful features are one that automatically indents to the proper pretty-print position whenever a new line is started and one that highlights the matching left parenthesis whenever a right parenthesis is typed.
+</p></div>
+
+</div> 
 <hr>
 
 <p> <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Interactive SICP</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://mitpress.mit.edu/sicp/" rel="dct:source" target="_blank">http://mitpress.mit.edu/sicp/</a>.

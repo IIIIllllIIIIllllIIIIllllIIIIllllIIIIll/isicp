@@ -1,28 +1,36 @@
-a.footnote_marker {
+a.footnote_link, a.footnote_backlink {
   color: #841;
-  cursor: default;
+  text-decoration: none;
+/*  cursor: default; */
   font-size: 80%; 
   vertical-align: top; 
   position: relative;
   top: -0.4ex;
+  margin:-1.5ex;
+  padding:1.5ex;
 }
 
-a.footnote_marker:hover {
+a.footnote_link:hover, a.footnote_backlink:hover {
   color: #481;
 }
 
-.footnote {
-  display: none;
+#footnote_popup {
   font-family: Georgia;
   font-size: 100%;
   line-height: 1.5em;
   text-align: justify;
   background: #f0f0f0;
   color: #333;
-  padding: 2em;
-  width: 53%; /* 70ex */
+  padding: 0.8ex;
+  padding-left: 3ex;
+  padding-right: 3ex;
+  width: 54%;
   box-shadow: 4px 4px 22px #777;
   z-index: 12;
+}
+
+#footnote_popup a {
+  display: none;
 }
 /*
 .footnote a {
