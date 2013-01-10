@@ -175,7 +175,7 @@ depsOf["scheme-define-sum-cubes"] = ["scheme-define-cube"];
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-26.gif'>
 
-<p> which converges to pi/8 (very slowly):49
+<p> which converges to pi/8 (very slowly):#49#
 
 <div id="scheme-define-pi-sum">
 (define (pi-sum a b)
@@ -271,7 +271,7 @@ prompt("scheme-sum-integers-1-10");
 depsOf["scheme-sum-integers-1-10"] = ["scheme-define-sum-integers-sum"];
 </script>
 
-<p> We can also define pi-sum in the same way:50
+<p> We can also define pi-sum in the same way:#50#
 
 <div id="scheme-define-pi-sum-sum">
 (define (pi-sum a b)
@@ -363,7 +363,7 @@ depsOf["scheme-integral-cube-finer"] = ["scheme-define-cube", "scheme-define-int
 
 <ol style="list-style-type: lower-alpha">
 <li>
-The sum procedure is only the simplest of a vast number of similar abstractions that can be captured as higher-order procedures.51 Write an analogous procedure called product that returns the product of the values of a function at points over a given range. Show how to define factorial in terms of product. Also use product to compute approximations to  using the formula52
+The sum procedure is only the simplest of a vast number of similar abstractions that can be captured as higher-order procedures.#51# Write an analogous procedure called product that returns the product of the values of a function at points over a given range. Show how to define factorial in terms of product. Also use product to compute approximations to  using the formula#52#
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-30.gif'>
 </li>
@@ -500,7 +500,7 @@ prompt("scheme-apply-lambda");
 depsOf["scheme-apply-lambda"] = ["scheme-define-square"];
 </script>
 
-<p> or, more generally, in any context where we would normally use a procedure name.53
+<p> or, more generally, in any context where we would normally use a procedure name.#53#
 
 <h4> Using let to create local variables </h4>
 
@@ -839,7 +839,7 @@ prompt("scheme-fixed-point-sin-cos");
 depsOf["scheme-fixed-point-sin-cos"] = ["scheme-define-fixed-point"];
 </script>
 
-<p> The fixed-point process is reminiscent of the process we used for finding square roots in section 1.1.7. Both are based on the idea of repeatedly improving a guess until the result satisfies some criterion. In fact, we can readily formulate the square-root computation as a fixed-point search. Computing the square root of some number x requires finding a y such that y2 = x. Putting this equation into the equivalent form y = x/y, we recognize that we are looking for a fixed point of the function58 y -> x/y, and we can therefore try to compute square roots as
+<p> The fixed-point process is reminiscent of the process we used for finding square roots in section 1.1.7. Both are based on the idea of repeatedly improving a guess until the result satisfies some criterion. In fact, we can readily formulate the square-root computation as a fixed-point search. Computing the square root of some number x requires finding a y such that y2 = x. Putting this equation into the equivalent form y = x/y, we recognize that we are looking for a fixed point of the function#58# y -> x/y, and we can therefore try to compute square roots as
 
 <div id="scheme-define-sqrt">
 (define (sqrt x)
@@ -953,7 +953,7 @@ prompt("scheme-define-average-damp");
 
 </script>
 
-<p> <tt> average-damp </tt> is a procedure that takes as its argument a procedure f and returns as its value a procedure (produced by the lambda) that, when applied to a number x, produces the average of x and (f x). For example, applying average-damp to the square procedure produces a procedure whose value at some number x is the average of x and x2. Applying this resulting procedure to 10 returns the average of 10 and 100, or 55:59
+<p> <tt> average-damp </tt> is a procedure that takes as its argument a procedure f and returns as its value a procedure (produced by the lambda) that, when applied to a number x, produces the average of x and (f x). For example, applying average-damp to the square procedure produces a procedure whose value at some number x is the average of x and x2. Applying this resulting procedure to 10 returns the average of 10 and 100, or 55:#59#
 
 <div id="scheme-average-damp-square-10">
 ((average-damp square) 10)
@@ -973,7 +973,7 @@ prompt("scheme-average-damp-square-10");
 prompt("scheme-define-sqrt-average-damp");
 </script>
 
-<p> Notice how this formulation makes explicit the three ideas in the method: fixed-point search, average damping, and the function y  x/y. It is instructive to compare this formulation of the square-root method with the original version given in section 1.1.7. Bear in mind that these procedures express the same process, and notice how much clearer the idea becomes when we express the process in terms of these abstractions. In general, there are many ways to formulate a process as a procedure. Experienced programmers know how to choose procedural formulations that are particularly perspicuous, and where useful elements of the process are exposed as separate entities that can be reused in other applications. As a simple example of reuse, notice that the cube root of x is a fixed point of the function y x/y2, so we can immediately generalize our square-root procedure to one that extracts cube roots:60
+<p> Notice how this formulation makes explicit the three ideas in the method: fixed-point search, average damping, and the function y  x/y. It is instructive to compare this formulation of the square-root method with the original version given in section 1.1.7. Bear in mind that these procedures express the same process, and notice how much clearer the idea becomes when we express the process in terms of these abstractions. In general, there are many ways to formulate a process as a procedure. Experienced programmers know how to choose procedural formulations that are particularly perspicuous, and where useful elements of the process are exposed as separate entities that can be reused in other applications. As a simple example of reuse, notice that the cube root of x is a fixed point of the function y x/y2, so we can immediately generalize our square-root procedure to one that extracts cube roots:#60#
 
 <div id="scheme-define-cube-root-average-damp">
 (define (cube-root x)
@@ -990,7 +990,7 @@ prompt("scheme-define-cube-root-average-damp");
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-37.gif'>
 
-<p> and Dg(x) is the derivative of g evaluated at x. Newton's method is the use of the fixed-point method we saw above to approximate a solution of the equation by finding a fixed point of the function f.61 For many functions g and for sufficiently good initial guesses for x, Newton's method converges very rapidly to a solution of g(x) = 0.62
+<p> and Dg(x) is the derivative of g evaluated at x. Newton's method is the use of the fixed-point method we saw above to approximate a solution of the equation by finding a fixed point of the function f.#61# For many functions g and for sufficiently good initial guesses for x, Newton's method converges very rapidly to a solution of g(x) = 0.#62#
 
 <p> In order to implement Newton's method as a procedure, we must first express the idea of derivative. Note that ``derivative,'' like average damping, is something that transforms a function into another function. For instance, the derivative of the function x  x3 is the function x   3x2. In general, if g is a function and dx is a small number, then the derivative Dg of g is the function whose value at any number x is given (in the limit of small dx) by
 
@@ -1044,7 +1044,7 @@ prompt("scheme-define-newton-transform");
 depsOf["scheme-define-newton-transform"] = ["scheme-define-deriv", "scheme-define-dx", "scheme-define-fixed-point"];
 </script>
 
-<p> The newton-transform procedure expresses the formula at the beginning of this section, and newtons-method is readily defined in terms of this. It takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of x, we can use Newton's method to find a zero of the function y  y2 - x starting with an initial guess of 1.63 This provides yet another form of the square-root procedure:
+<p> The newton-transform procedure expresses the formula at the beginning of this section, and newtons-method is readily defined in terms of this. It takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of x, we can use Newton's method to find a zero of the function y  y2 - x starting with an initial guess of 1.#63# This provides yet another form of the square-root procedure:
 
 <p> This provides yet another form of the square-root procedure:
 
@@ -1114,7 +1114,7 @@ first-class status of programming-language elements is due to the British comput
 <li> They may be named by variables. </li>
 <li> They may be passed as arguments to procedures. </li>
 <li> They may be returned as the results of procedures. </li>
-<li> They may be included in data structures.65 </li>
+<li> They may be included in data structures.#65# </li>
 
 </ul>
 

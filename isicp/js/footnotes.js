@@ -64,19 +64,19 @@ $(document).ready(function() {
 	div.css({ left: left, 
 		  top: top, 
 		  background: new_popup_bg });
-  	$(doc).css({ background: new_doc_bg });
+//  	$(doc).css({ background: new_doc_bg });
       },
 
       footnoteout: function() {
         Footnotes.footnotetimeout = setTimeout(function() {
           $(popup).animate({
             opacity: 0
-          }, 0, function() {
+          }, 600, function() {
 	    $(popup).remove();
-	    $(doc).css({ background: old_doc_bg });
+//	    $(doc).css({ background: old_doc_bg });
 	    $(popup).css({ background: old_popup_bg });
           });
-        },600);
+        },400);
       },
 
       divover: function() {
@@ -85,7 +85,7 @@ $(document).ready(function() {
         $(popup).css({
           opacity: 1
         });
-  	$(doc).css({ background: new_doc_bg });
+//  	$(doc).css({ background: new_doc_bg });
 	$(popup).css({ background: new_popup_bg });
       }
   }
