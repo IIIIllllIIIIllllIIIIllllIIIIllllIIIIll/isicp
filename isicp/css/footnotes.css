@@ -29,7 +29,7 @@ a.footnote_link:hover, a.footnote_backlink:hover {
   z-index: 12;
 }
 
-#footnote_popup a {
+#footnote_popup a.footnote_backlink {
   display: none;
 }
 /*
