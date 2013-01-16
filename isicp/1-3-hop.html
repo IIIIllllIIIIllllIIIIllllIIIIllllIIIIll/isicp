@@ -185,7 +185,7 @@ depsOf["scheme-define-sum-cubes"] = ["scheme-define-cube"];
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-26.gif'>
 
-<p> which converges to pi/8 (very slowly):#49#
+<p> which converges to pi/8 (very slowly):<a name="footnote_link_1-49" class="footnote_link" href="#footnote_1-49">49</a>
 
 <div id="scheme-define-pi-sum">
 (define (pi-sum a b)
@@ -210,13 +210,13 @@ prompt("scheme-define-pi-sum");
 prompt("scheme-sum-template");
 </script>
 
-<p> The presence of such a common pattern is strong evidence that there is a useful abstraction waiting to be brought to the surface. Indeed, mathematicians long ago identified the abstraction of summation of a series and invented ``sigma notation,'' for example
+<p> The presence of such a common pattern is strong evidence that there is a useful abstraction waiting to be brought to the surface. Indeed, mathematicians long ago identified the abstraction of summation of a series and invented &ldquo;sigma notation,&rdquo; for example
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-27.gif'>
 
-<p> to express this concept. The power of sigma notation is that it allows mathematicians to deal with the concept of summation itself rather than only with particular sums -- for example, to formulate general results about sums that are independent of the particular series being summed.
+<p> to express this concept. The power of sigma notation is that it allows mathematicians to deal with the concept of summation itself rather than only with particular sums &mdash; for example, to formulate general results about sums that are independent of the particular series being summed.
 
-<p> Similarly, as program designers, we would like our language to be powerful enough so that we can write a procedure that expresses the concept of summation itself rather than only procedures that compute particular sums. We can do so readily in our procedural language by taking the common template shown above and transforming the ``slots'' into formal parameters:
+<p> Similarly, as program designers, we would like our language to be powerful enough so that we can write a procedure that expresses the concept of summation itself rather than only procedures that compute particular sums. We can do so readily in our procedural language by taking the common template shown above and transforming the &ldquo;slots&rdquo; into formal parameters:
 
 <div id="scheme-define-sum">
 (define (sum term a next b)
@@ -281,7 +281,7 @@ prompt("scheme-sum-integers-1-10");
 depsOf["scheme-sum-integers-1-10"] = ["scheme-define-sum-integers-sum"];
 </script>
 
-<p> We can also define pi-sum in the same way:#50#
+<p> We can also define pi-sum in the same way:<a name="footnote_link_1-50" class="footnote_link" href="#footnote_1-50">50</a>
 
 <div id="scheme-define-pi-sum-sum">
 (define (pi-sum a b)
@@ -373,7 +373,7 @@ depsOf["scheme-integral-cube-finer"] = ["scheme-define-cube", "scheme-define-int
 
 <ol style="list-style-type: lower-alpha">
 <li>
-The sum procedure is only the simplest of a vast number of similar abstractions that can be captured as higher-order procedures.#51# Write an analogous procedure called product that returns the product of the values of a function at points over a given range. Show how to define factorial in terms of product. Also use product to compute approximations to  using the formula#52#
+The sum procedure is only the simplest of a vast number of similar abstractions that can be captured as higher-order procedures.<a name="footnote_link_1-51" class="footnote_link" href="#footnote_1-51">51</a> Write an analogous procedure called product that returns the product of the values of a function at points over a given range. Show how to define factorial in terms of product. Also use product to compute approximations to  using the formula<a name="footnote_link_1-52" class="footnote_link" href="#footnote_1-52">52</a>
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-30.gif'>
 </li>
@@ -419,7 +419,7 @@ the product of all the positive integers less than n that are relatively prime t
 
 <h3> Constructing Procedures Using Lambda </h3>
 
-<p> In using sum as in section 1.3.1, it seems terribly awkward to have to define trivial procedures such as pi-term and pi-next just so we can use them as arguments to our higher-order procedure. Rather than define pi-next and pi-term, it would be more convenient to have a way to directly specify ``the procedure that returns its input incremented by 4'' and ``the procedure that returns the reciprocal of its input times its input plus 2.'' We can do this by introducing the special form lambda, which creates procedures. Using lambda we can describe what we want as
+<p> In using sum as in section 1.3.1, it seems terribly awkward to have to define trivial procedures such as pi-term and pi-next just so we can use them as arguments to our higher-order procedure. Rather than define pi-next and pi-term, it would be more convenient to have a way to directly specify &ldquo;the procedure that returns its input incremented by 4&rdquo; and &ldquo;the procedure that returns the reciprocal of its input times its input plus 2.&rdquo; We can do this by introducing the special form lambda, which creates procedures. Using lambda we can describe what we want as
 
 <div id="scheme-lambda-plus-4">
 (lambda (x) (+ x 4))
@@ -510,7 +510,7 @@ prompt("scheme-apply-lambda");
 depsOf["scheme-apply-lambda"] = ["scheme-define-square"];
 </script>
 
-<p> or, more generally, in any context where we would normally use a procedure name.#53#
+<p> or, more generally, in any context where we would normally use a procedure name.<a name="footnote_link_1-53" class="footnote_link" href="#footnote_1-53">53</a>
 
 <h4> Using let to create local variables </h4>
 
@@ -679,7 +679,7 @@ prompt("scheme-define-f-close-define");
 depsOf["scheme-define-f-close-define"] = ["scheme-define-square"];
 </script>
 
-<p> We prefer, however, to use <tt> let </tt> in situations like this and to use internal <tt> define </tt> only for internal procedures.@footnote{Understanding internal definitions well enough to be sure a program means what we intend it to mean requires a more elaborate model of the evaluation process than we have presented in this chapter.  The subtleties do not arise with internal definitions of procedures, however.  We will return to this issue in section @ref{4-1-6}, after we learn more about evaluation.}
+<p> We prefer, however, to use <tt> let </tt> in situations like this and to use internal <tt> define </tt> only for internal procedures.<a name="footnote_link_1-54" class="footnote_link" href="#footnote_1-54">54</a>
 
 <div class="exercise">
 <p> <b> Exercise 1.34: </b> Suppose we define the procedure
@@ -716,11 +716,11 @@ What happens if we (perversely) ask the interpreter to evaluate the combination
 
 <h3> Procedures as General Methods </h3>
 
-<p> We introduced compound procedures in section @ref{1-1-4} as a mechanism for abstracting patterns of numerical operations so as to make them independent of the particular numbers involved.  With higher-order procedures, such as the <tt> integral </tt> procedure of section @ref{1-3-1}, we began to see a more powerful kind of abstraction: procedures used to express general methods of computation, independent of the particular functions involved.  In this section we discuss two more elaborate examples---general methods for finding zeros and fixed points of functions---and show how these methods can be expressed directly as procedures.
+<p> We introduced compound procedures in section @ref{1-1-4} as a mechanism for abstracting patterns of numerical operations so as to make them independent of the particular numbers involved.  With higher-order procedures, such as the <tt> integral </tt> procedure of section @ref{1-3-1}, we began to see a more powerful kind of abstraction: procedures used to express general methods of computation, independent of the particular functions involved.  In this section we discuss two more elaborate examples &mdash; general methods for finding zeros and fixed points of functions &mdash; and show how these methods can be expressed directly as procedures.
 
 <h4> Finding roots of equations by the half-interval method </h4>
 
-<p> The <em> half-interval method </em> is a simple but powerful technique for finding roots of an equation <em> f(x) = 0 </em>, where <em> f </em> is a continuous function.  The idea is that, if we are given points <em> a </em> and <em> b </em> such that <em> f(a) &lt; 0 &lt; f (b) </em>, then <em> f </em> must have at least one zero between <em> a </em> and <em> b </em>.  To locate a zero, let <em> x </em> be the average of <em> a </em> and <em> b </em> and compute <em> f(x) </em>.  If <em> f(x) &gt; 0  </em>, then <em> f </em> must have a zero between <em> a </em> and <em> x </em>.  If <em> f(x) &lt; 0</em>, then <em> f </em> must have a zero between <em> x </em> and <em> b </em>.  Continuing in this way, we can identify smaller and smaller intervals on which <em> f </em> must have a zero.  When we reach a point where the interval is small enough, the process stops.  Since the interval of uncertainty is reduced by half at each step of the process, the number of steps required grows as @i{[theta]}(@code{log}( @i{L}/@i{T})), where @i{L} is the length of the original interval and @i{T} is the error tolerance (that is, the size of the interval we will consider ``small enough'').  Here is a procedure that implements this strategy:
+<p> The <em> half-interval method </em> is a simple but powerful technique for finding roots of an equation <em> f(x) = 0 </em>, where <em> f </em> is a continuous function.  The idea is that, if we are given points <em> a </em> and <em> b </em> such that <em> f(a) &lt; 0 &lt; f (b) </em>, then <em> f </em> must have at least one zero between <em> a </em> and <em> b </em>.  To locate a zero, let <em> x </em> be the average of <em> a </em> and <em> b </em> and compute <em> f(x) </em>.  If <em> f(x) &gt; 0  </em>, then <em> f </em> must have a zero between <em> a </em> and <em> x </em>.  If <em> f(x) &lt; 0</em>, then <em> f </em> must have a zero between <em> x </em> and <em> b </em>.  Continuing in this way, we can identify smaller and smaller intervals on which <em> f </em> must have a zero.  When we reach a point where the interval is small enough, the process stops.  Since the interval of uncertainty is reduced by half at each step of the process, the number of steps required grows as @i{[theta]}(@code{log}( @i{L}/@i{T})), where @i{L} is the length of the original interval and @i{T} is the error tolerance (that is, the size of the interval we will consider &ldquo;small enough&rdquo;).  Here is a procedure that implements this strategy:
 
 <div id="scheme-define-average">
 (define (average x y)
@@ -750,7 +750,7 @@ depsOf["scheme-define-search"] = ["scheme-define-average", "scheme-define-close-
 
 <p> We assume that we are initially given the function <em> f </em> together with points at which its values are negative and positive.  We first compute the midpoint of the two given points.  Next we check to see if the given interval is small enough, and if so we simply return the midpoint as our answer.  Otherwise, we compute as a test value the value of <em> f </em> at the midpoint.  If the test value is positive, then we continue the process with a new interval running from the original negative point to the midpoint.  If the test value is negative, we continue with the interval from the midpoint to the positive point.  Finally, there is the possibility that the test value is 0, in which case the midpoint is itself the root we are searching for.
 
-<p> To test whether the endpoints are ``close enough'' we can use a procedure similar to the one used in section @ref{1-1-7} for computing square roots:@footnote{We have used 0.001 as a representative ``small'' number to indicate a tolerance for the acceptable error in a calculation.  The appropriate tolerance for a real calculation depends upon the problem to be solved and the limitations of the computer and the algorithm.  This is often a very subtle consideration, requiring help from a numerical analyst or some other kind of magician.}
+<p> To test whether the endpoints are &ldquo;close enough&rdquo; we can use a procedure similar to the one used in section @ref{1-1-7} for computing square roots:<a name="footnote_link_1-55" class="footnote_link" href="#footnote_1-55">55</a>
 
 <div id="scheme-define-close-enough">
 (define (close-enough? x y)
@@ -760,7 +760,7 @@ depsOf["scheme-define-search"] = ["scheme-define-average", "scheme-define-close-
 prompt("scheme-define-close-enough");
 </script>
 
-<p> <tt> search </tt> is awkward to use directly, because we can accidentally give it points at which <em> f </em>'s values do not have the required sign, in which case we get a wrong answer.  Instead we will use <tt> search </tt> via the following procedure, which checks to see which of the endpoints has a negative function value and which has a positive value, and calls the <tt> search </tt> procedure accordingly.  If the function has the same sign on the two given points, the half-interval method cannot be used, in which case the procedure signals an error.@footnote{This can be accomplished using <tt> error </tt>, which takes as arguments a number of items that are printed as error messages.}
+<p> <tt> search </tt> is awkward to use directly, because we can accidentally give it points at which <em> f </em>'s values do not have the required sign, in which case we get a wrong answer.  Instead we will use <tt> search </tt> via the following procedure, which checks to see which of the endpoints has a negative function value and which has a positive value, and calls the <tt> search </tt> procedure accordingly.  If the function has the same sign on the two given points, the half-interval method cannot be used, in which case the procedure signals an error.<a name="footnote_link_1-56" class="footnote_link" href="#footnote_1-56">56</a>
 
 <div id="scheme-define-half-interval-method">
 (define (half-interval-method f a b)
@@ -828,7 +828,7 @@ prompt("scheme-define-fixed-point");
 depsOf["scheme-define-fixed-point"] = ["scheme-define-close-enough"];
 </script>
 
-<p> For example, we can use this method to approximate the fixed point of the cosine function, starting with 1 as an initial approximation:
+<p> For example, we can use this method to approximate the fixed point of the cosine function, starting with 1 as an initial approximation:<a name="footnote_link_1-57" class="footnote_link" href="#footnote_1-57">57</a>
 
 <div id="scheme-fixed-point-cos">
 (fixed-point cos 1.0)
@@ -849,7 +849,7 @@ prompt("scheme-fixed-point-sin-cos");
 depsOf["scheme-fixed-point-sin-cos"] = ["scheme-define-fixed-point"];
 </script>
 
-<p> The fixed-point process is reminiscent of the process we used for finding square roots in section 1.1.7. Both are based on the idea of repeatedly improving a guess until the result satisfies some criterion. In fact, we can readily formulate the square-root computation as a fixed-point search. Computing the square root of some number x requires finding a y such that y2 = x. Putting this equation into the equivalent form y = x/y, we recognize that we are looking for a fixed point of the function#58# y -> x/y, and we can therefore try to compute square roots as
+<p> The fixed-point process is reminiscent of the process we used for finding square roots in section 1.1.7. Both are based on the idea of repeatedly improving a guess until the result satisfies some criterion. In fact, we can readily formulate the square-root computation as a fixed-point search. Computing the square root of some number x requires finding a y such that y2 = x. Putting this equation into the equivalent form y = x/y, we recognize that we are looking for a fixed point of the function<a name="footnote_link_1-58" class="footnote_link" href="#footnote_1-58">58</a> y -> x/y, and we can therefore try to compute square roots as
 
 <div id="scheme-define-sqrt">
 (define (sqrt x)
@@ -900,7 +900,7 @@ depsOf["scheme-define-sqrt-average"] = ["scheme-define-fixed-point", "scheme-def
 <li>
 An infinite continued fraction is an expression of the form
 
-<p> As an example, one can show that the infinite continued fraction expansion with the Ni and the Di all equal to 1 produces 1/, where  is the golden ratio (described in section 1.2.2). One way to approximate an infinite continued fraction is to truncate the expansion after a given number of terms. Such a truncation -- a so-called k-term finite continued fraction -- has the form
+<p> As an example, one can show that the infinite continued fraction expansion with the Ni and the Di all equal to 1 produces 1/, where  is the golden ratio (described in section 1.2.2). One way to approximate an infinite continued fraction is to truncate the expansion after a given number of terms. Such a truncation &mdash; a so-called k-term finite continued fraction &mdash; has the form
 
 <p> Suppose that @code{n} and <tt> d </tt> are procedures of one argument (the term index <em> i </em> that return the <em> N_i </em> and <em> Di </em> of the terms of the continued fraction.  Define a procedure @code{cont-frac} such that evaluating <tt> (cont-frac n d k) </tt> computes the value of the <em>k</em>-term finite continued fraction. Check your procedure by approximating 1/phi using
 
@@ -963,7 +963,7 @@ prompt("scheme-define-average-damp");
 
 </script>
 
-<p> <tt> average-damp </tt> is a procedure that takes as its argument a procedure f and returns as its value a procedure (produced by the lambda) that, when applied to a number x, produces the average of x and (f x). For example, applying average-damp to the square procedure produces a procedure whose value at some number x is the average of x and x2. Applying this resulting procedure to 10 returns the average of 10 and 100, or 55:#59#
+<p> <tt> average-damp </tt> is a procedure that takes as its argument a procedure f and returns as its value a procedure (produced by the lambda) that, when applied to a number x, produces the average of x and (f x). For example, applying average-damp to the square procedure produces a procedure whose value at some number x is the average of x and x2. Applying this resulting procedure to 10 returns the average of 10 and 100, or 55:<a name="footnote_link_1-59" class="footnote_link" href="#footnote_1-59">59</a>
 
 <div id="scheme-average-damp-square-10">
 ((average-damp square) 10)
@@ -983,7 +983,7 @@ prompt("scheme-average-damp-square-10");
 prompt("scheme-define-sqrt-average-damp");
 </script>
 
-<p> Notice how this formulation makes explicit the three ideas in the method: fixed-point search, average damping, and the function y  x/y. It is instructive to compare this formulation of the square-root method with the original version given in section 1.1.7. Bear in mind that these procedures express the same process, and notice how much clearer the idea becomes when we express the process in terms of these abstractions. In general, there are many ways to formulate a process as a procedure. Experienced programmers know how to choose procedural formulations that are particularly perspicuous, and where useful elements of the process are exposed as separate entities that can be reused in other applications. As a simple example of reuse, notice that the cube root of x is a fixed point of the function y x/y2, so we can immediately generalize our square-root procedure to one that extracts cube roots:#60#
+<p> Notice how this formulation makes explicit the three ideas in the method: fixed-point search, average damping, and the function y  x/y. It is instructive to compare this formulation of the square-root method with the original version given in section 1.1.7. Bear in mind that these procedures express the same process, and notice how much clearer the idea becomes when we express the process in terms of these abstractions. In general, there are many ways to formulate a process as a procedure. Experienced programmers know how to choose procedural formulations that are particularly perspicuous, and where useful elements of the process are exposed as separate entities that can be reused in other applications. As a simple example of reuse, notice that the cube root of x is a fixed point of the function y x/y2, so we can immediately generalize our square-root procedure to one that extracts cube roots:<a name="footnote_link_1-60" class="footnote_link" href="#footnote_1-60">60</a>
 
 <div id="scheme-define-cube-root-average-damp">
 (define (cube-root x)
@@ -1000,9 +1000,9 @@ prompt("scheme-define-cube-root-average-damp");
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-37.gif'>
 
-<p> and Dg(x) is the derivative of g evaluated at x. Newton's method is the use of the fixed-point method we saw above to approximate a solution of the equation by finding a fixed point of the function f.#61# For many functions g and for sufficiently good initial guesses for x, Newton's method converges very rapidly to a solution of g(x) = 0.#62#
+<p> and Dg(x) is the derivative of g evaluated at x. Newton's method is the use of the fixed-point method we saw above to approximate a solution of the equation by finding a fixed point of the function f.<a name="footnote_link_1-61" class="footnote_link" href="#footnote_1-61">61</a> For many functions g and for sufficiently good initial guesses for x, Newton's method converges very rapidly to a solution of g(x) = 0.<a name="footnote_link_1-62" class="footnote_link" href="#footnote_1-62">62</a>
 
-<p> In order to implement Newton's method as a procedure, we must first express the idea of derivative. Note that ``derivative,'' like average damping, is something that transforms a function into another function. For instance, the derivative of the function x  x3 is the function x   3x2. In general, if g is a function and dx is a small number, then the derivative Dg of g is the function whose value at any number x is given (in the limit of small dx) by
+<p> In order to implement Newton's method as a procedure, we must first express the idea of derivative. Note that &ldquo;derivative,&rdquo; like average damping, is something that transforms a function into another function. For instance, the derivative of the function x  x3 is the function x   3x2. In general, if g is a function and dx is a small number, then the derivative Dg of g is the function whose value at any number x is given (in the limit of small dx) by
 
 <p> <img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-38.gif'>
 
@@ -1054,7 +1054,7 @@ prompt("scheme-define-newton-transform");
 depsOf["scheme-define-newton-transform"] = ["scheme-define-deriv", "scheme-define-dx", "scheme-define-fixed-point"];
 </script>
 
-<p> The newton-transform procedure expresses the formula at the beginning of this section, and newtons-method is readily defined in terms of this. It takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of x, we can use Newton's method to find a zero of the function y  y2 - x starting with an initial guess of 1.#63# This provides yet another form of the square-root procedure:
+<p> The newton-transform procedure expresses the formula at the beginning of this section, and newtons-method is readily defined in terms of this. It takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of x, we can use Newton's method to find a zero of the function y  y2 - x starting with an initial guess of 1.<a name="footnote_link_1-63" class="footnote_link" href="#footnote_1-63">63</a> This provides yet another form of the square-root procedure:
 
 <p> This provides yet another form of the square-root procedure:
 
@@ -1116,19 +1116,18 @@ prompt("scheme-defne-sqrt-fixed-point-of-newton-transform");
 
 <p> As programmers, we should be alert to opportunities to identify the underlying abstractions in our programs and to build upon them and generalize them to create more powerful abstractions. This is not to say that one should always write programs in the most abstract way possible; expert programmers know how to choose the level of abstraction appropriate to their task. But it is important to be able to think in terms of these abstractions, so that we can be ready to apply them in new contexts. The significance of higher-order procedures is that they enable us to represent these abstractions explicitly as elements in our programming language, so that they can be handled just like other computational elements.
 
-<p> In general, programming languages impose restrictions on the ways in which computational elements can be manipulated.  Elements with the fewest restrictions are said to have @newterm{first-class} status.  Some of the ``rights and privileges'' of first-class elements are:@footnote{The notion of
-first-class status of programming-language elements is due to the British computer scientist Christopher Strachey (1916-1975).}
+<p> In general, programming languages impose restrictions on the ways in which computational elements can be manipulated.  Elements with the fewest restrictions are said to have @newterm{first-class} status.  Some of the &ldquo;rights and privileges&rdquo; of first-class elements are:<a name="footnote_link_1-64" class="footnote_link" href="#footnote_1-64">64</a>
 
 <ul>
 
 <li> They may be named by variables. </li>
 <li> They may be passed as arguments to procedures. </li>
 <li> They may be returned as the results of procedures. </li>
-<li> They may be included in data structures.#65# </li>
+<li> They may be included in data structures.<a name="footnote_link_1-65" class="footnote_link" href="#footnote_1-65">65</a> </li>
 
 </ul>
 
-Lisp, unlike other common programming languages, awards procedures full first-class status.  This poses challenges for efficient implementation, but the resulting gain in expressive power is enormous.@footnote{The major implementation cost of first-class procedures is that allowing procedures to be returned as values requires reserving storage for a procedure's free variableseven while the procedure is not executing.  In the Scheme implementation we will study in section @ref{4-1}, these variables are stored in the procedure's environment.}
+Lisp, unlike other common programming languages, awards procedures full first-class status.  This poses challenges for efficient implementation, but the resulting gain in expressive power is enormous.<a name="footnote_link_1-66" class="footnote_link" href="#footnote_1-66">66</a>
 
 <div class="exercise">
 
@@ -1187,13 +1186,109 @@ Hint: You may find it convenient to use @code{compose} from @ref{Exercise
 
 <p> Exercise 1.44.  The idea of smoothing a function is an important concept in signal processing. If f is a function and dx is some small number, then the smoothed version of f is the function whose value at a point x is the average of f(x - dx), f(x), and f(x + dx). Write a procedure smooth that takes as input a procedure that computes f and returns a procedure that computes the smoothed f. It is sometimes valuable to repeatedly smooth a function (that is, smooth the smoothed function, and so on) to obtained the n-fold smoothed function. Show how to generate the n-fold smoothed function of any given function using smooth and repeated from exercise 1.43.
 
-<p> Exercise 1.45.  We saw in section 1.3.3 that attempting to compute square roots by naively finding a fixed point of y x/y does not converge, and that this can be fixed by average damping. The same method works for finding cube roots as fixed points of the average-damped y  x/y2. Unfortunately, the process does not work for fourth roots -- a single average damp is not enough to make a fixed-point search for y  x/y3 converge. On the other hand, if we average damp twice (i.e., use the average damp of the average damp of y  x/y3) the fixed-point search does converge. Do some experiments to determine how many average damps are required to compute nth roots as a fixed-point search based upon repeated average damping of y  x/yn-1. Use this to implement a simple procedure for computing nth roots using fixed-point, average-damp, and the repeated procedure of exercise 1.43. Assume that any arithmetic operations you need are available as primitives.
+<p> Exercise 1.45.  We saw in section 1.3.3 that attempting to compute square roots by naively finding a fixed point of y x/y does not converge, and that this can be fixed by average damping. The same method works for finding cube roots as fixed points of the average-damped y  x/y2. Unfortunately, the process does not work for fourth roots &mdash; a single average damp is not enough to make a fixed-point search for y  x/y3 converge. On the other hand, if we average damp twice (i.e., use the average damp of the average damp of y  x/y3) the fixed-point search does converge. Do some experiments to determine how many average damps are required to compute nth roots as a fixed-point search based upon repeated average damping of y  x/yn-1. Use this to implement a simple procedure for computing nth roots using fixed-point, average-damp, and the repeated procedure of exercise 1.43. Assume that any arithmetic operations you need are available as primitives.
 
 <p> Exercise 1.46.  Several of the numerical methods described in this chapter are instances of an extremely general computational strategy known as iterative improvement. Iterative improvement says that, to compute something, we start with an initial guess for the answer, test if the guess is good enough, and otherwise improve the guess and continue the process using the improved guess as the new guess. Write a procedure iterative-improve that takes two procedures as arguments: a method for telling whether a guess is good enough and a method for improving a guess. Iterative-improve should return as its value a procedure that takes a guess as argument and keeps improving the guess until it is good enough. Rewrite the sqrt procedure of section 1.1.7 and the fixed-point procedure of section 1.3.3 in terms of iterative-improve.
 
 
 
- 
+<hr>
+
+<div id="footnotes">
+
+<h3 id='Notes'> Notes </h3>
+
+<div id="footnote_1-49" class="footnote">
+<p><a href="#footnote_link_1-49" class="footnote_backlink">49</a>
+ This series, usually written in the equivalent form (<img src="book-Z-G-D-9.gif" border="0">/4)  =  1 - (1/3) + (1/5) - (1/7) + <tt>&middot;&middot;&middot;</tt>, is due to Leibniz.  We'll see how to use this as the basis for some fancy numerical tricks in section&nbsp;<a href="book-Z-H-24.html#%_sec_3.5.3">3.5.3</a>.
+</p></div>
+
+<div id="footnote_1-50" class="footnote">
+<p><a href="#footnote_link_1-50" class="footnote_backlink">50</a>
+ Notice that we have used block structure (section&nbsp;<a href="book-Z-H-10.html#%_sec_1.1.8">1.1.8</a>) to embed the definitions of <tt>pi-next</tt> and <tt>pi-term</tt> within <tt>pi-sum</tt>, since these procedures are unlikely to be useful for any other purpose.  We will see how to get rid of them altogether in section&nbsp;<a href="book-Z-H-12.html#%_sec_1.3.2">1.3.2</a>.
+</p></div>
+
+<div id="footnote_1-51" class="footnote">
+<p><a href="#footnote_link_1-51" class="footnote_backlink">51</a>
+ The intent of exercises&nbsp;<a href="book-Z-H-12.html#%_thm_1.31">1.31</a>-<a href="book-Z-H-12.html#%_thm_1.33">1.33</a> is to demonstrate the expressive power that is attained by using an appropriate abstraction to consolidate many seemingly disparate operations.  However, though accumulation and filtering are elegant ideas, our hands are somewhat tied in using them at this point since we do not yet have data structures to provide suitable means of combination for these abstractions.  We will return to these ideas in section&nbsp;<a href="book-Z-H-15.html#%_sec_2.2.3">2.2.3</a> when we show how to use <em>sequences</em> as interfaces for combining filters and accumulators to build even more powerful abstractions.  We will see there how these methods really come into their own as a powerful and elegant approach to designing programs.
+</p></div>
+
+<div id="footnote_1-52" class="footnote">
+<p><a href="#footnote_link_1-52" class="footnote_backlink">52</a>
+ This formula was discovered by the seventeenth-century English mathematician John Wallis.
+</p></div>
+
+<div id="footnote_1-53" class="footnote">
+<p><a href="#footnote_link_1-53" class="footnote_backlink">53</a>
+ It would be clearer and less intimidating to people learning Lisp if a name more obvious than <tt>lambda</tt>, such as <tt>make-procedure</tt>, were used.  But the convention is firmly entrenched.  The notation is adopted from the <img src="book-Z-G-D-6.gif" border="0"> calculus, a mathematical formalism introduced by the mathematical logician Alonzo Church (1941).  Church developed the <img src="book-Z-G-D-6.gif" border="0"> calculus to provide a rigorous foundation for studying the notions of function and function application.  The <img src="book-Z-G-D-6.gif" border="0"> calculus has become a basic tool for mathematical investigations of the semantics of programming languages.
+</p></div>
+
+<div id="footnote_1-54" class="footnote">
+<p><a href="#footnote_link_1-54" class="footnote_backlink">54</a>
+ Understanding internal definitions well enough to be sure a program means what we intend it to mean requires a more elaborate model of the evaluation process than we have presented in this chapter.  The subtleties do not arise with internal definitions of procedures, however.  We will return to this issue in section&nbsp;<a href="book-Z-H-26.html#%_sec_4.1.6">4.1.6</a>, after we learn more about evaluation.
+</p></div>
+
+<div id="footnote_1-55" class="footnote">
+<p><a href="#footnote_link_1-55" class="footnote_backlink">55</a>
+ We have used 0.001 as a representative &ldquo;small&rdquo; number to indicate a tolerance for the acceptable error in a calculation.  The appropriate tolerance for a real calculation depends upon the problem to be solved and the limitations of the computer and the algorithm.  This is often a very subtle consideration, requiring help from a numerical analyst or some other kind of magician.
+</p></div>
+
+<div id="footnote_1-56" class="footnote">
+<p><a href="#footnote_link_1-56" class="footnote_backlink">56</a>
+ This can be accomplished using <tt>error</tt>, which takes as arguments a number of items that are printed as error messages.
+</p></div>
+
+<div id="footnote_1-57" class="footnote">
+<p><a href="#footnote_link_1-57" class="footnote_backlink">57</a>
+ Try this during a boring lecture: Set your calculator to radians mode and then repeatedly press the <tt>cos</tt> button until you obtain the fixed point.
+</p></div>
+
+<div id="footnote_1-58" class="footnote">
+<p><a href="#footnote_link_1-58" class="footnote_backlink">58</a>
+  <img src="book-Z-G-D-17.gif" border="0">(pronounced &ldquo;maps to&rdquo;) is the mathematician's way of writing <tt>lambda</tt>. <em>y</em>  <img src="book-Z-G-D-17.gif" border="0"><em>x</em>/<em>y</em> means <tt>(lambda(y) (/ x y))</tt>, that is, the function whose value at <em>y</em> is <em>x</em>/<em>y</em>.
+</p></div>
+
+<div id="footnote_1-59" class="footnote">
+<p><a href="#footnote_link_1-59" class="footnote_backlink">59</a>
+ Observe that this is a combination whose operator is itself a combination.  Exercise&nbsp;<a href="book-Z-H-10.html#%_thm_1.4">1.4</a> already demonstrated the ability to form such combinations, but that was only a toy example.  Here we begin to see the real need for such combinations &mdash; when applying a procedure that is obtained as the value returned by a higher-order procedure.
+</p></div>
+
+<div id="footnote_1-60" class="footnote">
+<p><a href="#footnote_link_1-60" class="footnote_backlink">60</a>
+ See exercise&nbsp;<a href="book-Z-H-12.html#%_thm_1.45">1.45</a> for a further generalization.
+</p></div>
+
+<div id="footnote_1-61" class="footnote">
+<p><a href="#footnote_link_1-61" class="footnote_backlink">61</a>
+ Elementary calculus books usually describe Newton's method in terms of the sequence of approximations <em>x</em><sub><em>n</em>+1</sub> = <em>x</em><sub><em>n</em></sub> - <em>g</em>(<em>x</em><sub><em>n</em></sub>)/<em>D</em><em>g</em>(<em>x</em><sub><em>n</em></sub>).  Having language for talking about processes and using the idea of fixed points simplifies the description of the method.
+</p></div>
+
+<div id="footnote_1-62" class="footnote">
+<p><a href="#footnote_link_1-62" class="footnote_backlink">62</a>
+ Newton's method does not always converge to an answer, but it can be shown that in favorable cases each iteration doubles the number-of-digits accuracy of the approximation to the solution. In such cases, Newton's method will converge much more rapidly than the half-interval method.
+</p></div>
+
+<div id="footnote_1-63" class="footnote">
+<p><a href="#footnote_link_1-63" class="footnote_backlink">63</a>
+ For finding square roots, Newton's method converges rapidly to the correct solution from any starting point.
+</p></div>
+
+<div id="footnote_1-64" class="footnote">
+<p><a href="#footnote_link_1-64" class="footnote_backlink">64</a>
+ The notion of first-class status of programming-language elements is due to the British computer scientist Christopher Strachey (1916-1975).
+</p></div>
+
+<div id="footnote_1-65" class="footnote">
+<p><a href="#footnote_link_1-65" class="footnote_backlink">65</a>
+ We'll see examples of this after we introduce data structures in chapter&nbsp;2.
+</p></div>
+
+<div id="footnote_1-66" class="footnote">
+<p><a href="#footnote_link_1-66" class="footnote_backlink">66</a>
+ The major implementation cost of first-class procedures is that allowing procedures to be returned as values requires reserving storage for a procedure's free variables even while the procedure is not executing.  In the Scheme implementation we will study in section&nbsp;<a href="book-Z-H-26.html#%_sec_4.1">4.1</a>, these variables are stored in the procedure's environment.
+</p></div>
+
+</div> 
 <hr>
 
 <p> <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /> Based on Structure and Interpretation of Computer Programs, a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://mitpress.mit.edu/sicp/" rel="dct:source" target="_blank">http://mitpress.mit.edu/sicp/</a>.

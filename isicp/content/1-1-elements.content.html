@@ -573,7 +573,7 @@ makeStatic("scheme-f-7");
 
 <li> The purpose of the substitution is to help us think about procedure application, not to provide a description of how the interpreter really works. Typical interpreters do not evaluate procedure applications by manipulating the text of a procedure to substitute values for the formal parameters. In practice, the "substitution" is accomplished by using a local environment for the formal parameters. We will discuss this more fully in chapters 3 and 4 when we examine the implementation of an interpreter in detail.
 
-<li> Over the course of this book, we will present a sequence of increasingly elaborate models of how interpreters work, culminating with a complete implementation of an interpreter and compiler in chapter 5. The substitution model is only the first of these models -- a way to get started thinking formally about the evaluation process. In general, when modeling phenomena in science and engineering, we begin with simplified, incomplete models. As we examine things in greater detail, these simple models become inadequate and must be replaced by more refined models. The substitution model is no exception. In particular, when we address in chapter 3 the use of procedures with "mutable data," we will see that the substitution model breaks down and must be replaced by a more complicated model of procedure application.<a name="footnote_link_1-15" class="footnote_link" href="#footnote_1-15">15</a> 
+<li> Over the course of this book, we will present a sequence of increasingly elaborate models of how interpreters work, culminating with a complete implementation of an interpreter and compiler in chapter 5. The substitution model is only the first of these models &mdash; a way to get started thinking formally about the evaluation process. In general, when modeling phenomena in science and engineering, we begin with simplified, incomplete models. As we examine things in greater detail, these simple models become inadequate and must be replaced by more refined models. The substitution model is no exception. In particular, when we address in chapter 3 the use of procedures with "mutable data," we will see that the substitution model breaks down and must be replaced by a more complicated model of procedure application.<a name="footnote_link_1-15" class="footnote_link" href="#footnote_1-15">15</a> 
 
 </ul>
 
@@ -686,7 +686,7 @@ makeStatic("scheme-x");
 makeStatic("scheme-cond-syntax"); 
 </script>
 
-<p> consisting of the symbol cond followed by parenthesized pairs of expressions <tt> (&lt;p&gt; &lt;e&gt;) </tt> called clauses. The first expression in each pair is a predicate -- that is, an expression whose value is interpreted as either true or false.<a name="footnote_link_1-17" class="footnote_link" href="#footnote_1-17">17</a>
+<p> consisting of the symbol cond followed by parenthesized pairs of expressions <tt> (&lt;p&gt; &lt;e&gt;) </tt> called clauses. The first expression in each pair is a predicate &mdash; that is, an expression whose value is interpreted as either true or false.<a name="footnote_link_1-17" class="footnote_link" href="#footnote_1-17">17</a>
 
 <p> Conditional expressions are evaluated as follows. The predicate <tt> &lt;p1&gt; </tt>; is evaluated first. If its value is false, then <tt> &lt;p2&gt; </tt> is evaluated. If <tt> &lt;p2&gt; </tt>'s value is also false, then <tt> &lt;p3&gt; </tt> is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding consequent expression <tt> &lt;e&gt; </tt> of the clause as the value of the conditional expression. If none of the <tt> &lt;p&gt; </tt>'s is found to be true, the value of the cond is undefined.
 
@@ -1220,7 +1220,7 @@ editorOf["scheme-ex-18-test"].setOption("readOnly", 'nocursor');
 
 <h3>Procedures as Black-Box Abstractions </h3>
 
-<p> Sqrt is our first example of a process defined by a set of mutually defined procedures. Notice that the definition of sqrt-iter is recursive; that is, the procedure is defined in terms of itself. The idea of being able to define a procedure in terms of itself may be disturbing; it may seem unclear how such a ``circular'' definition could make sense at all, much less specify a well-defined process to be carried out by a computer. This will be addressed more carefully in section 1.2. But first let's consider some other important points illustrated by the sqrt example.
+<p> Sqrt is our first example of a process defined by a set of mutually defined procedures. Notice that the definition of sqrt-iter is recursive; that is, the procedure is defined in terms of itself. The idea of being able to define a procedure in terms of itself may be disturbing; it may seem unclear how such a &ldquo;circular&rdquo; definition could make sense at all, much less specify a well-defined process to be carried out by a computer. This will be addressed more carefully in section 1.2. But first let's consider some other important points illustrated by the sqrt example.
 
 <p> Observe that the problem of computing square roots breaks up naturally into a number of subproblems: how to tell whether a guess is good enough, how to improve a guess, and so on. Each of these tasks is accomplished by a separate procedure. The entire sqrt program can be viewed as a cluster of procedures (shown in figure 1.2) that mirrors the decomposition of the problem into subproblems.
 
@@ -1228,7 +1228,7 @@ editorOf["scheme-ex-18-test"].setOption("readOnly", 'nocursor');
 
 <p style="text-align:center"> <b> Figure 1.2: </b> Procedural decomposition of the sqrt program.
 
-<p> The importance of this decomposition strategy is not simply that one is dividing the program into parts. After all, we could take any large program and divide it into parts -- the first ten lines, the next ten lines, the next ten lines, and so on. Rather, it is crucial that each procedure accomplishes an identifiable task that can be used as a module in defining other procedures. For example, when we define the good-enough? procedure in terms of square, we are able to regard the square procedure as a ``black box.'' We are not at that moment concerned with how the procedure computes its result, only with the fact that it computes the square. The details of how the square is computed can be suppressed, to be considered at a later time. Indeed, as far as the good-enough? procedure is concerned, square is not quite a procedure but rather an abstraction of a procedure, a so-called procedural abstraction. At this level of abstraction, any procedure that computes the square is equally good.
+<p> The importance of this decomposition strategy is not simply that one is dividing the program into parts. After all, we could take any large program and divide it into parts &mdash; the first ten lines, the next ten lines, the next ten lines, and so on. Rather, it is crucial that each procedure accomplishes an identifiable task that can be used as a module in defining other procedures. For example, when we define the good-enough? procedure in terms of square, we are able to regard the square procedure as a &ldquo;black box.&rdquo; We are not at that moment concerned with how the procedure computes its result, only with the fact that it computes the square. The details of how the square is computed can be suppressed, to be considered at a later time. Indeed, as far as the good-enough? procedure is concerned, square is not quite a procedure but rather an abstraction of a procedure, a so-called procedural abstraction. At this level of abstraction, any procedure that computes the square is equally good.
 
 <p> Thus, considering only the values they return, the following two procedures for squaring a number should be indistinguishable. Each takes a numerical argument and produces the square of that number as the value.<a name="footnote_link_1-25" class="footnote_link" href="#footnote_1-25">25</a>
 
@@ -1277,7 +1277,7 @@ prompt("scheme-define-square-x");
 prompt("scheme-define-square-y");
 </script>
 
-<p> This principle -- that the meaning of a procedure should be independent of the parameter names used by its author -- seems on the surface to be self-evident, but its consequences are profound. The simplest consequence is that the parameter names of a procedure must be local to the body of the procedure. For example, we used square in the definition of good-enough? in our square-root procedure:
+<p> This principle &mdash; that the meaning of a procedure should be independent of the parameter names used by its author &mdash; seems on the surface to be self-evident, but its consequences are profound. The simplest consequence is that the parameter names of a procedure must be local to the body of the procedure. For example, we used square in the definition of good-enough? in our square-root procedure:
 
 <div id="scheme-define-good-enough-2">
 (define (good-enough? guess x)
@@ -1384,7 +1384,7 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-7" class="footnote">
 <p><a href="#footnote_link_1-7" class="footnote_backlink">7</a>
- Lisp obeys the convention that every expression has a value. This convention, together with the old reputation of Lisp as an inefficient language, is the source of the quip by Alan Perlis (paraphrasing Oscar Wilde) that ``Lisp programmers know the value of everything but the cost of nothing.''   
+ Lisp obeys the convention that every expression has a value. This convention, together with the old reputation of Lisp as an inefficient language, is the source of the quip by Alan Perlis (paraphrasing Oscar Wilde) that &ldquo;Lisp programmers know the value of everything but the cost of nothing.&rdquo;   
 </p></div>
 
 <div id="footnote_1-8" class="footnote">
@@ -1404,17 +1404,17 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-11" class="footnote">
 <p><a href="#footnote_link_1-11" class="footnote_backlink">11</a>
- Special syntactic forms that are simply convenient alternative surface structures for things that can be written in more uniform ways are sometimes called <em>syntactic sugar</em>, to use a phrase coined by Peter Landin.  In comparison with users of other languages, Lisp programmers, as a rule, are less concerned with matters of syntax.  (By contrast, examine any Pascal manual and notice how much of it is devoted to descriptions of syntax.)  This disdain for syntax is due partly to the flexibility of Lisp, which makes it easy to change surface syntax, and partly to the observation that many ``convenient'' syntactic constructs, which make the language less uniform, end up causing more trouble than they are worth when programs become large and complex.  In the words of Alan Perlis, ``Syntactic sugar causes cancer of the semicolon.''   
+ Special syntactic forms that are simply convenient alternative surface structures for things that can be written in more uniform ways are sometimes called <em>syntactic sugar</em>, to use a phrase coined by Peter Landin.  In comparison with users of other languages, Lisp programmers, as a rule, are less concerned with matters of syntax.  (By contrast, examine any Pascal manual and notice how much of it is devoted to descriptions of syntax.)  This disdain for syntax is due partly to the flexibility of Lisp, which makes it easy to change surface syntax, and partly to the observation that many &ldquo;convenient&rdquo; syntactic constructs, which make the language less uniform, end up causing more trouble than they are worth when programs become large and complex.  In the words of Alan Perlis, &ldquo;Syntactic sugar causes cancer of the semicolon.&rdquo;   
 </p></div>
 
 <div id="footnote_1-12" class="footnote">
 <p><a href="#footnote_link_1-12" class="footnote_backlink">12</a>
- Observe that there are two different operations being combined here: we are creating the procedure, and we are giving it the name <tt>square</tt>.  It is possible, indeed important, to be able to separate these two notions -- to create procedures without naming them, and to give names to procedures that have already been created.  We will see how to do this in section&nbsp;<a href="book-Z-H-12.html#%_sec_1.3.2">1.3.2</a>.   
+ Observe that there are two different operations being combined here: we are creating the procedure, and we are giving it the name <tt>square</tt>.  It is possible, indeed important, to be able to separate these two notions &mdash; to create procedures without naming them, and to give names to procedures that have already been created.  We will see how to do this in section&nbsp;<a href="book-Z-H-12.html#%_sec_1.3.2">1.3.2</a>.   
 </p></div>
 
 <div id="footnote_1-13" class="footnote">
 <p><a href="#footnote_link_1-13" class="footnote_backlink">13</a>
- Throughout this book, we will describe the general syntax of expressions by using italic symbols delimited by angle brackets -- e.g., &lt;<em>name</em>&gt; -- to denote the ``slots'' in the expression to be filled in when such an expression is actually used.   
+ Throughout this book, we will describe the general syntax of expressions by using italic symbols delimited by angle brackets &mdash; e.g., &lt;<em>name</em>&gt; &mdash; to denote the &ldquo;slots&rdquo; in the expression to be filled in when such an expression is actually used.   
 </p></div>
 
 <div id="footnote_1-14" class="footnote">
@@ -1429,17 +1429,17 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-16" class="footnote">
 <p><a href="#footnote_link_1-16" class="footnote_backlink">16</a>
- In chapter&nbsp;3 we will introduce <em>stream processing</em>, which is a way of handling apparently ``infinite'' data structures by incorporating a limited form of normal-order evaluation.  In section&nbsp;<a href="book-Z-H-27.html#%_sec_4.2">4.2</a> we will modify the Scheme interpreter to produce a normal-order variant of Scheme.   
+ In chapter&nbsp;3 we will introduce <em>stream processing</em>, which is a way of handling apparently &ldquo;infinite&rdquo; data structures by incorporating a limited form of normal-order evaluation.  In section&nbsp;<a href="book-Z-H-27.html#%_sec_4.2">4.2</a> we will modify the Scheme interpreter to produce a normal-order variant of Scheme.   
 </p></div>
 
 <div id="footnote_1-17" class="footnote">
 <p><a href="#footnote_link_1-17" class="footnote_backlink">17</a>
- ``Interpreted as either true or false'' means this: In Scheme, there are two distinguished values that are denoted by the constants <tt>#t</tt> and <tt>#f</tt>.  When the interpreter checks a predicate's value, it interprets <tt>#f</tt> as false.  Any other value is treated as true.  (Thus, providing <tt>#t</tt> is logically unnecessary, but it is convenient.)  In this book we will use names <tt>true</tt> and <tt>false</tt>, which are associated with the values <tt>#t</tt> and <tt>#f</tt> respectively.   
+ &ldquo;Interpreted as either true or false&rdquo; means this: In Scheme, there are two distinguished values that are denoted by the constants <tt>#t</tt> and <tt>#f</tt>.  When the interpreter checks a predicate's value, it interprets <tt>#f</tt> as false.  Any other value is treated as true.  (Thus, providing <tt>#t</tt> is logically unnecessary, but it is convenient.)  In this book we will use names <tt>true</tt> and <tt>false</tt>, which are associated with the values <tt>#t</tt> and <tt>#f</tt> respectively.   
 </p></div>
 
 <div id="footnote_1-18" class="footnote">
 <p><a href="#footnote_link_1-18" class="footnote_backlink">18</a>
- <tt>Abs</tt> also uses the ``minus'' operator <tt>-</tt>, which, when used with a single operand, as in <tt>(-&nbsp;x)</tt>, indicates negation.   
+ <tt>Abs</tt> also uses the &ldquo;minus&rdquo; operator <tt>-</tt>, which, when used with a single operand, as in <tt>(-&nbsp;x)</tt>, indicates negation.   
 </p></div>
 
 <div id="footnote_1-19" class="footnote">
@@ -1449,7 +1449,7 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-20" class="footnote">
 <p><a href="#footnote_link_1-20" class="footnote_backlink">20</a>
- Declarative and imperative descriptions are intimately related, as indeed are mathematics and computer science.  For instance, to say that the answer produced by a program is ``correct'' is to make a declarative statement about the program.  There is a large amount of research aimed at establishing techniques for proving that programs are correct, and much of the technical difficulty of this subject has to do with negotiating the transition between imperative statements (from which programs are constructed) and declarative statements (which can be used to deduce things).  In a related vein, an important current area in programming-language design is the exploration of so-called very high-level languages, in which one actually programs in terms of declarative statements.  The idea is to make interpreters sophisticated enough so that, given ``what is'' knowledge specified by the programmer, they can generate ``how to'' knowledge automatically. This cannot be done in general, but there are important areas where progress has been made.  We shall revisit this idea in chapter&nbsp;4.   
+ Declarative and imperative descriptions are intimately related, as indeed are mathematics and computer science.  For instance, to say that the answer produced by a program is &ldquo;correct&rdquo; is to make a declarative statement about the program.  There is a large amount of research aimed at establishing techniques for proving that programs are correct, and much of the technical difficulty of this subject has to do with negotiating the transition between imperative statements (from which programs are constructed) and declarative statements (which can be used to deduce things).  In a related vein, an important current area in programming-language design is the exploration of so-called very high-level languages, in which one actually programs in terms of declarative statements.  The idea is to make interpreters sophisticated enough so that, given &ldquo;what is&rdquo; knowledge specified by the programmer, they can generate &ldquo;how to&rdquo; knowledge automatically. This cannot be done in general, but there are important areas where progress has been made.  We shall revisit this idea in chapter&nbsp;4.   
 </p></div>
 
 <div id="footnote_1-21" class="footnote">
@@ -1469,12 +1469,12 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-24" class="footnote">
 <p><a href="#footnote_link_1-24" class="footnote_backlink">24</a>
- Readers who are worried about the efficiency issues involved in using procedure calls to implement iteration should note the remarks on ``tail recursion'' in section&nbsp;<a href="book-Z-H-11.html#%_sec_1.2.1">1.2.1</a>.   
+ Readers who are worried about the efficiency issues involved in using procedure calls to implement iteration should note the remarks on &ldquo;tail recursion&rdquo; in section&nbsp;<a href="book-Z-H-11.html#%_sec_1.2.1">1.2.1</a>.   
 </p></div>
 
 <div id="footnote_1-25" class="footnote">
 <p><a href="#footnote_link_1-25" class="footnote_backlink">25</a>
- It is not even clear which of these procedures is a more efficient implementation.  This depends upon the hardware available.  There are machines for which the ``obvious'' implementation is the less efficient one.  Consider a machine that has extensive tables of logarithms and antilogarithms stored in a very efficient manner.   
+ It is not even clear which of these procedures is a more efficient implementation.  This depends upon the hardware available.  There are machines for which the &ldquo;obvious&rdquo; implementation is the less efficient one.  Consider a machine that has extensive tables of logarithms and antilogarithms stored in a very efficient manner.   
 </p></div>
 
 <div id="footnote_1-26" class="footnote">
