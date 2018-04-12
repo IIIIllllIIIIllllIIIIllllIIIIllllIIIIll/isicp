@@ -32,22 +32,22 @@ C.no_output_frozen_prompt("scheme-set-balance");
 <p> The basic operations on pairs &ndash; <tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt> &ndash; can be used to construct list structure and to select parts from list structure, but they are incapable of modifying list structure. The same is true of the list operations we have used so far, such as <tt>append</tt> and <tt>list</tt>, since these can be defined in terms of <tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt>. To modify list structures we need new operations.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-13.gif">
+<img src="images/ch3-Z-G-13.gif">
 <p> <b>Figure 3.12:</b> Lists <tt>x</tt>: <tt>((a b) c d)</tt> and <tt>y</tt>: <tt>(e f)</tt>.
 </div>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-14.gif">
+<img src="images/ch3-Z-G-14.gif">
 <p> <b>Figure 3.13:</b> Effect of <tt>(set-car! x y)</tt> on the lists in Figure 3-12.
 </div>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-15.gif">
+<img src="images/ch3-Z-G-15.gif">
 <p> <b>Figure 3.14:</b> Effect of <tt>(define z (cons y (cdr x)))</tt> on the lists in Figure 3-12.
 </div>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-16.gif">
+<img src="images/ch3-Z-G-16.gif">
 <p> <b>Figure 3.15:</b> Effect of <tt>(set-cdr! x y)</tt> on the lists in Figure 3-12.
 </div>
 
@@ -210,12 +210,12 @@ C.prompt("scheme-define-z1", ["scheme-define-x"]);
 <p> As shown in Figure 3-16, <tt>z1</tt> is a pair whose <tt>car</tt> and <tt>cdr</tt> both point to the same pair <tt>x</tt>. This sharing of <tt>x</tt> by the <tt>car</tt> and <tt>cdr</tt> of <tt>z1</tt> is a consequence of the straightforward way in which <tt>cons</tt> is implemented. In general, using <tt>cons</tt> to construct lists will result in an interlinked structure of pairs in which many individual pairs are shared by many different structures.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-17.gif">
+<img src="images/ch3-Z-G-17.gif">
 <p> <b>Figure 3.16:</b> The list <tt>z1</tt> formed by <tt>(cons x x)</tt>.
 </div>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-18.gif">
+<img src="images/ch3-Z-G-18.gif">
 <p> <b>Figure 3.17:</b> The list <tt>z2</tt> formed by <tt>(cons (list 'a 'b) (list 'a 'b))</tt>.
 </div>
 
@@ -446,7 +446,7 @@ Operation                Resulting Queue
 <p> A queue is represented, then, as a pair of pointers, <tt>front-ptr</tt> and <tt>rear-ptr</tt>, which indicate, respectively, the first and last pairs in an ordinary list. Since we would like the queue to be an identifiable object, we can use <tt>cons</tt> to combine the two pointers. Thus, the queue itself will be the <tt>cons</tt> of the two pointers. Figure 3-19 illustrates this representation.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-19.gif">
+<img src="images/ch3-Z-G-19.gif">
 <p> <b>Figure 3.19:</b> Implementation of a queue as a list with front and rear pointers.
 </div>
 
@@ -498,7 +498,7 @@ C.prompt("scheme-define-front-queue", ["scheme-define-make-queue"]);
 <p> To insert an item in a queue, we follow the method whose result is indicated in Figure 3-20. We first create a new pair whose <tt>car</tt> is the item to be inserted and whose <tt>cdr</tt> is the empty list. If the queue was initially empty, we set the front and rear pointers of the queue to this new pair. Otherwise, we modify the final pair in the queue to point to the new pair, and also set the rear pointer to the new pair.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-20.gif">
+<img src="images/ch3-Z-G-20.gif">
 <p> <b>Figure 3.20:</b> Result of using <tt>(insert-queue! q 'd)</tt> on the queue of Figure 3-19.
 </div>
 
@@ -521,7 +521,7 @@ C.prompt("scheme-define-insert-queue", ["scheme-define-front-queue"]);
 <p> To delete the item at the front of the queue, we merely modify the front pointer so that it now points at the second item in the queue, which can be found by following the <tt>cdr</tt> pointer of the first item (see Figure 3-21):<a name="footnote_link_3-22" class="footnote_link" href="#footnote_3-22">22</a>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-21.gif">
+<img src="images/ch3-Z-G-21.gif">
 <p> <b>Figure 3.21:</b> Result of using <tt>(delete-queue! q)</tt> on the queue of Figure 3-20.
 </div>
 
@@ -602,7 +602,7 @@ c:  3
 </pre>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-22.gif">
+<img src="images/ch3-Z-G-22.gif">
 <p> <b>Figure 3.22:</b> A table represented as a headed list.
 </div>
 
@@ -671,7 +671,7 @@ letters:
 <p> which has two subtables. (The subtables don't need a special header symbol, since the key that identifies the subtable serves this purpose.)
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-23.gif">
+<img src="images/ch3-Z-G-23.gif">
 <p> <b>Figure 3.23:</b> A two-dimensional table.
 </div>
 
@@ -837,7 +837,7 @@ C.prompt("scheme-define-memoize", ["scheme-define-table"]);
 <p> Our computational model of a circuit will be composed of objects that correspond to the elementary components from which the circuit is constructed. There are <tt>wires</tt> , which carry <tt>digital signals</tt> . A digital signal may at any moment have only one of two possible values, 0 and 1. There are also various types of digital <tt>function boxes</tt> , which connect wires carrying input signals to other output wires. Such boxes produce output signals computed from their input signals. The output signal is delayed by a time that depends on the type of the function box. For example, an <tt>inverter</tt> is a primitive function box that inverts its input. If the input signal to an inverter changes to 0, then one inverter-delay later the inverter will change its output signal to 1. If the input signal to an inverter changes to 1, then one inverter-delay later the inverter will change its output signal to 0. We draw an inverter symbolically as in Figure 3-24. An <tt>and-gate</tt> , also shown in Figure 3-24, is a primitive function box with two inputs and one output. It drives its output signal to a value that is the <tt>logical and</tt> of the inputs. That is, if both of its input signals become 1, then one and-gate-delay time later the and-gate will force its output signal to be 1; otherwise the output will be 0. An <tt>or-gate</tt> is a similar two-input primitive function box that drives its output signal to a value that is the <tt>logical or</tt> of the inputs. That is, the output will become 1 if at least one of the input signals is 1; otherwise the output will become 0.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-24.gif">
+<img src="images/ch3-Z-G-24.gif">
 <p> <b>Figure 3.24:</b> Primitive functions in the digital logic simulator.
 </div>
 
@@ -846,7 +846,7 @@ C.prompt("scheme-define-memoize", ["scheme-define-table"]);
 <p> circuit shown in Figure 3-25 consists of an or-gate, two and-gates, and an inverter. It takes two input signals, A and B, and has two output signals, S and C. S will become 1 whenever precisely one of A and B is 1, and C will become 1 whenever A and B are both 1. We can see from the figure that, because of the delays involved, the outputs may be generated at different times. Many of the difficulties in the design of digital circuits arise from this fact.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-25.gif">
+<img src="images/ch3-Z-G-25.gif">
 <p> <b>Figure 3.25:</b> A half-adder circuit.
 </div>
 
@@ -920,7 +920,7 @@ C.prompt("scheme-define-full-adder", ["scheme-define-half-adder"]);
 <p> Having defined <tt>full-adder</tt> as a procedure, we can now use it as a building block for creating still more complex circuits. (For example, see Exercise 3-30.)
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-26.gif">
+<img src="images/ch3-Z-G-26.gif">
 <p> <b>Figure 3.26:</b> A full-adder circuit.
 </div>
 
@@ -1408,7 +1408,7 @@ $$
 <div class="exercise">
 
 <div class="figure">
-<img src="https://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-30.gif">
+<img src="images/ch3-Z-G-30.gif">
 <p> <b>Figure 3.28:</b> The relation 9C = 5(F - 32) expressed as a constraint network.
 </div>
 </div>

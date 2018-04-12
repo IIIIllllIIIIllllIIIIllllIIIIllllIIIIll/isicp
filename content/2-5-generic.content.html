@@ -19,7 +19,7 @@
 <p> Figure 2-23 shows the structure of the system we shall build. Notice the abstraction barriers. From the perspective of someone using ``numbers,'' there is a single procedure <tt>add</tt> that operates on whatever numbers are supplied. <tt>Add</tt> is part of a generic interface that allows the separate ordinary-arithmetic, rational-arithmetic, and complex-arithmetic packages to be accessed uniformly by programs that use numbers. Any individual arithmetic package (such as the complex package) may itself be accessed through generic procedures (such as <tt>add-complex</tt>) that combine packages designed for different representations (such as rectangular and polar). Moreover, the structure of the system is additive, so that one can design the individual arithmetic packages separately and combine them to produce a generic arithmetic system.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-64.gif">
+<img src="images/ch2-Z-G-64.gif">
 <p> <b>Figure 2.23:</b> Generic arithmetic system.
 </div>
 
@@ -179,7 +179,7 @@ C.prompt("scheme-define-make-complex");
 <p> What we have here is a two-level tag system. A typical complex number, such as 3 + 4i in rectangular form, would be represented as shown in Figure 2-24. The outer tag (<tt>complex</tt>) is used to direct the number to the complex package. Once within the complex package, the next tag (<tt>rectangular</tt>) is used to direct the number to the rectangular package. In a large and complicated system there might be many levels, each interfaced with the next by means of generic operations. As a data object is passed ``downward,'' the outer tag that is used to direct it to the appropriate package is stripped off (by applying <tt>contents</tt>) and the next level of tag (if any) becomes visible to be used for further dispatching.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-65.gif">
+<img src="images/ch2-Z-G-65.gif">
 <p> <b>Figure 2.24:</b> Representation of 3 + 4i in rectangular form.
 </div>
 
@@ -304,7 +304,7 @@ C.prompt("scheme-define-apply-generic");
 <p> The coercion scheme presented above relied on the existence of natural relations between pairs of types. Often there is more ``global'' structure in how the different types relate to each other. For instance, suppose we are building a generic arithmetic system to handle integers, rational numbers, real numbers, and complex numbers. In such a system, it is quite natural to regard an integer as a special kind of rational number, which is in turn a special kind of real number, which is in turn a special kind of complex number. What we actually have is a so-called <tt>hierarchy of types</tt> , in which, for example, integers are a <tt>subtype</tt> of rational numbers (i.e., any operation that can be applied to a rational number can automatically be applied to an integer). Conversely, we say that rational numbers form a <tt>supertype</tt> of integers. The particular hierarchy we have here is of a very simple kind, in which each type has at most one supertype and at most one subtype. Such a structure, called a <tt>tower</tt> , is illustrated in Figure 2-25.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-66.gif">
+<img src="images/ch2-Z-G-66.gif">
 <p> <b>Figure 2.25:</b> A tower of types.
 </div>
 
@@ -317,7 +317,7 @@ C.prompt("scheme-define-apply-generic");
 <p> Yet another advantage of a tower over a more general hierarchy is that it gives us a simple way to ``lower'' a data object to the simplest representation. For example, if we add 2 + 3i to 4 - 3i, it would be nice to obtain the answer as the integer 6 rather than as the complex number 6 + 0i. Exercise 2-85 discusses a way to implement such a lowering operation. (The trick is that we need a general way to distinguish those objects that can be lowered, such as 6 + 0i, from those that cannot, such as 6 + 2i.)
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-67.gif">
+<img src="images/ch2-Z-G-67.gif">
 <p> <b>Figure 2.26:</b> Relations among types of geometric figures.
 </div>
 

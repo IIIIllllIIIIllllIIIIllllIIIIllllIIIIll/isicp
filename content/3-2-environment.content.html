@@ -27,7 +27,7 @@ with each formal parameter replaced by the corresponding argument.
 <p> An environment is a sequence of <em>frames</em> . Each frame is a table (possibly empty) of <em>bindings</em> , which associate variable names with their corresponding values. (A single frame may contain at most one binding for any variable.)  Each frame also has a pointer to its <em>enclosing environment</em> , unless, for the purposes of discussion, the frame is considered to be <em>global</em> . The <em>value of a variable</em> with respect to an environment is the value given by the binding of the variable in the first frame in the environment that contains a binding for that variable. If no frame in the sequence specifies a binding for the variable, then the variable is said to be <em>unbound</em> in the environment.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-2.gif">
+<img src="images/ch3-Z-G-2.gif">
 <p> <b>Figure 3.1:</b> A simple environment structure.
 </div>
 
@@ -80,7 +80,7 @@ C.prompt("scheme-define-square-lambda");
 <p> Figure 3-2 shows the result of evaluating this <tt>define</tt> expression. The procedure object is a pair whose code specifies that the procedure has one formal parameter, namely <tt>x</tt>, and a procedure body <tt>(* x x)</tt>. The environment part of the procedure is a pointer to the global environment, since that is the environment in which the <tt>lambda</tt> expression was evaluated to produce the procedure. A new binding, which associates the procedure object with the symbol <tt>square</tt>, has been added to the global frame. In general, <tt>define</tt> creates definitions by adding bindings to frames.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-3.gif">
+<img src="images/ch3-Z-G-3.gif">
 <p> <b>Figure 3.2:</b> Environment structure produced by evaluating <tt>(define (square x) (* x x))</tt> in the global environment.
 </div>
 
@@ -89,7 +89,7 @@ C.prompt("scheme-define-square-lambda");
 <p> To show how this rule is followed, Figure 3-3 illustrates the environment structure created by evaluating the expression <tt>(square 5)</tt> in the global environment, where <tt>square</tt> is the procedure generated in Figure 3-2. Applying the procedure results in the creation of a new environment, labeled E1 in the figure, that begins with a frame in which <tt>x</tt>, the formal parameter for the procedure, is bound to the argument 5. The pointer leading upward from this frame shows that the frame's enclosing environment is the global environment. The global environment is chosen here, because this is the environment that is indicated as part of the <tt>square</tt> procedure object. Within E1, we evaluate the body of the procedure, <tt>(* x x)</tt>. Since the value of <tt>x</tt> in E1 is 5, the result is <tt>(* 5 5)</tt>, or 25.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-4.gif">
+<img src="images/ch3-Z-G-4.gif">
 <p> <b>Figure 3.3:</b> Environment created by evaluating <tt>(square 5)</tt> in the global environment.
 </div>
 
@@ -132,7 +132,7 @@ C.prompt("scheme-define-sum-of-squares");
 <p> We can analyze the same example using the environment model. Figure 3-4 shows the three procedure objects created by evaluating the definitions of <tt>f</tt>, <tt>square</tt>, and <tt>sum-of-squares</tt> in the global environment. Each procedure object consists of some code, together with a pointer to the global environment.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-5.gif">
+<img src="images/ch3-Z-G-5.gif">
 <p> <b>Figure 3.4:</b> Procedure objects in the global frame.
 </div>
 
@@ -146,7 +146,7 @@ C.no_output_frozen_prompt("scheme-f-internal");
 </script>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-6.gif">
+<img src="images/ch3-Z-G-6.gif">
 <p> <b>Figure 3.5:</b> Environments created by evaluating
 </div>
 
@@ -229,7 +229,7 @@ C.prompt("scheme-w1-50", ["scheme-define-w1"]);
 <p> Figure 3-6 shows the result of defining the <tt>make-withdraw</tt> procedure in the global environment. This produces a procedure object that contains a pointer to the global environment. So far, this is no different from the examples we have already seen, except that the body of the procedure is itself a <tt>lambda</tt> expression.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-7.gif">
+<img src="images/ch3-Z-G-7.gif">
 <p> <b>Figure 3.6:</b> Result of defining <tt>make-withdraw</tt> in the global environment.
 </div>
 
@@ -245,7 +245,7 @@ C.prompt("scheme-define-w1-again", ["scheme-define-make-withdraw"]);
 <p> We begin, as usual, by setting up an environment E1 in which the formal parameter <tt>balance</tt> is bound to the argument 100. Within this environment, we evaluate the body of <tt>make-withdraw</tt>, namely the <tt>lambda</tt> expression. This constructs a new procedure object, whose code is as specified by the <tt>lambda</tt> and whose environment is E1, the environment in which the <tt>lambda</tt> was evaluated to produce the procedure. The resulting procedure object is the value returned by the call to <tt>make-withdraw</tt>. This is bound to <tt>W1</tt> in the global environment, since the <tt>define</tt> itself is being evaluated in the global environment. Figure 3-7 shows the resulting environment structure.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-8.gif">
+<img src="images/ch3-Z-G-8.gif">
 <p> <b>Figure 3.7:</b> Result of evaluating <tt>(define W1 (make-withdraw 100))</tt>.
 </div>
 
@@ -273,14 +273,14 @@ C.no_output_frozen_prompt("scheme-w1-internal");
 <p> The resulting environment structure is shown in Figure 3-8. The expression being evaluated references both <tt>amount</tt> and <tt>balance</tt>. <tt>Amount</tt> will be found in the first frame in the environment, while <tt>balance</tt> will be found by following the enclosing-environment pointer to E1.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-9.gif">
+<img src="images/ch3-Z-G-9.gif">
 <p> <b>Figure 3.8:</b> Environments created by applying the procedure object <tt>W1</tt>.
 </div>
 
 <p> When the <tt>set!</tt> is executed, the binding of <tt>balance</tt> in E1 is changed. At the completion of the call to <tt>W1</tt>, <tt>balance</tt> is 50, and the frame that contains <tt>balance</tt> is still pointed to by the procedure object <tt>W1</tt>. The frame that binds <tt>amount</tt> (in which we executed the code that changed <tt>balance</tt>) is no longer relevant, since the procedure call that constructed it has terminated, and there are no pointers to that frame from other parts of the environment. The next time <tt>W1</tt> is called, this will build a new frame that binds <tt>amount</tt> and whose enclosing environment is E1. We see that E1 serves as the ``place'' that holds the local state variable for the procedure object <tt>W1</tt>. Figure 3-9 shows the situation after the call to <tt>W1</tt>.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-10.gif">
+<img src="images/ch3-Z-G-10.gif">
 <p> <b>Figure 3.9:</b> Environments after the call to <tt>W1</tt>.
 </div>
 
@@ -297,7 +297,7 @@ C.prompt("scheme-define-w2", ["scheme-define-make-withdraw"]);
 <p> <p> This produces the environment structure of Figure 3-10, which shows that <tt>W2</tt> is a procedure object, that is, a pair with some code and an environment. The environment E2 for <tt>W2</tt> was created by the call to <tt>make-withdraw</tt>. It contains a frame with its own local binding for <tt>balance</tt>. On the other hand, <tt>W1</tt> and <tt>W2</tt> have the same code: the code specified by the <tt>lambda</tt> expression in the body of <tt>make-withdraw</tt>.<a name="footnote_link_3-15" class="footnote_link" href="#footnote_3-15">15</a> We see here why <tt>W1</tt> and <tt>W2</tt> behave as independent objects. Calls to <tt>W1</tt> reference the state variable <tt>balance</tt> stored in E1, whereas calls to <tt>W2</tt> reference the <tt>balance</tt> stored in E2. Thus, changes to the local state of one object do not affect the other object.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-11.gif">
+<img src="images/ch3-Z-G-11.gif">
 <p> <b>Figure 3.10:</b> Using <tt>(define W2 (make-withdraw 100))</tt> to create a second object.
 </div>
 
@@ -383,7 +383,7 @@ C.prompt("scheme-define-sqrt", ["scheme-define-square", "scheme-define-average"]
 <p> Now we can use the environment model to see why these internal definitions behave as desired. Figure 3-11 shows the point in the evaluation of the expression <tt>(sqrt 2)</tt> where the internal procedure <tt>good-enough?</tt> has been called for the first time with <tt>guess</tt> equal to 1.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch3-Z-G-12.gif">
+<img src="images/ch3-Z-G-12.gif">
 <p> <b>Figure 3.11:</b> <tt>Sqrt</tt> procedure with internal definitions.
 </div>
 

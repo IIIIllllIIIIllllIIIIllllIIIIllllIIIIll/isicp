@@ -29,7 +29,7 @@
 
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-54.gif">
+<img src="images/ch2-Z-G-54.gif">
 <p> <b>Figure 2.19:</b> Data-abstraction barriers in the complex-number system.
 </div>
 
@@ -61,7 +61,7 @@
 <p> Thus, there are two different representations for complex numbers, which are appropriate for different operations. Yet, from the viewpoint of someone writing a program that uses complex numbers, the principle of data abstraction suggests that all the operations for manipulating complex numbers should be available regardless of which representation is used by the computer. For example, it is often useful to be able to find the magnitude of a complex number that is specified by rectangular coordinates. Similarly, it is often useful to be able to determine the real part of a complex number that is specified by polar coordinates.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-59.gif">
+<img src="images/ch2-Z-G-59.gif">
 <p> <b>Figure 2.20:</b> Complex numbers as points in the plane.
 </div>
 
@@ -320,7 +320,7 @@ C.prompt("scheme-define-tagged-constructors");
 <p>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-62.gif">
+<img src="images/ch2-Z-G-62.gif">
 <p> <b>Figure 2.21:</b> Structure of the generic complex-arithmetic system.
 </div>
 
@@ -342,7 +342,7 @@ C.prompt("scheme-define-tagged-constructors");
 <p> Data-directed programming is the technique of designing programs to work with such a table directly. Previously, we implemented the mechanism that interfaces the complex-arithmetic code with the two representation packages as a set of procedures that each perform an explicit dispatch on type. Here we will implement the interface as a single procedure that looks up the combination of the operation name and argument type in the table to find the correct procedure to apply, and then applies it to the contents of the argument. If we do this, then to add a new representation package to the system we need not change any existing procedures; we need only add new entries to the table.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-63.gif">
+<img src="images/ch2-Z-G-63.gif">
 <p> <b>Figure 2.22:</b> Table of operations for the complex-number system.
 </div>
 

@@ -254,7 +254,7 @@ C.prompt("scheme-test-rat-reduce", ["scheme-define-arith-rat", "scheme-define-on
 
 <p> We can envision the structure of the rational-number system as shown in Figure 2-1. The horizontal lines represent <em>abstraction barriers</em> that isolate different "levels" of the system. At each level, the barrier separates the programs (above) that use the data abstraction from the programs (below) that implement the data abstraction. Programs that use rational numbers manipulate them solely in terms of the procedures supplied "for public use" by the rational-number package: <tt>add-rat</tt>, <tt>sub-rat</tt>, <tt>mul-rat</tt>, <tt>div-rat</tt>, and <tt>equal-rat?</tt>. These, in turn, are implemented solely in terms of the constructor and selectors <tt>make-rat</tt>, <tt>numer</tt>, and <tt>denom</tt>, which themselves are implemented in terms of pairs. The details of how pairs are implemented are irrelevant to the rest of the rational-number package so long as pairs can be manipulated by the use of <tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt>. In effect, procedures at each level are the interfaces that define the abstraction barriers and connect the different levels.
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-6.gif'>
+<p> <img class='center' src='images/ch2-Z-G-6.gif'>
 
 <p style="text-align:center"> Figure 2.1:  Data-abstraction barriers in the rational-number package.
 

@@ -670,7 +670,7 @@ C.prompt("scheme-define-ordered-intersection-set");
 <p> We can do better than the ordered-list representation by arranging the set elements in the form of a tree. Each node of the tree holds one element of the set, called the ``entry'' at that node, and a link to each of two other (possibly empty) nodes. The ``left'' link points to elements smaller than the one at the node, and the ``right'' link to elements greater than the one at the node. Figure 2-16 shows some trees that represent the set <tt>{1,3,5,7,9,11}.</tt>  The same set may be represented by a tree in a number of different ways. The only thing we require for a valid representation is that all elements in the left subtree be smaller than the node entry and that all elements in the right subtree be larger.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-51.gif">
+<img src="images/ch2-Z-G-51.gif">
 <p> <b>Figure 2.16:</b> Various binary trees that represent the set $\{1,3,5,7,9,11\}$.
 </div>
 
@@ -729,7 +729,7 @@ C.prompt("scheme-define-binary-adjoin-set", ["scheme-define-bst-accessors"]);
 <p> The above claim that searching the tree can be performed in a logarithmic number of steps rests on the assumption that the tree is ``balanced,'' i.e., that the left and the right subtree of every tree have approximately the same number of elements, so that each subtree contains about half the elements of its parent. But how can we be certain that the trees we construct will be balanced?  Even if we start with a balanced tree, adding elements with <tt>adjoin-set</tt> may produce an unbalanced result. Since the position of a newly adjoined element depends on how the element compares with the items already in the set, we can expect that if we add elements ``randomly'' the tree will tend to be balanced on the average. But this is not a guarantee. For example, if we start with an empty set and adjoin the numbers 1 through 7 in sequence we end up with the highly unbalanced tree shown in Figure 2-17. In this tree all the left subtrees are empty, so it has no advantage over a simple ordered list. One way to solve this problem is to define an operation that transforms an arbitrary tree into a balanced tree with the same elements. Then we can perform this transformation after every few <tt>adjoin-set</tt> operations to keep our set in balance. There are also other ways to solve this problem, most of which involve designing new data structures for which searching and insertion both can be done in $\Theta(\log(n))$ steps.<a name="footnote_link_2-40" class="footnote_link" href="#footnote_2-40">40</a>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-52.gif">
+<img src="images/ch2-Z-G-52.gif">
 <p> <b>Figure 2.17:</b> Unbalanced tree produced by adjoining 1 through 7 in sequence.
 </div>
 
@@ -884,7 +884,7 @@ B 100 D 1011  F 1101  H 1111
 <p> In general, we can attain significant savings if we use variable-length prefix codes that take advantage of the relative frequencies of the symbols in the messages to be encoded. One particular scheme for doing this is called the Huffman encoding method, after its discoverer, David Huffman. A Huffman code can be represented as a binary tree whose leaves are the symbols that are encoded. At each non-leaf node of the tree there is a set containing all the symbols in the leaves that lie below the node. In addition, each symbol at a leaf is assigned a weight (which is its relative frequency), and each non-leaf node contains a weight that is the sum of all the weights of the leaves lying below it. The weights are not used in the encoding or the decoding process. We will see below how they are used to help construct the tree.
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-53.gif">
+<img src="images/ch2-Z-G-53.gif">
 <p> <b>Figure 2.18:</b> A Huffman encoding tree.
 </div>
 

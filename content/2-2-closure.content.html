@@ -25,13 +25,13 @@ C.hidden_prompt("scheme-define-square");
 
 <p> As we have seen, pairs provide a primitive "glue" that we can use to construct compound data objects. Figure 2-2 shows a standard way to visualize a pair---in this case, the pair formed by <tt>(cons 1 2)</tt>. In this representation, which is called <tt>box-and-pointer notation</tt>  , each object is shown as a <tt>pointer</tt>  to a box. The box for a primitive object contains a representation of the object. For example, the box for a number contains a numeral. The box for a pair is actually a double box, the left part containing (a pointer to) the <tt>car</tt> of the pair and the right part containing the <tt>cdr</tt>.
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-11.gif'>
+<p> <img class='center' src='images/ch2-Z-G-11.gif'>
 
 <p style="text-align:center"> <b> Figure 2.2: </b> Box-and-pointer representation of <tt>(cons 1 2)</tt>.
 
 <p> We have already seen that <tt>cons</tt> can be used to combine not only numbers but pairs as well. (You made use of this fact, or should have, in doing Exercise 2-2 and Exercise 2-3.)  As a consequence, pairs provide a universal building block from which we can construct all sorts of data structures. Figure 2-3 shows two ways to use pairs to combine the numbers 1, 2, 3, and 4.
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-12.gif'>
+<p> <img class='center' src='images/ch2-Z-G-12.gif'>
 
 <p style="text-align:center"> <b>Figure 2.3:</b> Two ways to combine 1, 2, 3, and 4 using pairs.
 
@@ -42,7 +42,7 @@ C.hidden_prompt("scheme-define-square");
 <a name="%_sec_2.2.1" />
 <h3> 2.2.1 Representing Sequences </h3>
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-13.gif'>
+<p> <img class='center' src='images/ch2-Z-G-13.gif'>
 
 <p style="text-align:center"> <b>Figure 2.4:</b> The sequence 1, 2, 3, 4 represented as a chain of pairs.
 
@@ -765,13 +765,13 @@ C.prompt("scheme-show-1-2-pair-3-4");
 
 <p> as a list of three items, the first of which is itself a list, <tt>(1 2)</tt>. Indeed, this is suggested by the form in which the result is printed by the interpreter. Figure 2-5 shows the representation of this structure in terms of pairs.
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-15.gif'>
+<p> <img class='center' src='images/ch2-Z-G-15.gif'>
 
 <p style="text-align:center"> <b>Figure 2.5:</b> Structure formed by <tt>(cons (list 1 2) (list 3 4))</tt>.
 
 <p> Another way to think of sequences whose elements are sequences is as <tt>trees</tt> . The elements of the sequence are the branches of the tree, and elements that are themselves sequences are subtrees. Figure 2-6 shows the structure in Figure 2-5 viewed as a tree.
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-16.gif'>
+<p> <img class='center' src='images/ch2-Z-G-16.gif'>
 
 <p style="text-align:center"> <b>Figure 2.6:</b> The list structure in Figure 2-5 viewed as a tree.
 
@@ -1578,7 +1578,7 @@ empty list.
 
 <p> A signal-processing engineer would find it natural to conceptualize these processes in terms of signals flowing through a cascade of stages, each of which implements part of the program plan, as shown in Figure 2-7. In <tt>sum-odd-squares</tt>, we begin with an <tt>enumerator</tt> , which generates a "signal" consisting of the leaves of a given tree. This signal is passed through a <tt>filter</tt> , which eliminates all but the odd elements. The resulting signal is in turn passed through a <tt>map</tt> , which is a "transducer" that applies the <tt>square</tt> procedure to each element. The output of the map is then fed to an <tt>accumulator</tt> , which combines the elements using <tt>+</tt>, starting from an initial 0. The plan for <tt>even-fibs</tt> is analogous.
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-17.gif'>
+<p> <img class='center' src='images/ch2-Z-G-17.gif'>
 
 <p style="text-align:center"> <b>Figure 2.7:</b> The signal-flow plans for the procedures <tt>sum-odd-squares</tt> (top) and <tt>even-fibs</tt> (bottom) reveal the commonality between the two programs.
 
@@ -2334,7 +2334,7 @@ C.prompt("scheme-define-remove", ["scheme-define-filter"]);
 
 <p> <b>Exercise 2.42:</b> The "eight-queens puzzle" asks how to place eight queens on a chessboard so that no queen is in check from any other (i.e., no two queens are in the same row, column, or diagonal).
 
-<p> <img class='center' src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-23.gif'>
+<p> <img class='center' src='images/ch2-Z-G-23.gif'>
 
 <p style="text-align:center"> <b>Figure 2.8:</b> A solution to the eight-queens puzzle.
 
@@ -2395,8 +2395,8 @@ C.no_output_frozen_prompt("scheme-louise-queens-flatmap");
 <p>
 
 <div class="figure">
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-24.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-25.gif'>
+<img src='images/ch2-Z-G-24.gif'>
+<img src='images/ch2-Z-G-25.gif'>
 
 <p> <b>Figure 2.9:</b> Designs generated with the picture language.
 </div>
@@ -2410,10 +2410,10 @@ C.no_output_frozen_prompt("scheme-louise-queens-flatmap");
 <p> To combine images, we use various operations that construct new painters from given painters. For example, the <tt>beside</tt> operation takes two painters and produces a new, compound painter that draws the first painter's image in the left half of the frame and the second painter's image in the right half of the frame. Similarly, <tt>below</tt> takes two painters and produces a compound painter that draws the first painter's image below the second painter's image. Some operations transform a single painter to produce a new painter. For example, <tt>flip-vert</tt> takes a painter and produces a painter that draws its image upside-down, and <tt>flip-horiz</tt> produces a painter that draws the original painter's image left-to-right reversed.
 
 <div class="figure">
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-26.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-27.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-28.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-29.gif'>
+<img src='images/ch2-Z-G-26.gif'>
+<img src='images/ch2-Z-G-27.gif'>
+<img src='images/ch2-Z-G-28.gif'>
+<img src='images/ch2-Z-G-29.gif'>
 
 <p> <b>Figure 2.10:</b> Images produced by the <tt>wave</tt> painter, with respect to four different frames. The frames, shown with dotted lines, are not part of the images.
 </div>
@@ -2421,10 +2421,10 @@ C.no_output_frozen_prompt("scheme-louise-queens-flatmap");
 <p>
 
 <div class="figure">
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-30.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-31.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-32.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-33.gif'>
+<img src='images/ch2-Z-G-30.gif'>
+<img src='images/ch2-Z-G-31.gif'>
+<img src='images/ch2-Z-G-32.gif'>
+<img src='images/ch2-Z-G-33.gif'>
 
 <p> <b>Figure 2.11:</b> Images of William Barton Rogers, founder and first president of MIT, painted with respect to the same four frames as in Figure 2-10 (original image reprinted with the permission of the MIT Museum).
 </div>
@@ -2440,8 +2440,8 @@ C.prompt("scheme-define-wave-2-4");
 </script>
 
 <div class='figure'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-34.gif'>
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-35.gif'>
+<img src='images/ch2-Z-G-34.gif'>
+<img src='images/ch2-Z-G-35.gif'>
 
 <p> <b>Figure 2.12:</b> Creating a complex figure, starting from the <tt>wave</tt> painter of Figure 2-10.
 </div>
@@ -2484,8 +2484,8 @@ C.prompt("scheme-define-right-split");
 <p>
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-36.gif">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-37.gif">
+<img src="images/ch2-Z-G-36.gif">
+<img src="images/ch2-Z-G-37.gif">
 
 <p> <b>Figure 2.13:</b> Recursive plans for <tt>right-split</tt> and <tt>corner-split</tt>.
 </div>
@@ -2517,8 +2517,8 @@ C.prompt("scheme-ex-define-corner-split");
 <script>
 C.prompt("scheme-right-split-wave-rogers-4");
 </script>
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-38.gif">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-39.gif">
+<img src="images/ch2-Z-G-38.gif">
+<img src="images/ch2-Z-G-39.gif">
 
 <div id="scheme-corner-split-wave-rogers-4">
 (corner-split wave 4)
@@ -2527,8 +2527,8 @@ C.prompt("scheme-right-split-wave-rogers-4");
 <script>
 C.prompt("scheme-corner-split-wave-rogers-4");
 </script>
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-40.gif">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-41.gif">
+<img src="images/ch2-Z-G-40.gif">
+<img src="images/ch2-Z-G-41.gif">
 <p> <b>Figure 2.14:</b> The recursive operations <tt>right-split</tt> and <tt>corner-split</tt> applied to the painters <tt>wave</tt> and <tt>rogers</tt>. Combining four <tt>corner-split</tt> figures produces symmetric <tt>square-limit</tt> designs as shown in Figure 2-9.
 
 <p> By placing four copies of a <tt>corner-split</tt> appropriately, we obtain a pattern called <tt>square-limit</tt>, whose application to <tt>wave</tt> and <tt>rogers</tt> is shown in Figure 2-9:
@@ -2612,7 +2612,7 @@ C.prompt("scheme-define-right-up-split-with-split");
 <p> Figure 2-15 shows a frame and its associated vectors. In accordance with data abstraction, we need not be specific yet about how frames are represented, other than to say that there is a constructor <tt>make-frame</tt>, which takes three vectors and produces a frame, and three corresponding selectors <tt>origin-frame</tt>, <tt>edge1-frame</tt>, and <tt>edge2-frame</tt> (see Exercise 2-47).
 
 <div class="figure">
-<img src="http://mitpress.mit.edu/sicp/full-text/book/ch2-Z-G-42.gif">
+<img src="images/ch2-Z-G-42.gif">
 <p> <b>Figure 2.15:</b> A frame is described by three vectors -- an origin and two edges.
 </div>
 

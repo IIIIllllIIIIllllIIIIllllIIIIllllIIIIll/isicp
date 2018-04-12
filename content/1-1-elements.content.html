@@ -459,7 +459,7 @@ C.link_editor("scheme-tree-eg", "scheme-tree-eg-output", function(x, y) {
 
 <p> requires that the evaluation rule be applied to four different combinations. We can obtain a picture of this process by representing the combination in the form of a tree, as shown in figure 1.1.
 
-<p> <div id='gv-out'> <img class='center' src="http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-1.gif"> </img> <br> </div>
+<p> <div id='gv-out'> <img class='center' src="images/ch1-Z-G-1.gif"> </img> <br> </div>
 <p style="text-align:center"> <b> Figure 1.1 </b>:  Tree representation, showing the value of each subcombination.
 
 <p> Each combination is represented by a node with branches corresponding to the operator and the operands of the combination stemming from it. The terminal nodes (that is, nodes with no branches stemming from them) represent either operators or numbers. Viewing evaluation in terms of the tree, we can imagine that the values of the operands percolate upward, starting from the terminal nodes and then combining at higher and higher levels. In general, we shall see that recursion is a very powerful technique for dealing with hierarchical, treelike objects. In fact, the "percolate values upward" form of the evaluation rule is an example of a general kind of process known as tree accumulation.
@@ -1310,7 +1310,7 @@ C.editor_of["scheme-ex-18-test"].setOption("readOnly", 'nocursor');
 <p> Observe that the problem of computing square roots breaks up naturally into a number of subproblems: how to tell whether a guess is good enough, how to improve a guess, and so on. Each of these tasks is accomplished by a separate procedure. The entire sqrt program can be viewed as a cluster of procedures (shown in figure 1.2) that mirrors the decomposition of the problem into subproblems.
 
 <div class="figure">
-<img src='http://mitpress.mit.edu/sicp/full-text/book/ch1-Z-G-6.gif'>
+<img src='images/ch1-Z-G-6.gif'>
 <p> <b> Figure 1.2: </b> Procedural decomposition of the <tt>sqrt</tt> program.
 </div>
 
