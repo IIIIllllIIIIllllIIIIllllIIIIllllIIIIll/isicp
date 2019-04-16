@@ -30,6 +30,13 @@ tt {
   background-color: rgba(0,0,0,0.05);
 }
 
+code {
+  border: 1px #999999 solid;
+  padding-left:1px;
+  padding-right:1px;
+  background-color: rgba(0,0,0,0.05);
+}
+
 li {
   font-family:Georgia;
   color:#2E2E2E;

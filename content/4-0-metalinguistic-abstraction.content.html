@@ -3,10 +3,10 @@
 @@
 
 {{main_text}}
-<a href='index.html' style="float:left"> <img src='images/chevron-up.svg' height=64 width=64> </a>
+<a href='index.html' style="float:left"><img src='images/chevron-up.svg' height=64 width=64></a>
 <span style="float:right">
-<a href='3-5-streams.html'> <img src='images/chevron-left.svg' height=64 width=64> </a>
-<a href='4-1-metacircular.html'> <img src='images/chevron-right.svg' height=64 width=64> </a>
+<a href='3-5-streams.html'><img src='images/chevron-left.svg' height=64 width=64></a>
+<a href='4-1-metacircular.html'><img src='images/chevron-right.svg' height=64 width=64></a>
 </span>
 <br> <br>
 <h2> Metalinguistic Abstraction </h2>
@@ -32,7 +32,7 @@
 
 <p> To appreciate this point is to change our images of ourselves as programmers. We come to see ourselves as designers of languages, rather than only users of languages designed by others.
 
-<p> In fact, we can regard almost any program as the evaluator for some language. For instance, the polynomial manipulation system of section <a href="2-5-generic.html#%_sec_2.5.3">2.5.3</a> embodies the rules of polynomial arithmetic and implements them in terms of operations on list-structured data. If we augment this system with procedures to read and print polynomial expressions, we have the core of a special-purpose language for dealing with problems in symbolic mathematics. The digital-logic simulator of section <a href="3-3-modeling.html#%_sec_3.3.4">3.3.4</a> and the constraint propagator of section <a href="3-3-modeling.html#%_sec_3.3.5">3.3.5</a> are legitimate languages in their own right, each with its own primitives, means of combination, and means of abstraction. Seen from this perspective, the technology for coping with large-scale computer systems merges with the technology for building new computer languages, and computer science itself becomes no more (and no less) than the discipline of constructing appropriate descriptive languages.
+<p> In fact, we can regard almost any program as the evaluator for some language. For instance, the polynomial manipulation system of section <a href="2-5-generic.html#sec_2.5.3">2.5.3</a> embodies the rules of polynomial arithmetic and implements them in terms of operations on list-structured data. If we augment this system with procedures to read and print polynomial expressions, we have the core of a special-purpose language for dealing with problems in symbolic mathematics. The digital-logic simulator of section <a href="3-3-modeling.html#sec_3.3.4">3.3.4</a> and the constraint propagator of section <a href="3-3-modeling.html#sec_3.3.5">3.3.5</a> are legitimate languages in their own right, each with its own primitives, means of combination, and means of abstraction. Seen from this perspective, the technology for coping with large-scale computer systems merges with the technology for building new computer languages, and computer science itself becomes no more (and no less) than the discipline of constructing appropriate descriptive languages.
 
 <p> We now embark on a tour of the technology by which languages are established in terms of other languages. In this chapter we shall use Lisp as a base, implementing evaluators as Lisp procedures. Lisp is particularly well suited to this task, because of its ability to represent and manipulate symbolic expressions. We will take the first step in understanding how languages are implemented by building an evaluator for Lisp itself. The language implemented by our evaluator will be a subset of the Scheme dialect of Lisp that we use in this book. Although the evaluator described in this chapter is written for a particular dialect of Lisp, it contains the essential structure of an evaluator for any expression-oriented language designed for writing programs for a sequential machine. (In fact, most language processors contain, deep within them, a little ``Lisp'' evaluator.) The evaluator has been simplified for the purposes of illustration and discussion, and some features have been left out that would be important to include in a production-quality Lisp system. Nevertheless, this simple evaluator is adequate to execute most of the programs in this book.2
 

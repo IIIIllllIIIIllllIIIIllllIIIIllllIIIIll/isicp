@@ -1,0 +1,41 @@
+# Replacements to be made to the .content.html files when converting to html5
+
+(< (abs
+with
+(&lt; (abs
+
+<a name="(%_sec_.*)" \/>
+with
+<a name="\1"></a>
+and
+<a name="(.*)"></a>\n<h3>
+with
+<h3 id="\1">
+
+<tt>
+with 
+<code>
+and
+</tt>
+with
+</code>
+
+%_sec_
+with
+sec_
+
+ </img>
+with
+
+<div class="exercise">\n\n<p>
+with
+<div class="exercise">\n<p>
+
+<div class="exercise">\n<p> <b> Exercise ([0-9]+\.[0-9]+)
+with
+<div class="exercise" id="thm_\1">\n<p> <b> Exercise ([0-9]+\.[0-9]+)
+
+
+
+ToDO
+Excercises should have ids and the footnotes should link to exercises correctly.

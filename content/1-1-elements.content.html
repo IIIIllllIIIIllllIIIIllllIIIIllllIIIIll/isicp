@@ -3,10 +3,10 @@
 @@
 
 {{main_text}}
-<a href='index.html' style="float:left"> <img src='images/chevron-up.svg' height=64 width=64> </a>
+<a href='index.html' style="float:left"><img src='images/chevron-up.svg' height=64 width=64 alt="up chevron"></a>
 <span style="float:right">
-<a href='1-0-abstractions.html'> <img src='images/chevron-left.svg' height=64 width=64> </a>
-<a href='1-2-procedures.html'> <img src='images/chevron-right.svg' height=64 width=64> </a>
+<a href='1-0-abstractions.html'><img src='images/chevron-left.svg' height=64 width=64 alt="left chevron"></a>
+<a href='1-2-procedures.html'><img src='images/chevron-right.svg' height=64 width=64 alt="right chevron"></a>
 </span>
 <br> <br>
 <h2> The Elements of Programming </h2>
@@ -27,10 +27,9 @@
 
 <p> In programming, we deal with two kinds of elements: procedures and data. (Later we will discover that they are really not so distinct.) Informally, data is &ldquo;stuff&thinsp;&rdquo; that we want to manipulate, and procedures are descriptions of the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive procedures and should have methods for combining and abstracting procedures and data.
 
-<p> In this chapter we will deal only with simple numerical data so that we can focus on the rules for building procedures.<a name="footnote_link_1-4" class="footnote_link" href="#footnote_1-4">4</a> In later chapters we will see that these same rules allow us to build procedures to manipulate compound data as well.
+<p> In this chapter we will deal only with simple numerical data so that we can focus on the rules for building procedures.<a id="footnote_link_1-4" class="footnote_link" href="#footnote_1-4">4</a> In later chapters we will see that these same rules allow us to build procedures to manipulate compound data as well.
 
-<a name="%_sec_1.1.1" />
-<h3> 1.1.1 Expressions </h3>
+<h3 id="sec_1.1.1"> 1.1.1 Expressions </h3>
 
 <p> One easy way to get started at programming is to examine some typical interactions with an interpreter for the Scheme dialect of Lisp. Imagine that you are sitting at a computer terminal. You type an expression, and the interpreter responds by displaying the result of its evaluating that expression.
 
@@ -43,7 +42,7 @@
 C.make_editable("scheme-number");
 </script>
 
-<p> the interpreter will respond by printing<a name="footnote_link_1-5" class="footnote_link" href="#footnote_1-5">5</a>
+<p> the interpreter will respond by printing<a id="footnote_link_1-5" class="footnote_link" href="#footnote_1-5">5</a>
 
 <div id="scheme-number-output" class="output"> </div>
 <script>
@@ -52,7 +51,7 @@ C.editor_of["scheme-number"].setOption('onBlur', function() {
 });
 </script>
 
-<p> Expressions representing numbers may be combined with an expression representing a primitive procedure (such as <tt>+</tt> or <tt>*</tt>) to form a compound expression that represents the application of the procedure to those numbers. For example:
+<p> Expressions representing numbers may be combined with an expression representing a primitive procedure (such as <code>+</code> or <code>*</code>) to form a compound expression that represents the application of the procedure to those numbers. For example:
 
 <div id="scheme-plus-1">
 (+ 137 349)
@@ -127,7 +126,7 @@ C.prompt("scheme-plus-times");
 C.prompt("scheme-long-tree");
 </script>
 
-<p> which the interpreter would readily evaluate to be <tt>57</tt>. We can help ourselves by writing such an expression in the form
+<p> which the interpreter would readily evaluate to be <code>57</code>. We can help ourselves by writing such an expression in the form
 
 <div id="scheme-long-tree-pp">
 (+ (* 3
@@ -140,11 +139,11 @@ C.prompt("scheme-long-tree");
 C.prompt("scheme-long-tree-pp");
 </script>
 
-<p> following a formatting convention known as pretty-printing, in which each long combination is written so that the operands are aligned vertically. The resulting indentations display clearly the structure of the expression.<a name="footnote_link_1-6" class="footnote_link" href="#footnote_1-6">6</a>
+<p> following a formatting convention known as pretty-printing, in which each long combination is written so that the operands are aligned vertically. The resulting indentations display clearly the structure of the expression.<a id="footnote_link_1-6" class="footnote_link" href="#footnote_1-6">6</a>
 
-<p> Even with complex expressions, the interpreter always operates in the same basic cycle: It reads an expression from the terminal, evaluates the expression, and prints the result. This mode of operation is often expressed by saying that the interpreter runs in a read-eval-print loop. Observe in particular that it is not necessary to explicitly instruct the interpreter to print the value of the expression.<a name="footnote_link_1-7" class="footnote_link" href="#footnote_1-7">7</a>
+<p> Even with complex expressions, the interpreter always operates in the same basic cycle: It reads an expression from the terminal, evaluates the expression, and prints the result. This mode of operation is often expressed by saying that the interpreter runs in a read-eval-print loop. Observe in particular that it is not necessary to explicitly instruct the interpreter to print the value of the expression.<a id="footnote_link_1-7" class="footnote_link" href="#footnote_1-7">7</a>
 
-<div class='exercise'>
+<div class="exercise">
 
 <p> <b> Exercise 1.1.1. </b>  Below is a sequence of expressions. What is the result printed by the interpreter in response to each expression? Assume that the sequence is to be evaluated in the order in which it is presented.
 
@@ -194,7 +193,7 @@ C.answer("scheme-ex-111-nested", 6);
 
 <p>
 
-<div class='exercise'>
+<div class="exercise">
 
 <p> <b> Exercise 1.2. </b>  Translate the following expression into prefix form.
 
@@ -228,12 +227,11 @@ editor.setOption('onBlur', function() {
 </script>
 </div>
 
-<a name="%_sec_1.1.2" />
-<h3> 1.1.2 Naming and the Environment </h3>
+<h3 id="sec_1.1.2"> 1.1.2 Naming and the Environment </h3>
 
 <p> A critical aspect of a programming language is the means it provides for using names to refer to computational objects. We say that the name identifies a variable whose value is the object.
 
-<p> In the Scheme dialect of Lisp, we name things with <tt>define</tt>. Typing
+<p> In the Scheme dialect of Lisp, we name things with <code>define</code>. Typing
 
 <div id="scheme-define-size">
 (define size 2)
@@ -242,7 +240,7 @@ editor.setOption('onBlur', function() {
 C.prompt("scheme-define-size");
 </script>
 
-<p> causes the interpreter to associate the value <tt>2</tt> with the name <tt>size</tt>.<a name="footnote_link_1-8" class="footnote_link" href="#footnote_1-8">8</a> Once the name <tt>size</tt> has been associated with the number <tt>2</tt>, we can refer to the value <tt>2</tt> by name:
+<p> causes the interpreter to associate the value <code>2</code> with the name <code>size</code>.<a id="footnote_link_1-8" class="footnote_link" href="#footnote_1-8">8</a> Once the name <code>size</code> has been associated with the number <code>2</code>, we can refer to the value <code>2</code> by name:
 
 <div id="scheme-size">
 size
@@ -260,7 +258,7 @@ C.prompt("scheme-size", ["scheme-define-size"]);
 C.prompt("scheme-times-size", ["scheme-define-size"]);
 </script>
 
-<p> Here are further examples of the use of <tt>define</tt>:
+<p> Here are further examples of the use of <code>define</code>:
 
 <div id="scheme-define-radius">
 (define pi 3.14159)
@@ -293,11 +291,11 @@ circumference
 C.prompt("scheme-circumference", ["scheme-define-circumference"]);
 </script>
 
-<p> <tt>define</tt> is our language's simplest means of abstraction, for it allows us to use simple names to refer to the results of compound operations, such as the circumference computed above. In general, computational objects may have very complex structures, and it would be extremely inconvenient to have to remember and repeat their details each time we want to use them. Indeed, complex programs are constructed by building, step by step, computational objects of increasing complexity. The interpreter makes this step-by-step program construction particularly convenient because name-object associations can be created incrementally in successive interactions. This feature encourages the incremental development and testing of programs and is largely responsible for the fact that a Lisp program usually consists of a large number of relatively simple procedures.
+<p> <code>define</code> is our language's simplest means of abstraction, for it allows us to use simple names to refer to the results of compound operations, such as the circumference computed above. In general, computational objects may have very complex structures, and it would be extremely inconvenient to have to remember and repeat their details each time we want to use them. Indeed, complex programs are constructed by building, step by step, computational objects of increasing complexity. The interpreter makes this step-by-step program construction particularly convenient because name-object associations can be created incrementally in successive interactions. This feature encourages the incremental development and testing of programs and is largely responsible for the fact that a Lisp program usually consists of a large number of relatively simple procedures.
 
-<p> It should be clear that the possibility of associating values with symbols and later retrieving them means that the interpreter must maintain some sort of memory that keeps track of the name-object pairs. This memory is called the environment (more precisely the global environment, since we will see later that a computation may involve a number of different environments).<a name="footnote_link_1-9" class="footnote_link" href="#footnote_1-9">9</a>
+<p> It should be clear that the possibility of associating values with symbols and later retrieving them means that the interpreter must maintain some sort of memory that keeps track of the name-object pairs. This memory is called the environment (more precisely the global environment, since we will see later that a computation may involve a number of different environments).<a id="footnote_link_1-9" class="footnote_link" href="#footnote_1-9">9</a>
 
-<div class='exercise'>
+<div class="exercise">
 
 <p> <b> Exercise 1.1.2. </b>  Below is a sequence of expressions. What is the result printed by the interpreter in response to each expression? Assume that the sequence is to be evaluated in the order in which it is presented.
 
@@ -339,8 +337,7 @@ C.answer("scheme-ex-112-eq", "false");
 
 </div>
 
-<a name="%_sec_1.1.3" />
-<h3> 1.1.3 Evaluating Combinations </h3>
+<h3 id="sec_1.1.3"> 1.1.3 Evaluating Combinations </h3>
 
 <p> One of our goals in this chapter is to isolate issues about thinking procedurally. As a case in point, let us consider that, in evaluating combinations, the interpreter is itself following a procedure.
 
@@ -352,7 +349,7 @@ C.answer("scheme-ex-112-eq", "false");
 <p>
 <li> Apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands). </ol> </blockquote>
 
-<p> Even this simple rule illustrates some important points about processes in general. First, observe that the first step dictates that in order to accomplish the evaluation process for a combination we must first perform the evaluation process on each element of the combination. Thus, the evaluation rule is recursive in nature; that is, it includes, as one of its steps, the need to invoke the rule itself.<a name="footnote_link_1-10" class="footnote_link" href="#footnote_1-10">10</a>
+<p> Even this simple rule illustrates some important points about processes in general. First, observe that the first step dictates that in order to accomplish the evaluation process for a combination we must first perform the evaluation process on each element of the combination. Thus, the evaluation rule is recursive in nature; that is, it includes, as one of its steps, the need to invoke the rule itself.<a id="footnote_link_1-10" class="footnote_link" href="#footnote_1-10">10</a>
 
 <p> Notice how succinctly the idea of recursion can be used to express what, in the case of a deeply nested combination, would otherwise be viewed as a rather complicated process. For example, evaluating
 
@@ -441,7 +438,7 @@ C.link_editor("scheme-tree-eg", "scheme-tree-eg-output", function(x, y) {
       $("#gv-out").html(svg);
     }
     if (typeof Viz == "undefined") {
-      $("#gv-out").html("<p style='text-align:center'>loading <tt>mdaines/viz.js</tt>")
+      $("#gv-out").html("<p style='text-align:center'>loading <code>mdaines/viz.js</code>")
       $.getScript('http://mdaines.github.com/viz.js/viz.js', update);
     } else {
       update();
@@ -459,7 +456,7 @@ C.link_editor("scheme-tree-eg", "scheme-tree-eg-output", function(x, y) {
 
 <p> requires that the evaluation rule be applied to four different combinations. We can obtain a picture of this process by representing the combination in the form of a tree, as shown in figure 1.1.
 
-<p> <div id='gv-out'> <img class='center' src="images/ch1-Z-G-1.gif"> </img> <br> </div>
+<p> <div id='gv-out'> <img class='center' src="images/ch1-Z-G-1.gif" alt="the process represented in tree form"> <br> </div>
 <p style="text-align:center"> <b> Figure 1.1 </b>:  Tree representation, showing the value of each subcombination.
 
 <p> Each combination is represented by a node with branches corresponding to the operator and the operands of the combination stemming from it. The terminal nodes (that is, nodes with no branches stemming from them) represent either operators or numbers. Viewing evaluation in terms of the tree, we can imagine that the values of the operands percolate upward, starting from the terminal nodes and then combining at higher and higher levels. In general, we shall see that recursion is a very powerful technique for dealing with hierarchical, treelike objects. In fact, the "percolate values upward" form of the evaluation rule is an example of a general kind of process known as tree accumulation.
@@ -474,14 +471,13 @@ C.link_editor("scheme-tree-eg", "scheme-tree-eg-output", function(x, y) {
 <li> the values of other names are the objects associated with those names in the environment.
 </ul>
 
-<p> We may regard the second rule as a special case of the third one by stipulating that symbols such as + and * are also included in the global environment, and are associated with the sequences of machine instructions that are their "values." The key point to notice is the role of the environment in determining the meaning of the symbols in expressions. In an interactive language such as Lisp, it is meaningless to speak of the value of an expression such as <tt>(+ x 1)</tt> without specifying any information about the environment that would provide a meaning for the symbol <tt>x</tt> (or even for the symbol <tt>+</tt>). As we shall see in chapter 3, the general notion of the environment as providing a context in which evaluation takes place will play an important role in our understanding of program execution.
+<p> We may regard the second rule as a special case of the third one by stipulating that symbols such as + and * are also included in the global environment, and are associated with the sequences of machine instructions that are their "values." The key point to notice is the role of the environment in determining the meaning of the symbols in expressions. In an interactive language such as Lisp, it is meaningless to speak of the value of an expression such as <code>(+ x 1)</code> without specifying any information about the environment that would provide a meaning for the symbol <code>x</code> (or even for the symbol <code>+</code>). As we shall see in chapter 3, the general notion of the environment as providing a context in which evaluation takes place will play an important role in our understanding of program execution.
 
-<p> Notice that the evaluation rule given above does not handle definitions. For instance, evaluating <tt>(define x 3)</tt> does not apply define to two arguments, one of which is the value of the symbol <tt>x</tt> and the other of which is <tt>3</tt>, since the purpose of the define is precisely to associate x with a value. (That is, <tt>(define x 3)</tt> is not a combination.)
+<p> Notice that the evaluation rule given above does not handle definitions. For instance, evaluating <code>(define x 3)</code> does not apply define to two arguments, one of which is the value of the symbol <code>x</code> and the other of which is <code>3</code>, since the purpose of the define is precisely to associate x with a value. (That is, <code>(define x 3)</code> is not a combination.)
 
-<p> Such exceptions to the general evaluation rule are called special forms. Define is the only example of a special form that we have seen so far, but we will meet others shortly. Each special form has its own evaluation rule. The various kinds of expressions (each with its associated evaluation rule) constitute the syntax of the programming language. In comparison with most other programming languages, Lisp has a very simple syntax; that is, the evaluation rule for expressions can be described by a simple general rule together with specialized rules for a small number of special forms.<a name="footnote_link_1-11" class="footnote_link" href="#footnote_1-11">11</a>
+<p> Such exceptions to the general evaluation rule are called special forms. Define is the only example of a special form that we have seen so far, but we will meet others shortly. Each special form has its own evaluation rule. The various kinds of expressions (each with its associated evaluation rule) constitute the syntax of the programming language. In comparison with most other programming languages, Lisp has a very simple syntax; that is, the evaluation rule for expressions can be described by a simple general rule together with specialized rules for a small number of special forms.<a id="footnote_link_1-11" class="footnote_link" href="#footnote_1-11">11</a>
 
-<a name="%_sec_1.1.4" />
-<h3> 1.1.4 Compound Procedures </h3>
+<h3 id="sec_1.1.4"> 1.1.4 Compound Procedures </h3>
 
 <p> We have identified in Lisp some of the elements that must appear in any powerful programming language:
 
@@ -513,7 +509,7 @@ C.prompt("scheme-define-square");
 &nbsp;To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;square&nbsp;something,&nbsp;multiply&nbsp;&nbsp;&nbsp;it&nbsp;by&nbsp;&nbsp;itself.<br>
 </pre>
 
-<p> We have here a compound procedure, which has been given the name square. The procedure represents the operation of multiplying something by itself. The thing to be multiplied is given a local name, x, which plays the same role that a pronoun plays in natural language. Evaluating the definition creates this compound procedure and associates it with the name square.<a name="footnote_link_1-12" class="footnote_link" href="#footnote_1-12">12</a>
+<p> We have here a compound procedure, which has been given the name square. The procedure represents the operation of multiplying something by itself. The thing to be multiplied is given a local name, x, which plays the same role that a pronoun plays in natural language. Evaluating the definition creates this compound procedure and associates it with the name square.<a id="footnote_link_1-12" class="footnote_link" href="#footnote_1-12">12</a>
 
 <p> The general form of a procedure definition is
 
@@ -524,7 +520,7 @@ C.prompt("scheme-define-square");
 C.make_static("scheme-define-syntax");
 </script>
 
-<p> The &lt;<em>name</em>&gt; is a symbol to be associated with the procedure definition in the environment.<a name="footnote_link_1-13" class="footnote_link" href="#footnote_1-13">13</a> The &lt;<em>formal parameters</em>&gt; are the names used within the body of the procedure to refer to the corresponding arguments of the procedure. The &lt;<em>body</em>&gt; is an expression that will yield the value of the procedure application when the formal parameters are replaced by the actual arguments to which the procedure is applied.<a name="footnote_link_1-14" class="footnote_link" href="#footnote_1-14">14</a> The &lt;<em>name</em>&gt; and the &lt;<em>formal parameters</em>&gt; are grouped within parentheses, just as they would be in an actual call to the procedure being defined.
+<p> The &lt;<em>name</em>&gt; is a symbol to be associated with the procedure definition in the environment.<a id="footnote_link_1-13" class="footnote_link" href="#footnote_1-13">13</a> The &lt;<em>formal parameters</em>&gt; are the names used within the body of the procedure to refer to the corresponding arguments of the procedure. The &lt;<em>body</em>&gt; is an expression that will yield the value of the procedure application when the formal parameters are replaced by the actual arguments to which the procedure is applied.<a id="footnote_link_1-14" class="footnote_link" href="#footnote_1-14">14</a> The &lt;<em>name</em>&gt; and the &lt;<em>formal parameters</em>&gt; are grouped within parentheses, just as they would be in an actual call to the procedure being defined.
 
 <p> Having defined square, we can now use it:
 
@@ -592,12 +588,11 @@ C.prompt("scheme-sum-of-squares-3-4", ["scheme-define-sum-of-squares"]);
 C.prompt("scheme-f", ["scheme-define-sum-of-squares"]);
 </script>
 
-<p> Compound procedures are used in exactly the same way as primitive procedures. Indeed, one could not tell by looking at the definition of sum-of-squares given above whether square was built into the interpreter, like <tt>+</tt> and <tt>*</tt>, or defined as a compound procedure.
+<p> Compound procedures are used in exactly the same way as primitive procedures. Indeed, one could not tell by looking at the definition of sum-of-squares given above whether square was built into the interpreter, like <code>+</code> and <code>*</code>, or defined as a compound procedure.
 
-<a name="%_sec_1.1.5" />
-<h3> 1.1.5 The Substitution Model for Procedure Application</h3>
+<h3 id="sec_1.1.5"> 1.1.5 The Substitution Model for Procedure Application</h3>
 
-<p> To evaluate a combination whose operator names a compound procedure, the interpreter follows much the same process as for combinations whose operators name primitive procedures, which we described in section <a href="1-1-elements.html#%_sec_1.1.3">1.1.3</a>. That is, the interpreter evaluates the elements of the combination and applies the procedure (which is the value of the operator of the combination) to the arguments (which are the values of the operands of the combination).
+<p> To evaluate a combination whose operator names a compound procedure, the interpreter follows much the same process as for combinations whose operators name primitive procedures, which we described in section <a href="1-1-elements.html#sec_1.1.3">1.1.3</a>. That is, the interpreter evaluates the elements of the combination and applies the procedure (which is the value of the operator of the combination) to the arguments (which are the values of the operands of the combination).
 
 <p> We can assume that the mechanism for applying primitive procedures to arguments is built into the interpreter. For compound procedures, the application process is as follows:
 
@@ -612,7 +607,7 @@ C.prompt("scheme-f", ["scheme-define-sum-of-squares"]);
 C.make_static("scheme-f-1");
 </script>
 
-<p> where <tt>f</tt> is the procedure defined in section <a href="1-1-elements.html#%_sec_1.1.4">1.1.4</a>. We begin by retrieving the body of <tt>f</tt>:
+<p> where <code>f</code> is the procedure defined in section <a href="1-1-elements.html#sec_1.1.4">1.1.4</a>. We begin by retrieving the body of <code>f</code>:
 
 <div id="scheme-f-2" class='static'>
 (sum-of-squares (+ a 1) (* a 2))
@@ -621,7 +616,7 @@ C.make_static("scheme-f-1");
 C.make_static("scheme-f-2");
 </script>
 
-<p> Then we replace the formal parameter <tt>a</tt> by the argument <tt>5</tt>:
+<p> Then we replace the formal parameter <code>a</code> by the argument <code>5</code>:
 
 <div id="scheme-f-3" class='static'>
 (sum-of-squares (+ 5 1) (* 5 2))
@@ -630,7 +625,7 @@ C.make_static("scheme-f-2");
 C.make_static("scheme-f-3");
 </script>
 
-<p> Thus the problem reduces to the evaluation of a combination with two operands and an operator <tt>sum-of-squares</tt>. Evaluating this combination involves three subproblems. We must evaluate the operator to get the procedure to be applied, and we must evaluate the operands to get the arguments. Now <tt>(+ 5 1)</tt> produces <tt>6</tt> and <tt>(* 5 2)</tt> produces <tt>10</tt>, so we must apply the sum-of-squares procedure to 6 and 10. These values are substituted for the formal parameters x and y in the body of sum-of-squares, reducing the expression to
+<p> Thus the problem reduces to the evaluation of a combination with two operands and an operator <code>sum-of-squares</code>. Evaluating this combination involves three subproblems. We must evaluate the operator to get the procedure to be applied, and we must evaluate the operands to get the arguments. Now <code>(+ 5 1)</code> produces <code>6</code> and <code>(* 5 2)</code> produces <code>10</code>, so we must apply the sum-of-squares procedure to 6 and 10. These values are substituted for the formal parameters x and y in the body of sum-of-squares, reducing the expression to
 
 <div id="scheme-f-4" class='static'>
 (+ (square 6) (square 10))
@@ -674,13 +669,13 @@ C.make_static("scheme-f-7");
 <p> The purpose of the substitution is to help us think about procedure application, not to provide a description of how the interpreter really works. Typical interpreters do not evaluate procedure applications by manipulating the text of a procedure to substitute values for the formal parameters. In practice, the "substitution" is accomplished by using a local environment for the formal parameters. We will discuss this more fully in chapters 3 and 4 when we examine the implementation of an interpreter in detail.
 </li>
 
-<li> <p> Over the course of this book, we will present a sequence of increasingly elaborate models of how interpreters work, culminating with a complete implementation of an interpreter and compiler in chapter 5. The substitution model is only the first of these models &mdash; a way to get started thinking formally about the evaluation process. In general, when modeling phenomena in science and engineering, we begin with simplified, incomplete models. As we examine things in greater detail, these simple models become inadequate and must be replaced by more refined models. The substitution model is no exception. In particular, when we address in chapter 3 the use of procedures with "mutable data," we will see that the substitution model breaks down and must be replaced by a more complicated model of procedure application.<a name="footnote_link_1-15" class="footnote_link" href="#footnote_1-15">15</a>
+<li> <p> Over the course of this book, we will present a sequence of increasingly elaborate models of how interpreters work, culminating with a complete implementation of an interpreter and compiler in chapter 5. The substitution model is only the first of these models &mdash; a way to get started thinking formally about the evaluation process. In general, when modeling phenomena in science and engineering, we begin with simplified, incomplete models. As we examine things in greater detail, these simple models become inadequate and must be replaced by more refined models. The substitution model is no exception. In particular, when we address in chapter 3 the use of procedures with "mutable data," we will see that the substitution model breaks down and must be replaced by a more complicated model of procedure application.<a id="footnote_link_1-15" class="footnote_link" href="#footnote_1-15">15</a>
 </li>
 </ul>
 
 <h4> Applicative order versus normal order </h4>
 
-<p> According to the description of evaluation given in section <a href="1-1-elements.html#%_sec_1.1.3">1.1.3</a>, the interpreter first evaluates the operator and operands and then applies the resulting procedure to the resulting arguments. This is not the only way to perform evaluation. An alternative evaluation model would not evaluate the operands until their values were needed. Instead it would first substitute operand expressions for parameters until it obtained an expression involving only primitive operators, and would then perform the evaluation. If we used this method, the evaluation of
+<p> According to the description of evaluation given in section <a href="1-1-elements.html#sec_1.1.3">1.1.3</a>, the interpreter first evaluates the operator and operands and then applies the resulting procedure to the resulting arguments. This is not the only way to perform evaluation. An alternative evaluation model would not evaluate the operands until their values were needed. Instead it would first substitute operand expressions for parameters until it obtained an expression involving only primitive operators, and would then perform the evaluation. If we used this method, the evaluation of
 
 <div id="scheme-f-1-n" class='static'>
 (f 5)
@@ -743,7 +738,7 @@ C.make_static("scheme-f-6-n");
 C.make_static("scheme-f-7-n");
 </script>
 
-<p> This gives the same answer as our previous evaluation model, but the process is different. In particular, the evaluations of <tt>(+ 5 1)</tt> and <tt>(* 5 2)</tt> are each performed twice here, corresponding to the reduction of the expression
+<p> This gives the same answer as our previous evaluation model, but the process is different. In particular, the evaluations of <code>(+ 5 1)</code> and <code>(* 5 2)</code> are each performed twice here, corresponding to the reduction of the expression
 
 <div id="scheme-x" class='static'>
 (* x x)
@@ -752,14 +747,13 @@ C.make_static("scheme-f-7-n");
 C.make_static("scheme-x");
 </script>
 
-<p> with <tt>x</tt> replaced respectively by <tt>(+ 5 1)</tt> and <tt>(* 5 2)</tt>.
+<p> with <code>x</code> replaced respectively by <code>(+ 5 1)</code> and <code>(* 5 2)</code>.
 
 <p> This alternative "fully expand and then reduce" evaluation method is known as normal-order evaluation, in contrast to the "evaluate the arguments and then apply" method that the interpreter actually uses, which is called applicative-order evaluation. It can be shown that, for procedure applications that can be modeled using substitution (including all the procedures in the first two chapters of this book) and that yield legitimate values, normal-order and applicative-order evaluation produce the same value. (See exercise 1.5 for an instance of an "illegitimate" value where normal-order and applicative-order evaluation do not give the same result.)
 
-<p> Lisp uses applicative-order evaluation, partly because of the additional efficiency obtained from avoiding multiple evaluations of expressions such as those illustrated with <tt>(+ 5 1)</tt> and <tt>(* 5 2)</tt> above and, more significantly, because normal-order evaluation becomes much more complicated to deal with when we leave the realm of procedures that can be modeled by substitution. On the other hand, normal-order evaluation can be an extremely valuable tool, and we will investigate some of its implications in chapters 3 and 4.<a name="footnote_link_1-16" class="footnote_link" href="#footnote_1-16">16</a>
+<p> Lisp uses applicative-order evaluation, partly because of the additional efficiency obtained from avoiding multiple evaluations of expressions such as those illustrated with <code>(+ 5 1)</code> and <code>(* 5 2)</code> above and, more significantly, because normal-order evaluation becomes much more complicated to deal with when we leave the realm of procedures that can be modeled by substitution. On the other hand, normal-order evaluation can be an extremely valuable tool, and we will investigate some of its implications in chapters 3 and 4.<a id="footnote_link_1-16" class="footnote_link" href="#footnote_1-16">16</a>
 
-<a name="%_sec_1.1.6" />
-<h3> 1.1.6 Conditional Expressions and Predicates</h3>
+<h3 id="sec_1.1.6"> 1.1.6 Conditional Expressions and Predicates</h3>
 
 <p> The expressive power of the class of procedures that we can define at this point is very limited, because we have no way to make tests and to perform different operations depending on the result of a test. For instance, we cannot define a procedure that computes the absolute value of a number by testing whether the number is positive, negative, or zero and taking different actions in the different cases according to the rule
 
@@ -793,11 +787,11 @@ $$
 C.no_output_frozen_prompt("scheme-cond-syntax");
 </script>
 
-<p> consisting of the symbol cond followed by parenthesized pairs of expressions <tt>(&lt;p&gt; &lt;e&gt;)</tt> called clauses. The first expression in each pair is a predicate &mdash; that is, an expression whose value is interpreted as either true or false.<a name="footnote_link_1-17" class="footnote_link" href="#footnote_1-17">17</a>
+<p> consisting of the symbol cond followed by parenthesized pairs of expressions <code>(&lt;p&gt; &lt;e&gt;)</code> called clauses. The first expression in each pair is a predicate &mdash; that is, an expression whose value is interpreted as either true or false.<a id="footnote_link_1-17" class="footnote_link" href="#footnote_1-17">17</a>
 
-<p> Conditional expressions are evaluated as follows. The predicate <tt>&lt;p1&gt;</tt> is evaluated first. If its value is false, then <tt>&lt;p2&gt;</tt> is evaluated. If <tt>&lt;p2&gt;</tt>'s value is also false, then <tt>&lt;p3&gt;</tt> is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding consequent expression <tt>&lt;e&gt;</tt> of the clause as the value of the conditional expression. If none of the <tt>&lt;p&gt;</tt>'s is found to be true, the value of the cond is undefined.
+<p> Conditional expressions are evaluated as follows. The predicate <code>&lt;p1&gt;</code> is evaluated first. If its value is false, then <code>&lt;p2&gt;</code> is evaluated. If <code>&lt;p2&gt;</code>'s value is also false, then <code>&lt;p3&gt;</code> is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding consequent expression <code>&lt;e&gt;</code> of the clause as the value of the conditional expression. If none of the <code>&lt;p&gt;</code>'s is found to be true, the value of the cond is undefined.
 
-<p> The word predicate is used for procedures that return true or false, as well as for expressions that evaluate to true or false. The absolute-value procedure abs makes use of the primitive predicates <tt>&gt;</tt>, <tt>&lt;</tt>, and <tt>=</tt>.<a name="footnote_link_1-18" class="footnote_link" href="#footnote_1-18">18</a> These take two numbers as arguments and test whether the first number is, respectively, greater than, less than, or equal to the second number, returning true or false accordingly.
+<p> The word predicate is used for procedures that return true or false, as well as for expressions that evaluate to true or false. The absolute-value procedure abs makes use of the primitive predicates <code>&gt;</code>, <code>&lt;</code>, and <code>=</code>.<a id="footnote_link_1-18" class="footnote_link" href="#footnote_1-18">18</a> These take two numbers as arguments and test whether the first number is, respectively, greater than, less than, or equal to the second number, returning true or false accordingly.
 
 <p> Another way to write the absolute-value procedure is
 
@@ -808,7 +802,7 @@ C.no_output_frozen_prompt("scheme-cond-syntax");
 </div>
 <script> C.prompt("scheme-abs"); </script>
 
-<p> which could be expressed in English as "If $x$ is less than zero return $-x$; otherwise return $x$." <tt>else</tt> is a special symbol that can be used in place of the <tt>&lt;p&gt;</tt> in the final clause of a cond. This causes the cond to return as its value the value of the corresponding <tt>&lt;e&gt;</tt> whenever all previous clauses have been bypassed. In fact, any expression that always evaluates to a true value could be used as the <tt>&lt;p&gt;</tt> here.
+<p> which could be expressed in English as "If $x$ is less than zero return $-x$; otherwise return $x$." <code>else</code> is a special symbol that can be used in place of the <code>&lt;p&gt;</code> in the final clause of a cond. This causes the cond to return as its value the value of the corresponding <code>&lt;e&gt;</code> whenever all previous clauses have been bypassed. In fact, any expression that always evaluates to a true value could be used as the <code>&lt;p&gt;</code> here.
 <p> Here is yet another way to write the absolute-value procedure:
 
 <div id="scheme-abs-if">
@@ -827,29 +821,29 @@ C.no_output_frozen_prompt("scheme-cond-syntax");
 </div>
 <script> C.no_output_frozen_prompt("scheme-if-syntax"); </script>
 
-<p> To evaluate an if expression, the interpreter starts by evaluating the <tt>&lt;predicate&gt;</tt> part of the expression. If the <tt>&lt;predicate&gt;</tt> evaluates to a true value, the interpreter then evaluates the <tt>&lt;consequent&gt;</tt> and returns its value. Otherwise it evaluates the <tt>&lt;alternative&gt;</tt> and returns its value.<a name="footnote_link_1-19" class="footnote_link" href="#footnote_1-19">19</a>
+<p> To evaluate an if expression, the interpreter starts by evaluating the <code>&lt;predicate&gt;</code> part of the expression. If the <code>&lt;predicate&gt;</code> evaluates to a true value, the interpreter then evaluates the <code>&lt;consequent&gt;</code> and returns its value. Otherwise it evaluates the <code>&lt;alternative&gt;</code> and returns its value.<a id="footnote_link_1-19" class="footnote_link" href="#footnote_1-19">19</a>
 
-<p> In addition to primitive predicates such as <tt>&lt;</tt>, <tt>=</tt>, and <tt>&gt;</tt>, there are logical composition operations, which enable us to construct compound predicates. The three most frequently used are these:
+<p> In addition to primitive predicates such as <code>&lt;</code>, <code>=</code>, and <code>&gt;</code>, there are logical composition operations, which enable us to construct compound predicates. The three most frequently used are these:
 
 <ul>
 
 <li>
 
-<tt>(and &lt;e1&gt; ... &lt;en&gt;)</tt>
+<code>(and &lt;e1&gt; ... &lt;en&gt;)</code>
 
-<p> The interpreter evaluates the expressions <tt>&lt;e&gt;</tt> one at a time, in left-to-right order. If any <tt>&lt;e&gt;</tt> evaluates to false, the value of the and expression is false, and the rest of the <tt>&lt;e&gt;</tt>'s are not evaluated. If all <tt>&lt;e&gt;</tt>'s evaluate to true values, the value of the and expression is the value of the last one.
-
-<li>
-
-<tt>(or &lt;e1&gt; ... &lt;en&gt;)</tt>
-
-<p> The interpreter evaluates the expressions <tt>&lt;e&gt;</tt> one at a time, in left-to-right order. If any <tt>&lt;e&gt;</tt> evaluates to a true value, that value is returned as the value of the or expression, and the rest of the <tt>&lt;e&gt;</tt>'s are not evaluated. If all <tt>&lt;e&gt;</tt>'s evaluate to false, the value of the or expression is false.
+<p> The interpreter evaluates the expressions <code>&lt;e&gt;</code> one at a time, in left-to-right order. If any <code>&lt;e&gt;</code> evaluates to false, the value of the and expression is false, and the rest of the <code>&lt;e&gt;</code>'s are not evaluated. If all <code>&lt;e&gt;</code>'s evaluate to true values, the value of the and expression is the value of the last one.
 
 <li>
 
-<tt>(not &lt;e&gt;)</tt>
+<code>(or &lt;e1&gt; ... &lt;en&gt;)</code>
 
-<p> The value of a not expression is true when the expression <tt>&lt;e&gt;</tt> evaluates to false, and false otherwise.
+<p> The interpreter evaluates the expressions <code>&lt;e&gt;</code> one at a time, in left-to-right order. If any <code>&lt;e&gt;</code> evaluates to a true value, that value is returned as the value of the or expression, and the rest of the <code>&lt;e&gt;</code>'s are not evaluated. If all <code>&lt;e&gt;</code>'s evaluate to false, the value of the or expression is false.
+
+<li>
+
+<code>(not &lt;e&gt;)</code>
+
+<p> The value of a not expression is true when the expression <code>&lt;e&gt;</code> evaluates to false, and false otherwise.
 
 </ul>
 
@@ -880,7 +874,7 @@ C.no_output_frozen_prompt("scheme-cond-syntax");
 
 <p>
 
-<div class='exercise'>
+<div class="exercise">
 
 <p> <b> Exercise 1.3. </b> Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
 
@@ -934,7 +928,7 @@ C.editor_of["scheme-ex-define-square-sum-larger"].setOption("onBlur", function()
 
 <p>
 
-<div class='exercise'>
+<div class="exercise">
 
 <p> <b> Exercise 1.4. </b> Observe that our model of evaluation allows for combinations whose operators are compound expressions. Use this observation to describe the behavior of the following procedure:
 
@@ -948,9 +942,9 @@ C.editor_of["scheme-ex-define-square-sum-larger"].setOption("onBlur", function()
 <div id="scheme-ex-14-mcq"></div>
 <script>
 C.make_MCQ("scheme-ex-14-mcq",
-    ["<tt>(if (> b 0) (+ a b) (- a b))</tt>",
-     "<tt>(+ a (if (> b 0) b (- b)))</tt>",
-     "<tt>(+ a (abs b))</tt>"],
+    ["<code>(if (> b 0) (+ a b) (- a b))</code>",
+     "<code>(+ a (if (> b 0) b (- b)))</code>",
+     "<code>(+ a (abs b))</code>"],
     ["Error: the leftmost subexpression is not a procedure",
      "Error: the value of the leftmost subexpresion cannot depend on b",
      "Error: the leftmost subexpression is not evaluated in the substitution model"
@@ -965,7 +959,7 @@ C.make_static("scheme-ex-14");
 
 <p>
 
-<div class='exercise'>
+<div class="exercise">
 
 <p> <b> Exercise 1.5. </b> Ben Bitdiddle has invented a test to determine whether the interpreter he is faced with is using applicative-order evaluation or normal-order evaluation. He defines the following two procedures:
 
@@ -995,17 +989,16 @@ C.make_static("scheme-ex-14");
 C.make_static("scheme-ex-15-p");
 C.make_static("scheme-ex-15-test");
 C.make_MCQ("scheme-ex-15-mcq",
-    ["In applicative-order evaluation, <tt>(p)</tt> will be evaluated, resulting in an infinite loop",
-     "In normal-order evaluation, <tt>(p)</tt> is not evaluated because predicate of <tt>if</tt> evaluates to <tt>true</tt>"],
-    ["In normal-order evaluation, <tt>(p)</tt> will be evaluated, resulting in an infinite loop",
-     "In applicative-order evaluation, <tt>(p)</tt> is not evaluated because predicate of <tt>if</tt> evaluates to <tt>true</tt>",
-     "Error in both cases: <tt>(p)</tt> cannot be defined in terms of itself",
-     "In both cases, <tt>0</tt> is returned because <tt>(p)</tt> evaluates to itself, terminating the recursion"
+    ["In applicative-order evaluation, <code>(p)</code> will be evaluated, resulting in an infinite loop",
+     "In normal-order evaluation, <code>(p)</code> is not evaluated because predicate of <code>if</code> evaluates to <code>true</code>"],
+    ["In normal-order evaluation, <code>(p)</code> will be evaluated, resulting in an infinite loop",
+     "In applicative-order evaluation, <code>(p)</code> is not evaluated because predicate of <code>if</code> evaluates to <code>true</code>",
+     "Error in both cases: <code>(p)</code> cannot be defined in terms of itself",
+     "In both cases, <code>0</code> is returned because <code>(p)</code> evaluates to itself, terminating the recursion"
      ]);
 </script>
 
-<a name="%_sec_1.1.7" />
-<h3> 1.1.7 Example: Square Roots by Newton's Method </h3>
+<h3 id="sec_1.1.7"> 1.1.7 Example: Square Roots by Newton's Method </h3>
 
 <p> Procedures, as introduced above, are much like ordinary mathematical functions. They specify a value that is determined by one or more parameters. But there is an important difference between mathematical functions and computer procedures. Procedures must be effective.
 
@@ -1028,10 +1021,10 @@ C.no_output_frozen_prompt("scheme-pseudo-sqrt");
 
 <p> This only begs the question.
 
-<p> The contrast between function and procedure is a reflection of the general distinction between describing properties of things and describing how to do things, or, as it is sometimes referred to, the distinction between declarative knowledge and imperative knowledge. In mathematics we are usually concerned with declarative (what is) descriptions, whereas in computer science we are usually concerned with imperative (how to) descriptions.<a name="footnote_link_1-20" class="footnote_link" href="#footnote_1-20">20</a>
+<p> The contrast between function and procedure is a reflection of the general distinction between describing properties of things and describing how to do things, or, as it is sometimes referred to, the distinction between declarative knowledge and imperative knowledge. In mathematics we are usually concerned with declarative (what is) descriptions, whereas in computer science we are usually concerned with imperative (how to) descriptions.<a id="footnote_link_1-20" class="footnote_link" href="#footnote_1-20">20</a>
 
 <p> How does one compute square roots?  The most common way is to use Newton's method of successive approximations, which says that whenever we have a guess $y$ for the value of the square root of a number $x$, we can perform a simple manipulation to get a better guess (one closer to the actual square root) by averaging $y$ with
-$\frac{x}{y}$.<a name="footnote_link_1-21" class="footnote_link" href="#footnote_1-21">21</a> For example, we can compute the square root of 2 as follows. Suppose our initial guess is $1$:<p>
+$\frac{x}{y}$.<a id="footnote_link_1-21" class="footnote_link" href="#footnote_1-21">21</a> For example, we can compute the square root of 2 as follows. Suppose our initial guess is $1$:<p>
 
 \begin{array}{c|c|c}
 \text{Guess} &amp; \text{Quotient} &amp; \text{Average} \\
@@ -1077,17 +1070,17 @@ C.prompt("scheme-define-improve", ["scheme-define-average"]);
 C.prompt("scheme-define-average");
 </script>
 
-<p> We also have to say what we mean by "good enough." The following will do for illustration, but it is not really a very good test. (See exercise 1.7.) The idea is to improve the answer until it is close enough so that its square differs from the radicand by less than a predetermined tolerance (here 0.001):<a name="footnote_link_1-22" class="footnote_link" href="#footnote_1-22">22</a>
+<p> We also have to say what we mean by "good enough." The following will do for illustration, but it is not really a very good test. (See exercise 1.7.) The idea is to improve the answer until it is close enough so that its square differs from the radicand by less than a predetermined tolerance (here 0.001):<a id="footnote_link_1-22" class="footnote_link" href="#footnote_1-22">22</a>
 
 <div id="scheme-define-good-enough">
 (define (good-enough? guess x)
-  (< (abs (- (square guess) x)) 0.001))
+  (&lt; (abs (- (square guess) x)) 0.001))
 </div>
 <script>
 C.prompt("scheme-define-good-enough", ["scheme-define-square"]);
 </script>
 
-<p> Finally, we need a way to get started. For instance, we can always guess that the square root of any number is 1:<a name="footnote_link_1-23" class="footnote_link" href="#footnote_1-23">23</a>
+<p> Finally, we need a way to get started. For instance, we can always guess that the square root of any number is 1:<a id="footnote_link_1-23" class="footnote_link" href="#footnote_1-23">23</a>
 
 <div id="scheme-define-sqrt">
 (define (sqrt x)
@@ -1133,11 +1126,10 @@ C.prompt("scheme-sqrt-sqrt", ["scheme-define-sqrt"]);
 C.prompt("scheme-square-sqrt", ["scheme-define-square", "scheme-define-sqrt"]);
 </script>
 
-<p> The sqrt program also illustrates that the simple procedural language we have introduced so far is sufficient for writing any purely numerical program that one could write in, say, C or Pascal. This might seem surprising, since we have not included in our language any iterative (looping) constructs that direct the computer to do something over and over again. Sqrt-iter, on the other hand, demonstrates how iteration can be accomplished using no special construct other than the ordinary ability to call a procedure.<a name="footnote_link_1-24" class="footnote_link" href="#footnote_1-24">24</a>
+<p> The sqrt program also illustrates that the simple procedural language we have introduced so far is sufficient for writing any purely numerical program that one could write in, say, C or Pascal. This might seem surprising, since we have not included in our language any iterative (looping) constructs that direct the computer to do something over and over again. Sqrt-iter, on the other hand, demonstrates how iteration can be accomplished using no special construct other than the ordinary ability to call a procedure.<a id="footnote_link_1-24" class="footnote_link" href="#footnote_1-24">24</a>
 
-<div class="exercise">
-
-<p> <b> Exercise 1.6. </b> Alyssa P. Hacker doesn’t see why <tt>if</tt> needs to be provided as a special form. “Why can’t I just define it as an ordinary procedure in terms of <tt>cond?</tt>” she asks. Alyssa’s friend Eva Lu Ator claims  this can indeed be done, and she defines a new version of <tt>if</tt>:
+<div class="exercise" id="thm_1.6">
+<p> <b> Exercise 1.6. </b> Alyssa P. Hacker doesn’t see why <code>if</code> needs to be provided as a special form. “Why can’t I just define it as an ordinary procedure in terms of <code>cond?</code>” she asks. Alyssa’s friend Eva Lu Ator claims  this can indeed be done, and she defines a new version of <code>if</code>:
 
 <div id="scheme-define-new-if">
 (define (new-if predicate then-clause else-clause)
@@ -1182,16 +1174,16 @@ C.make_MCQ("scheme-new-if-mcq",
     ["Infinite loop: sqrt-iter always evaluates itself"],
     ["It works as before",
      "Infinite loop: cond evaluates all its arguments",
-     "Error: only <tt>if</tt> can perform conditional evaluations"
+     "Error: only <code>if</code> can perform conditional evaluations"
     ]);
 </script>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 1.7. </b> The <tt>good-enough?</tt> test used in computing square roots will not be very effective for finding the square roots of very small numbers. Also, in  real computers, arithmetic operations are almost always performed with limited precision. This makes  our test inadequate for very large numbers. Explain these statements, with examples showing how the  test fails for small and large numbers.
+<div class="exercise" id="thm_1.7">
+<p> <b>Exercise 1.7. </b> The <code>good-enough?</code> test used in computing square roots will not be very effective for finding the square roots of very small numbers. Also, in  real computers, arithmetic operations are almost always performed with limited precision. This makes  our test inadequate for very large numbers. Explain these statements, with examples showing how the  test fails for small and large numbers.
 
-<p> An alternative strategy for implementing <tt>good-enough?</tt> is to watch how guess changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a square-root procedure that  uses this kind of end test. Does this work better for small and large numbers?
+<p> An alternative strategy for implementing <code>good-enough?</code> is to watch how guess changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a square-root procedure that  uses this kind of end test. Does this work better for small and large numbers?
 
 <div id="scheme-ex-17-input" class='input'>
 (define (my-sqrt x)
@@ -1231,7 +1223,7 @@ C.frozen_prompt("scheme-ex-17-my-test", ["scheme-define-square", "scheme-ex-17-i
       2))
 
 (define (good-enough? guess previous-guess)
-   (< (abs (- guess previous-guess))
+   (&lt; (abs (- guess previous-guess))
          0.001))
 
 (define (improve guess x)
@@ -1252,15 +1244,14 @@ C.frozen_prompt("scheme-ex-17-my-test", ["scheme-define-square", "scheme-ex-17-i
 
 <p>
 
-<div class="exercise">
-
+<div class="exercise" id="thm_1.8">
 <p> <b> Exercise 1.8. </b> Newton's method for cube roots is  based on the fact that if y is an approximation to the cube root of x, then a better approximation is given  by the value
 
 $$
 \frac{x/y^2 + 2y}{3}
 $$
 
-<p> Use this formula to implement a cube-root procedure analogous to the square-root procedure. (In Section <a href="1-3-hop.html#%_sec_1.3.4">1.3.4</a> we will see how to implement Newton’s  method in general as an abstraction of these square root and cube-root procedures.)
+<p> Use this formula to implement a cube-root procedure analogous to the square-root procedure. (In Section <a href="1-3-hop.html#sec_1.3.4">1.3.4</a> we will see how to implement Newton’s  method in general as an abstraction of these square root and cube-root procedures.)
 
 <div id="scheme-ex-18">
 (define (cube-root x)
@@ -1284,7 +1275,7 @@ C.editor_of["scheme-ex-18-test"].setOption("readOnly", 'nocursor');
   (* x x x))
 
 (define (good-enough? guess x)
-  (< (abs (- (cube guess) x)) 0.001))
+  (&lt; (abs (- (cube guess) x)) 0.001))
 
 (define (improve guess x)
   (/ (+ (/ x (* guess guess))
@@ -1302,21 +1293,20 @@ C.editor_of["scheme-ex-18-test"].setOption("readOnly", 'nocursor');
 
 </div>
 
-<a name="%_sec_1.1.8" />
-<h3> 1.1.8 Procedures as Black-Box Abstractions </h3>
+<h3 id="sec_1.1.8"> 1.1.8 Procedures as Black-Box Abstractions </h3>
 
 <p> Sqrt is our first example of a process defined by a set of mutually defined procedures. Notice that the definition of sqrt-iter is recursive; that is, the procedure is defined in terms of itself. The idea of being able to define a procedure in terms of itself may be disturbing; it may seem unclear how such a &ldquo;circular&rdquo; definition could make sense at all, much less specify a well-defined process to be carried out by a computer. This will be addressed more carefully in section <a href="1-2-procedures.html">1.2</a>. But first let's consider some other important points illustrated by the sqrt example.
 
 <p> Observe that the problem of computing square roots breaks up naturally into a number of subproblems: how to tell whether a guess is good enough, how to improve a guess, and so on. Each of these tasks is accomplished by a separate procedure. The entire sqrt program can be viewed as a cluster of procedures (shown in figure 1.2) that mirrors the decomposition of the problem into subproblems.
 
 <div class="figure">
-<img src='images/ch1-Z-G-6.gif'>
-<p> <b> Figure 1.2: </b> Procedural decomposition of the <tt>sqrt</tt> program.
+<img src='images/ch1-Z-G-6.gif' alt="the process drawn in tree form">
+<p> <b> Figure 1.2: </b> Procedural decomposition of the <code>sqrt</code> program.
 </div>
 
 <p> The importance of this decomposition strategy is not simply that one is dividing the program into parts. After all, we could take any large program and divide it into parts &mdash; the first ten lines, the next ten lines, the next ten lines, and so on. Rather, it is crucial that each procedure accomplishes an identifiable task that can be used as a module in defining other procedures. For example, when we define the good-enough? procedure in terms of square, we are able to regard the square procedure as a &ldquo;black box.&rdquo; We are not at that moment concerned with how the procedure computes its result, only with the fact that it computes the square. The details of how the square is computed can be suppressed, to be considered at a later time. Indeed, as far as the good-enough? procedure is concerned, square is not quite a procedure but rather an abstraction of a procedure, a so-called procedural abstraction. At this level of abstraction, any procedure that computes the square is equally good.
 
-<p> Thus, considering only the values they return, the following two procedures for squaring a number should be indistinguishable. Each takes a numerical argument and produces the square of that number as the value.<a name="footnote_link_1-25" class="footnote_link" href="#footnote_1-25">25</a>
+<p> Thus, considering only the values they return, the following two procedures for squaring a number should be indistinguishable. Each takes a numerical argument and produces the square of that number as the value.<a id="footnote_link_1-25" class="footnote_link" href="#footnote_1-25">25</a>
 
 <div id="scheme-define-square-times">
 (define (square x) (* x x))
@@ -1377,9 +1367,9 @@ C.make_static("scheme-define-good-enough-2");
 
 <p> If the parameters were not local to the bodies of their respective procedures, then the parameter x in square could be confused with the parameter x in good-enough?, and the behavior of good-enough? would depend upon which version of square we used. Thus, square would not be the black box we desired.
 
-<p> A formal parameter of a procedure has a very special role in the procedure definition, in that it doesn't matter what name the formal parameter has. Such a name is called a bound variable, and we say that the procedure definition binds its formal parameters. The meaning of a procedure definition is unchanged if a bound variable is consistently renamed throughout the definition.<a name="footnote_link_1-26" class="footnote_link" href="#footnote_1-26">26</a> If a variable is not bound, we say that it is free. The set of expressions for which a binding defines a name is called the scope of that name. In a procedure definition, the bound variables declared as the formal parameters of the procedure have the body of the procedure as their scope.
+<p> A formal parameter of a procedure has a very special role in the procedure definition, in that it doesn't matter what name the formal parameter has. Such a name is called a bound variable, and we say that the procedure definition binds its formal parameters. The meaning of a procedure definition is unchanged if a bound variable is consistently renamed throughout the definition.<a id="footnote_link_1-26" class="footnote_link" href="#footnote_1-26">26</a> If a variable is not bound, we say that it is free. The set of expressions for which a binding defines a name is called the scope of that name. In a procedure definition, the bound variables declared as the formal parameters of the procedure have the body of the procedure as their scope.
 
-<p> In the definition of good-enough? above, guess and x are bound variables but &lt;, -, abs, and square are free. The meaning of good-enough? should be independent of the names we choose for guess and x so long as they are distinct and different from <, -, abs, and square. (If we renamed guess to abs we would have introduced a bug by capturing the variable abs. It would have changed from free to bound.) The meaning of good-enough? is not independent of the names of its free variables, however. It surely depends upon the fact (external to this definition) that the symbol abs names a procedure for computing the absolute value of a number. Good-enough? will compute a different function if we substitute cos for abs in its definition.
+<p> In the definition of good-enough? above, guess and x are bound variables but &lt;, -, abs, and square are free. The meaning of good-enough? should be independent of the names we choose for guess and x so long as they are distinct and different from &lt;, -, abs, and square. (If we renamed guess to abs we would have introduced a bug by capturing the variable abs. It would have changed from free to bound.) The meaning of good-enough? is not independent of the names of its free variables, however. It surely depends upon the fact (external to this definition) that the symbol abs names a procedure for computing the absolute value of a number. Good-enough? will compute a different function if we substitute cos for abs in its definition.
 
 <h4>Internal definitions and block structure</h4>
 
@@ -1395,7 +1385,7 @@ C.make_static("scheme-define-good-enough-2");
       (sqrt-iter (improve guess x) x)))
 
 (define (good-enough? guess x)
-  (< (abs (- (square guess) x)) 0.001))
+  (&lt; (abs (- (square guess) x)) 0.001))
 
 (define (improve guess x)
   (average guess (/ x guess)))
@@ -1409,7 +1399,7 @@ C.prompt("scheme-define-sqrt-full", ["scheme-define-square", "scheme-define-aver
 <div id="scheme-define-sqrt-block">
 (define (sqrt x)
   (define (good-enough? guess x)
-    (< (abs (- (square guess) x)) 0.001))
+    (&lt; (abs (- (square guess) x)) 0.001))
   (define (improve guess x)
     (average guess (/ x guess)))
   (define (sqrt-iter guess x)
@@ -1422,12 +1412,12 @@ C.prompt("scheme-define-sqrt-full", ["scheme-define-square", "scheme-define-aver
 C.prompt("scheme-define-sqrt-block", ["scheme-define-square", "scheme-define-average"]);
 </script>
 
-<p> Such nesting of definitions, called block structure, is basically the right solution to the simplest name-packaging problem. But there is a better idea lurking here. In addition to internalizing the definitions of the auxiliary procedures, we can simplify them. Since x is bound in the definition of sqrt, the procedures good-enough?, improve, and sqrt-iter, which are defined internally to sqrt, are in the scope of x. Thus, it is not necessary to pass x explicitly to each of these procedures. Instead, we allow x to be a free variable in the internal definitions, as shown below. Then x gets its value from the argument with which the enclosing procedure sqrt is called. This discipline is called lexical scoping.<a name="footnote_link_1-27" class="footnote_link" href="#footnote_1-27">27</a>
+<p> Such nesting of definitions, called block structure, is basically the right solution to the simplest name-packaging problem. But there is a better idea lurking here. In addition to internalizing the definitions of the auxiliary procedures, we can simplify them. Since x is bound in the definition of sqrt, the procedures good-enough?, improve, and sqrt-iter, which are defined internally to sqrt, are in the scope of x. Thus, it is not necessary to pass x explicitly to each of these procedures. Instead, we allow x to be a free variable in the internal definitions, as shown below. Then x gets its value from the argument with which the enclosing procedure sqrt is called. This discipline is called lexical scoping.<a id="footnote_link_1-27" class="footnote_link" href="#footnote_1-27">27</a>
 
 <div id="scheme-define-sqrt-no-x">
 (define (sqrt x)
   (define (good-enough? guess)
-    (< (abs (- (square guess) x)) 0.001))
+    (&lt; (abs (- (square guess) x)) 0.001))
   (define (improve guess)
     (average guess (/ x guess)))
   (define (sqrt-iter guess)
@@ -1440,7 +1430,7 @@ C.prompt("scheme-define-sqrt-block", ["scheme-define-square", "scheme-define-ave
 C.prompt("scheme-define-sqrt-no-x", ["scheme-define-square", "scheme-define-average"]);
 </script>
 
-<p> We will use block structure extensively to help us break up large programs into tractable pieces.<a name="footnote_link_1-28" class="footnote_link" href="#footnote_1-28">28</a> The idea of block structure originated with the programming language Algol 60. It appears in most advanced programming languages and is an important tool for helping to organize the construction of large programs.
+<p> We will use block structure extensively to help us break up large programs into tractable pieces.<a id="footnote_link_1-28" class="footnote_link" href="#footnote_1-28">28</a> The idea of block structure originated with the programming language Algol 60. It appears in most advanced programming languages and is an important tool for helping to organize the construction of large programs.
 @@
 
 {{footnotes}}
@@ -1475,7 +1465,7 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-10" class="footnote">
 <p><a href="#footnote_link_1-10" class="footnote_backlink">10</a>
- It may seem strange that the evaluation rule says, as part of the first step, that we should evaluate the leftmost element of a combination, since at this point that can only be an operator such as <tt>+</tt> or <tt>*</tt> representing a built-in primitive procedure such as addition or multiplication. We will see later that it is useful to be able to work with combinations whose operators are themselves compound expressions.
+ It may seem strange that the evaluation rule says, as part of the first step, that we should evaluate the leftmost element of a combination, since at this point that can only be an operator such as <code>+</code> or <code>*</code> representing a built-in primitive procedure such as addition or multiplication. We will see later that it is useful to be able to work with combinations whose operators are themselves compound expressions.
 </p></div>
 
 <div id="footnote_1-11" class="footnote">
@@ -1485,7 +1475,7 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-12" class="footnote">
 <p><a href="#footnote_link_1-12" class="footnote_backlink">12</a>
- Observe that there are two different operations being combined here: we are creating the procedure, and we are giving it the name <tt>square</tt>. It is possible, indeed important, to be able to separate these two notions &mdash; to create procedures without naming them, and to give names to procedures that have already been created. We will see how to do this in section&nbsp;<a href="1-3-hop.html#%_sec_1.3.2">1.3.2</a>.
+ Observe that there are two different operations being combined here: we are creating the procedure, and we are giving it the name <code>square</code>. It is possible, indeed important, to be able to separate these two notions &mdash; to create procedures without naming them, and to give names to procedures that have already been created. We will see how to do this in section&nbsp;<a href="1-3-hop.html#sec_1.3.2">1.3.2</a>.
 </p></div>
 
 <div id="footnote_1-13" class="footnote">
@@ -1505,21 +1495,21 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-16" class="footnote">
 <p><a href="#footnote_link_1-16" class="footnote_backlink">16</a>
- In chapter&nbsp;3 we will introduce <em>stream processing</em>, which is a way of handling apparently &ldquo;infinite&rdquo; data structures by incorporating a limited form of normal-order evaluation. In section&nbsp;<a href="4-2-lazy.html#%_sec_4.2">4.2</a> we will modify the Scheme interpreter to produce a normal-order variant of Scheme.
+ In chapter&nbsp;3 we will introduce <em>stream processing</em>, which is a way of handling apparently &ldquo;infinite&rdquo; data structures by incorporating a limited form of normal-order evaluation. In section&nbsp;<a href="4-2-lazy.html#sec_4.2">4.2</a> we will modify the Scheme interpreter to produce a normal-order variant of Scheme.
 </p></div>
 
 <div id="footnote_1-17" class="footnote">
 <p><a href="#footnote_link_1-17" class="footnote_backlink">17</a>
- &ldquo;Interpreted as either true or false&rdquo; means this: In Scheme, there are two distinguished values that are denoted by the constants <tt>#t</tt> and <tt>#f</tt>. When the interpreter checks a predicate's value, it interprets <tt>#f</tt> as false. Any other value is treated as true. (Thus, providing <tt>#t</tt> is logically unnecessary, but it is convenient.)  In this book we will use names <tt>true</tt> and <tt>false</tt>, which are associated with the values <tt>#t</tt> and <tt>#f</tt> respectively.
+ &ldquo;Interpreted as either true or false&rdquo; means this: In Scheme, there are two distinguished values that are denoted by the constants <code>#t</code> and <code>#f</code>. When the interpreter checks a predicate's value, it interprets <code>#f</code> as false. Any other value is treated as true. (Thus, providing <code>#t</code> is logically unnecessary, but it is convenient.)  In this book we will use names <code>true</code> and <code>false</code>, which are associated with the values <code>#t</code> and <code>#f</code> respectively.
 </p></div>
 
 <div id="footnote_1-18" class="footnote">
-<p><a href="#footnote_link_1-18" class="footnote_backlink">18</a> <tt>abs</tt> also uses the &ldquo;minus&rdquo; operator <tt>-</tt>, which, when used with a single operand, as in <tt>(-&nbsp;x)</tt>, indicates negation.
+<p><a href="#footnote_link_1-18" class="footnote_backlink">18</a> <code>abs</code> also uses the &ldquo;minus&rdquo; operator <code>-</code>, which, when used with a single operand, as in <code>(-&nbsp;x)</code>, indicates negation.
 </p></div>
 
 <div id="footnote_1-19" class="footnote">
 <p><a href="#footnote_link_1-19" class="footnote_backlink">19</a>
- A minor difference between <tt>if</tt> and <tt>cond</tt> is that the <tt><em>&lt;e&gt;</em></tt> part of each <tt>cond</tt> clause may be a sequence of expressions. If the corresponding <tt><em>&lt;p&gt;</em></tt> is found to be true, the expressions <tt><em>&lt;e&gt;</em></tt> are evaluated in sequence and the value of the final expression in the sequence is returned as the value of the <tt>cond</tt>. In an <tt>if</tt> expression, however, the <tt><em>&lt;consequent&gt;</em></tt> and <tt><em>&lt;alternative&gt;</em></tt> must be single expressions.
+ A minor difference between <code>if</code> and <code>cond</code> is that the <code><em>&lt;e&gt;</em></code> part of each <code>cond</code> clause may be a sequence of expressions. If the corresponding <code><em>&lt;p&gt;</em></code> is found to be true, the expressions <code><em>&lt;e&gt;</em></code> are evaluated in sequence and the value of the final expression in the sequence is returned as the value of the <code>cond</code>. In an <code>if</code> expression, however, the <code><em>&lt;consequent&gt;</em></code> and <code><em>&lt;alternative&gt;</em></code> must be single expressions.
 </p></div>
 
 <div id="footnote_1-20" class="footnote">
@@ -1529,7 +1519,7 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-21" class="footnote">
 <p><a href="#footnote_link_1-21" class="footnote_backlink">21</a>
- This square-root algorithm is actually a special case of Newton's method, which is a general technique for finding roots of equations. The square-root algorithm itself was developed by Heron of Alexandria in the first century <font size="-2">A</font>.<font size="-2">D</font>. We will see how to express the general Newton's method as a Lisp procedure in section&nbsp;<a href="1-3-hop.html#%_sec_1.3.4">1.3.4</a>.
+ This square-root algorithm is actually a special case of Newton's method, which is a general technique for finding roots of equations. The square-root algorithm itself was developed by Heron of Alexandria in the first century AD. We will see how to express the general Newton's method as a Lisp procedure in section&nbsp;<a href="1-3-hop.html#sec_1.3.4">1.3.4</a>.
 </p></div>
 
 <div id="footnote_1-22" class="footnote">
@@ -1539,12 +1529,12 @@ Lisp systems typically provide features to aid the user in formatting expression
 
 <div id="footnote_1-23" class="footnote">
 <p><a href="#footnote_link_1-23" class="footnote_backlink">23</a>
- Observe that we express our initial guess as $1.0$ rather than $1$. This would not make any difference in many Lisp implementations. MIT Scheme, however, distinguishes between exact integers and decimal values, and dividing two integers produces a rational number rather than a decimal. For example, dividing $10$ by $6$ yields $5/3$, while dividing $10.0$ by $6.0$ yields $1.6666666666666667$. (We will learn how to implement arithmetic on rational numbers in section&nbsp;<a href="2-1-data.html#%_sec_2.1.1">2.1.1</a>.)  If we start with an initial guess of $1$ in our square-root program, and $x$ is an exact integer, all subsequent values produced in the square-root computation will be rational numbers rather than decimals. Mixed operations on rational numbers and decimals always yield decimals, so starting with an initial guess of $1.0$ forces all subsequent values to be decimals.
+ Observe that we express our initial guess as $1.0$ rather than $1$. This would not make any difference in many Lisp implementations. MIT Scheme, however, distinguishes between exact integers and decimal values, and dividing two integers produces a rational number rather than a decimal. For example, dividing $10$ by $6$ yields $5/3$, while dividing $10.0$ by $6.0$ yields $1.6666666666666667$. (We will learn how to implement arithmetic on rational numbers in section&nbsp;<a href="2-1-data.html#sec_2.1.1">2.1.1</a>.)  If we start with an initial guess of $1$ in our square-root program, and $x$ is an exact integer, all subsequent values produced in the square-root computation will be rational numbers rather than decimals. Mixed operations on rational numbers and decimals always yield decimals, so starting with an initial guess of $1.0$ forces all subsequent values to be decimals.
 </p></div>
 
 <div id="footnote_1-24" class="footnote">
 <p><a href="#footnote_link_1-24" class="footnote_backlink">24</a>
- Readers who are worried about the efficiency issues involved in using procedure calls to implement iteration should note the remarks on &ldquo;tail recursion&rdquo; in section&nbsp;<a href="1-2-procedures.html#%_sec_1.2.1">1.2.1</a>.
+ Readers who are worried about the efficiency issues involved in using procedure calls to implement iteration should note the remarks on &ldquo;tail recursion&rdquo; in section&nbsp;<a href="1-2-procedures.html#sec_1.2.1">1.2.1</a>.
 </p></div>
 
 <div id="footnote_1-25" class="footnote">

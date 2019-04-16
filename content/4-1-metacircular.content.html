@@ -3,16 +3,16 @@
 @@
 
 {{main_text}}
-<a href='index.html' style="float:left"> <img src='images/chevron-up.svg' height=64 width=64> </a>
+<a href='index.html' style="float:left"><img src='images/chevron-up.svg' height=64 width=64></a>
 <span style="float:right">
-<a href='4-0-metalinguistic-abstraction.html'> <img src='images/chevron-left.svg' height=64 width=64> </a>
-<a href='4-2-lazy.html'> <img src='images/chevron-right.svg' height=64 width=64> </a>
+<a href='4-0-metalinguistic-abstraction.html'><img src='images/chevron-left.svg' height=64 width=64></a>
+<a href='4-2-lazy.html'><img src='images/chevron-right.svg' height=64 width=64></a>
 
 </span>
 <br> <br>
 <h2> The Metacircular Evaluator </h2>
 
-<p> Our evaluator for Lisp will be implemented as a Lisp program. It may seem circular to think about evaluating Lisp programs using an evaluator that is itself implemented in Lisp. However, evaluation is a process, so it is appropriate to describe the evaluation process using Lisp, which, after all, is our tool for describing processes.<a name="footnote_link_1-3" class="footnote_link" href="#footnote_1-3">3</a> An evaluator that is written in the same language that it evaluates is said to be <tt>metacircular</tt>  .
+<p> Our evaluator for Lisp will be implemented as a Lisp program. It may seem circular to think about evaluating Lisp programs using an evaluator that is itself implemented in Lisp. However, evaluation is a process, so it is appropriate to describe the evaluation process using Lisp, which, after all, is our tool for describing processes.<a id="footnote_link_1-3" class="footnote_link" href="#footnote_1-3">3</a> An evaluator that is written in the same language that it evaluates is said to be <code>metacircular</code>  .
 The metacircular evaluator is essentially a Scheme formulation of the
 environment model of evaluation described in section <a href="3-2-environment.html">3.2</a>. Recall that
 the model has two basic parts:
@@ -27,35 +27,34 @@ the model has two basic parts:
 </li>
 </ul>
 
-<p> These two rules describe the essence of the evaluation process, a basic cycle in which expressions to be evaluated in environments are reduced to procedures to be applied to arguments, which in turn are reduced to new expressions to be evaluated in new environments, and so on, until we get down to symbols, whose values are looked up in the environment, and to primitive procedures, which are applied directly (see Figure 4-1).<a name="footnote_link_1-4" class="footnote_link" href="#footnote_1-4">4</a> This evaluation cycle will be embodied by the interplay between the two critical procedures in the evaluator, <tt>eval</tt> and <tt>apply</tt>, which are
+<p> These two rules describe the essence of the evaluation process, a basic cycle in which expressions to be evaluated in environments are reduced to procedures to be applied to arguments, which in turn are reduced to new expressions to be evaluated in new environments, and so on, until we get down to symbols, whose values are looked up in the environment, and to primitive procedures, which are applied directly (see Figure 4-1).<a id="footnote_link_1-4" class="footnote_link" href="#footnote_1-4">4</a> This evaluation cycle will be embodied by the interplay between the two critical procedures in the evaluator, <code>eval</code> and <code>apply</code>, which are
 described in section <a href="4-1-metacircular.html">4.1.1</a> (see Figure 4-1).
 
-<p> The implementation of the evaluator will depend upon procedures that define the <em>syntax</em> of the expressions to be evaluated. We will use data abstraction to make the evaluator independent of the representation of the language. For example, rather than committing to a choice that an assignment is to be represented by a list beginning with the symbol <tt>set!</tt> we use an abstract predicate <tt>assignment?</tt> to test for an assignment, and we use abstract selectors <tt>assignment-variable</tt> and <tt>assignment-value</tt> to access the parts of an assignment. Implementation of expressions will be described in detail in section <a href="4-1-metacircular.html">4.1.2</a>. There are also operations, described in section <a href="4-1-metacircular.html">4.1.3</a>, that specify the representation of procedures and environments. For example, <tt>make-procedure</tt> constructs compound procedures, <tt>lookup-variable-value</tt> accesses the values of variables, and <tt>apply-primitive-procedure</tt> applies a primitive procedure to a given list of arguments.
+<p> The implementation of the evaluator will depend upon procedures that define the <em>syntax</em> of the expressions to be evaluated. We will use data abstraction to make the evaluator independent of the representation of the language. For example, rather than committing to a choice that an assignment is to be represented by a list beginning with the symbol <code>set!</code> we use an abstract predicate <code>assignment?</code> to test for an assignment, and we use abstract selectors <code>assignment-variable</code> and <code>assignment-value</code> to access the parts of an assignment. Implementation of expressions will be described in detail in section <a href="4-1-metacircular.html">4.1.2</a>. There are also operations, described in section <a href="4-1-metacircular.html">4.1.3</a>, that specify the representation of procedures and environments. For example, <code>make-procedure</code> constructs compound procedures, <code>lookup-variable-value</code> accesses the values of variables, and <code>apply-primitive-procedure</code> applies a primitive procedure to a given list of arguments.
 
-<a name="%_sec_4.1.1" />
-<h3> 4.1.1 The Core of the Evaluator </h3>
+<h3 id="sec_4.1.1"> 4.1.1 The Core of the Evaluator </h3>
 
 <p> <img class='center' src='images/ch4-Z-G-1.gif'>
 
-<p style="text-align:center"> <b>Figure 4.1:</b> The <tt>eval</tt>-<tt>apply</tt> cycle
+<p style="text-align:center"> <b>Figure 4.1:</b> The <code>eval</code>-<code>apply</code> cycle
 exposes the essence of a computer language.
 
-<p> The evaluation process can be described as the interplay between two procedures: <tt>eval</tt> and <tt>apply</tt>.
+<p> The evaluation process can be described as the interplay between two procedures: <code>eval</code> and <code>apply</code>.
 
 <h4> Eval </h4>
 
-<p> <tt>Eval</tt> takes as arguments an expression and an environment. It classifies the expression and directs its evaluation. <tt>Eval</tt> is structured as a case analysis of the syntactic type of the expression to be evaluated. In order to keep the procedure general, we express the determination of the type of an expression abstractly, making no commitment to any particular representation for the various types of expressions. Each type of expression has a predicate that tests for it and an abstract means for selecting its parts. This <tt>abstract syntax</tt> makes it easy to see how we can change the syntax of the language by using the same evaluator, but with a different collection of syntax procedures.
+<p> <code>Eval</code> takes as arguments an expression and an environment. It classifies the expression and directs its evaluation. <code>Eval</code> is structured as a case analysis of the syntactic type of the expression to be evaluated. In order to keep the procedure general, we express the determination of the type of an expression abstractly, making no commitment to any particular representation for the various types of expressions. Each type of expression has a predicate that tests for it and an abstract means for selecting its parts. This <code>abstract syntax</code> makes it easy to see how we can change the syntax of the language by using the same evaluator, but with a different collection of syntax procedures.
 
 
 <h5> Primitive expressions </h5>
 
 <ul>
 <li>
-<p> For self-evaluating expressions, such as numbers, <tt>eval</tt> returns the expression itself.
+<p> For self-evaluating expressions, such as numbers, <code>eval</code> returns the expression itself.
 </li>
 
 <li>
-<p> <tt>Eval</tt> must look up variables in the environment to find their values.
+<p> <code>Eval</code> must look up variables in the environment to find their values.
 </li>
 </ul>
 
@@ -64,27 +63,27 @@ exposes the essence of a computer language.
 
 <ul>
 <li>
-For quoted expressions, <tt>eval</tt> returns the expression that was quoted.
+For quoted expressions, <code>eval</code> returns the expression that was quoted.
 </li>
 
 <li>
-An assignment to (or a definition of) a variable must recursively call <tt>eval</tt> to compute the new value to be associated with the variable. The environment must be modified to change (or create) the binding of the variable.
+An assignment to (or a definition of) a variable must recursively call <code>eval</code> to compute the new value to be associated with the variable. The environment must be modified to change (or create) the binding of the variable.
 </li>
 
 <li>
-<p> An <tt>if</tt> expression requires special processing of its parts, so as to evaluate the consequent if the predicate is true, and otherwise to evaluate the alternative.
+<p> An <code>if</code> expression requires special processing of its parts, so as to evaluate the consequent if the predicate is true, and otherwise to evaluate the alternative.
 </li>
 
 <li>
-<p> A <tt>lambda</tt> expression must be transformed into an applicable procedure by packaging together the parameters and body specified by the <tt>lambda</tt> expression with the environment of the evaluation.
+<p> A <code>lambda</code> expression must be transformed into an applicable procedure by packaging together the parameters and body specified by the <code>lambda</code> expression with the environment of the evaluation.
 </li>
 
 <li>
-<p> A <tt>begin</tt> expression requires evaluating its sequence of expressions in the order in which they appear.
+<p> A <code>begin</code> expression requires evaluating its sequence of expressions in the order in which they appear.
 </li>
 
 <li>
-<p> A case analysis (<tt>cond</tt>) is transformed into a nest of <tt>if</tt> expressions and then evaluated.
+<p> A case analysis (<code>cond</code>) is transformed into a nest of <code>if</code> expressions and then evaluated.
 </li>
 </ul>
 
@@ -93,11 +92,11 @@ An assignment to (or a definition of) a variable must recursively call <tt>eval<
 
 <ul>
 <li>
-<p> For a procedure application, <tt>eval</tt> must recursively evaluate the operator part and the operands of the combination. The resulting procedure and arguments are passed to <tt>apply</tt>, which handles the actual procedure application.
+<p> For a procedure application, <code>eval</code> must recursively evaluate the operator part and the operands of the combination. The resulting procedure and arguments are passed to <code>apply</code>, which handles the actual procedure application.
 </li>
 </ul>
 
-<p> Here is the definition of <tt>eval</tt>:
+<p> Here is the definition of <code>eval</code>:
 
 <div id="scheme-eval">
 (define (eval exp env)
@@ -124,11 +123,11 @@ An assignment to (or a definition of) a variable must recursively call <tt>eval<
 C.prompt("scheme-eval", ["scheme-apply"]);
 </script>
 
-<p> For clarity, <tt>eval</tt> has been implemented as a case analysis using <tt>cond</tt>. The disadvantage of this is that our procedure handles only a few distinguishable types of expressions, and no new ones can be defined without editing the definition of <tt>eval</tt>. In most Lisp implementations, dispatching on the type of an expression is done in a data-directed style. This allows a user to add new types of expressions that <tt>eval</tt> can distinguish, without modifying the definition of <tt>eval</tt> itself. (See Exercise 4-3.)
+<p> For clarity, <code>eval</code> has been implemented as a case analysis using <code>cond</code>. The disadvantage of this is that our procedure handles only a few distinguishable types of expressions, and no new ones can be defined without editing the definition of <code>eval</code>. In most Lisp implementations, dispatching on the type of an expression is done in a data-directed style. This allows a user to add new types of expressions that <code>eval</code> can distinguish, without modifying the definition of <code>eval</code> itself. (See Exercise 4-3.)
 
 <h4> Apply </h4>
 
-<p> <tt>Apply</tt> takes two arguments, a procedure and a list of arguments to which the procedure should be applied. <tt>Apply</tt> classifies procedures into two kinds: It calls <tt>apply-primitive-procedure</tt> to apply primitives; it applies compound procedures by sequentially evaluating the expressions that make up the body of the procedure. The environment for the evaluation of the body of a compound procedure is constructed by extending the base environment carried by the procedure to include a frame that binds the parameters of the procedure to the arguments to which the procedure is to be applied. Here is the definition of <tt>apply</tt>:
+<p> <code>Apply</code> takes two arguments, a procedure and a list of arguments to which the procedure should be applied. <code>Apply</code> classifies procedures into two kinds: It calls <code>apply-primitive-procedure</code> to apply primitives; it applies compound procedures by sequentially evaluating the expressions that make up the body of the procedure. The environment for the evaluation of the body of a compound procedure is constructed by extending the base environment carried by the procedure to include a frame that binds the parameters of the procedure to the arguments to which the procedure is to be applied. Here is the definition of <code>apply</code>:
 
 <div id="scheme-apply">
 (define (apply procedure arguments)
@@ -151,7 +150,7 @@ C.prompt("scheme-apply", ["scheme-eval"]);
 
 <h4> Procedure arguments </h4>
 
-<p> When <tt>eval</tt> processes a procedure application, it uses <tt>list-of-values</tt> to produce the list of arguments to which the procedure is to be applied. <tt>List-of-values</tt> takes as an argument the operands of the combination. It evaluates each operand and returns a list of the corresponding values:<a name="footnote_link_1-5" class="footnote_link" href="#footnote_1-5">5</a>
+<p> When <code>eval</code> processes a procedure application, it uses <code>list-of-values</code> to produce the list of arguments to which the procedure is to be applied. <code>List-of-values</code> takes as an argument the operands of the combination. It evaluates each operand and returns a list of the corresponding values:<a id="footnote_link_1-5" class="footnote_link" href="#footnote_1-5">5</a>
 
 <div id="scheme-list-of-values">
 (define (list-of-values exps env)
@@ -167,7 +166,7 @@ C.prompt("scheme-list-of-values");
 
 <h4> Conditionals </h4>
 
-<p> <tt>Eval-if</tt> evaluates the predicate part of an <tt>if</tt> expression in the given environment. If the result is true, <tt>eval-if</tt> evaluates the consequent, otherwise it evaluates the alternative:
+<p> <code>Eval-if</code> evaluates the predicate part of an <code>if</code> expression in the given environment. If the result is true, <code>eval-if</code> evaluates the consequent, otherwise it evaluates the alternative:
 
 <div id="scheme-eval-if">
 (define (eval-if exp env)
@@ -179,11 +178,11 @@ C.prompt("scheme-list-of-values");
 C.prompt("scheme-eval-if");
 </script>
 
-<p> The use of <tt>true?</tt> in <tt>eval-if</tt> highlights the issue of the connection between an implemented language and an implementation language. The <tt>if-predicate</tt> is evaluated in the language being implemented and thus yields a value in that language. The interpreter predicate <tt>true?</tt> translates that value into a value that can be tested by the <tt>if</tt> in the implementation language: The metacircular representation of truth might not be the same as that of the underlying Scheme.<a name="footnote_link_1-6" class="footnote_link" href="#footnote_1-6">6</a>
+<p> The use of <code>true?</code> in <code>eval-if</code> highlights the issue of the connection between an implemented language and an implementation language. The <code>if-predicate</code> is evaluated in the language being implemented and thus yields a value in that language. The interpreter predicate <code>true?</code> translates that value into a value that can be tested by the <code>if</code> in the implementation language: The metacircular representation of truth might not be the same as that of the underlying Scheme.<a id="footnote_link_1-6" class="footnote_link" href="#footnote_1-6">6</a>
 
 <h4> Sequences </h4>
 
-<p> <tt>Eval-sequence</tt> is used by <tt>apply</tt> to evaluate the sequence of expressions in a procedure body and by <tt>eval</tt> to evaluate the sequence of expressions in a <tt>begin</tt> expression. It takes as arguments a sequence of expressions and an environment, and evaluates the expressions in the order in which they occur. The value returned is the value of the final expression.
+<p> <code>Eval-sequence</code> is used by <code>apply</code> to evaluate the sequence of expressions in a procedure body and by <code>eval</code> to evaluate the sequence of expressions in a <code>begin</code> expression. It takes as arguments a sequence of expressions and an environment, and evaluates the expressions in the order in which they occur. The value returned is the value of the final expression.
 
 <div id="scheme-eval-sequence">
 (define (eval-sequence exps env)
@@ -197,7 +196,7 @@ C.prompt("scheme-eval-sequence");
 
 <h4> Assignments and definitions </h4>
 
-<p> The following procedure handles assignments to variables. It calls <tt>eval</tt> to find the value to be assigned and transmits the variable and the resulting value to <tt>set-variable-value!</tt> to be installed in the designated environment.
+<p> The following procedure handles assignments to variables. It calls <code>eval</code> to find the value to be assigned and transmits the variable and the resulting value to <code>set-variable-value!</code> to be installed in the designated environment.
 
 <div id="scheme-eval-assignment">
 (define (eval-assignment exp env)
@@ -211,7 +210,7 @@ C.prompt("scheme-eval-assignment");
 </script>
 
 
-<p> Definitions of variables are handled in a similar manner.<a name="footnote_link_1-7" class="footnote_link" href="#footnote_1-7">7</a>
+<p> Definitions of variables are handled in a similar manner.<a id="footnote_link_1-7" class="footnote_link" href="#footnote_1-7">7</a>
 
 <div id="scheme-eval-definition">
 (define (eval-definition exp env)
@@ -224,17 +223,16 @@ C.prompt("scheme-eval-assignment");
 C.prompt("scheme-eval-definition");
 </script>
 
-<p> We have chosen here to return the symbol <tt>ok</tt> as the value of an
-assignment or a definition.<a name="footnote_link_1-8" class="footnote_link" href="#footnote_1-8">8</a>
+<p> We have chosen here to return the symbol <code>ok</code> as the value of an
+assignment or a definition.<a id="footnote_link_1-8" class="footnote_link" href="#footnote_1-8">8</a>
 
-<div class="exercise">
-<p> <b>Exercise 4.1:</b> Notice that we cannot tell whether the metacircular evaluator evaluates operands from left to right or from right to left. Its evaluation order is inherited from the underlying Lisp: If the arguments to <tt>cons</tt> in <tt>list-of-values</tt> are evaluated from left to right, then <tt>list-of-values</tt> will evaluate operands from left to right; and if the arguments to <tt>cons</tt> are evaluated from right to left, then <tt>list-of-values</tt> will evaluate operands from right to left.
+<div class="exercise" id="thm_4.1">
+<p> <b>Exercise 4.1:</b> Notice that we cannot tell whether the metacircular evaluator evaluates operands from left to right or from right to left. Its evaluation order is inherited from the underlying Lisp: If the arguments to <code>cons</code> in <code>list-of-values</code> are evaluated from left to right, then <code>list-of-values</code> will evaluate operands from left to right; and if the arguments to <code>cons</code> are evaluated from right to left, then <code>list-of-values</code> will evaluate operands from right to left.
 
-Write a version of <tt>list-of-values</tt> that evaluates operands from left to right regardless of the order of evaluation in the underlying Lisp. Also write a version of <tt>list-of-values</tt> that evaluates operands from right to left.
+Write a version of <code>list-of-values</code> that evaluates operands from left to right regardless of the order of evaluation in the underlying Lisp. Also write a version of <code>list-of-values</code> that evaluates operands from right to left.
 </div>
 
-<a name="%_sec_4.1.2" />
-<h3> 4.1.2 Representing Expressions </h3>
+<h3 id="sec_4.1.2"> 4.1.2 Representing Expressions </h3>
 
 <p> The evaluator is reminiscent of the symbolic differentiation program discussed in section <a href="2-3-symbolic.html">2.3.2</a>. Both programs operate on symbolic expressions. Inboth programs, the result of operating on a compound expression is determinedby operating recursively on the pieces of the expression and combining theresults in a way that depends on the type of the expression. In both programswe used data abstraction to decouple the general rules of operation from thedetails of how expressions are represented. In the differentiation programthis meant that the same differentiation procedure could deal with algebraicexpressions in prefix form, in infix form, or in some other form. For theevaluator, this means that the syntax of the language being evaluated isdetermined solely by the procedures that classify and extract pieces of expressions.
 
@@ -266,7 +264,7 @@ C.prompt("scheme-variable-p");
 </script>
 
 <li>
-<p> Quotations have the form <tt>(quote &lt;text-of-quotation&gt;)</tt>:<a name="footnote_link_1-9" class="footnote_link" href="#footnote_1-9">9</a>
+<p> Quotations have the form <code>(quote &lt;text-of-quotation&gt;)</code>:<a id="footnote_link_1-9" class="footnote_link" href="#footnote_1-9">9</a>
 
 <div id="scheme-quoted-p">
 (define (quoted? exp)
@@ -278,7 +276,7 @@ C.prompt("scheme-variable-p");
 C.prompt("scheme-quoted-p");
 </script>
 
-<p> <tt>Quoted?</tt> is defined in terms of the procedure <tt>tagged-list?</tt>, which identifies lists beginning with a designated symbol:
+<p> <code>Quoted?</code> is defined in terms of the procedure <code>tagged-list?</code>, which identifies lists beginning with a designated symbol:
 
 <div id="scheme-tagged-list-p">
 (define (tagged-list? exp tag)
@@ -291,7 +289,7 @@ C.prompt("scheme-tagged-list-p");
 </script>
 
 <li>
-<p> Assignments have the form <tt>(set! ⟨var⟩ ⟨value⟩)</tt>:
+<p> Assignments have the form <code>(set! ⟨var⟩ ⟨value⟩)</code>:
 
 <div id="scheme-define-assignment">
 (define (assignment? exp)
@@ -358,7 +356,7 @@ C.prompt("scheme-definition-p");
 </script>
 
 <li>
-<p> <tt>Lambda</tt> expressions are lists that begin with the symbol <tt>lambda</tt>:
+<p> <code>Lambda</code> expressions are lists that begin with the symbol <code>lambda</code>:
 
 <div id="scheme-define-lambda-p">
 (define (lambda? exp) (tagged-list? exp 'lambda))
@@ -371,7 +369,7 @@ C.prompt("scheme-definition-p");
 C.prompt("scheme-define-lambda-p");
 </script>
 
-<p> We also provide a constructor for <tt>lambda</tt> expressions, which is used by <tt>definition-value</tt>, above:
+<p> We also provide a constructor for <code>lambda</code> expressions, which is used by <code>definition-value</code>, above:
 
 <div id="scheme-define-make-lambda">
 (define (make-lambda parameters body)
@@ -382,7 +380,7 @@ C.prompt("scheme-define-make-lambda");
 </script>
 
 <li>
-<p> Conditionals begin with <tt>if</tt> and have a predicate, a consequent, and an (optional) alternative. If the expression has no alternative part, we provide <tt>false</tt> as the alternative.<a name="footnote_link_1-10" class="footnote_link" href="#footnote_1-10">10</a>
+<p> Conditionals begin with <code>if</code> and have a predicate, a consequent, and an (optional) alternative. If the expression has no alternative part, we provide <code>false</code> as the alternative.<a id="footnote_link_1-10" class="footnote_link" href="#footnote_1-10">10</a>
 
 <div id="scheme-define-if-p">
 (define (if? exp) (tagged-list? exp 'if))
@@ -400,7 +398,7 @@ C.prompt("scheme-define-make-lambda");
 C.prompt("scheme-define-if-p");
 </script>
 
-<p> We also provide a constructor for <tt>if</tt> expressions, to be used by <tt>cond->if</tt> to transform <tt>cond</tt> expressions into <tt>if</tt> expressions:
+<p> We also provide a constructor for <code>if</code> expressions, to be used by <code>cond->if</code> to transform <code>cond</code> expressions into <code>if</code> expressions:
 
 <div id="scheme-define-make-if">
 (define (make-if predicate consequent alternative)
@@ -411,7 +409,7 @@ C.prompt("scheme-define-make-if");
 </script>
 
 <li>
-<p> <tt>Begin</tt> packages a sequence of expressions into a single expression. We include syntax operations on <tt>begin</tt> expressions to extract the actual sequence from the <tt>begin</tt> expression, as well as selectors that return the first expression and the rest of the expressions in the sequence.<a name="footnote_link_1-11" class="footnote_link" href="#footnote_1-11">11</a>
+<p> <code>Begin</code> packages a sequence of expressions into a single expression. We include syntax operations on <code>begin</code> expressions to extract the actual sequence from the <code>begin</code> expression, as well as selectors that return the first expression and the rest of the expressions in the sequence.<a id="footnote_link_1-11" class="footnote_link" href="#footnote_1-11">11</a>
 
 <div id="scheme-define-begin-p">
 (define (begin? exp) (tagged-list? exp 'begin))
@@ -428,7 +426,7 @@ C.prompt("scheme-define-make-if");
 C.prompt("scheme-define-begin-p");
 </script>
 
-<p> We also include a constructor <tt>sequence->exp</tt> (for use by <tt>cond->if</tt>) that transforms a sequence into a single expression, using <tt>begin</tt> if necessary:
+<p> We also include a constructor <code>sequence->exp</code> (for use by <code>cond->if</code>) that transforms a sequence into a single expression, using <code>begin</code> if necessary:
 
 <div id="scheme-define-sequence-exp">
 (define (sequence->exp seq)
@@ -443,7 +441,7 @@ C.prompt("scheme-define-sequence-exp");
 </script>
 
 <li>
-<p> A procedure application is any compound expression that is not one of the above expression types. The <tt>car</tt> of the expression is the operator, and the <tt>cdr</tt> is the list of operands:
+<p> A procedure application is any compound expression that is not one of the above expression types. The <code>car</code> of the expression is the operator, and the <code>cdr</code> is the list of operands:
 
 <div id="scheme-define-application-p">
 (define (application? exp) (pair? exp))
@@ -466,7 +464,7 @@ C.prompt("scheme-define-application-p");
 
 <h4> Derived expressions </h4>
 
-<p> Some special forms in our language can be defined in terms of expressions involving other special forms, rather than being implemented directly. One example is <tt>cond</tt>, which can be implemented as a nest of <tt>if</tt> expressions. For example, we can reduce the problem of evaluating the expression
+<p> Some special forms in our language can be defined in terms of expressions involving other special forms, rather than being implemented directly. One example is <code>cond</code>, which can be implemented as a nest of <code>if</code> expressions. For example, we can reduce the problem of evaluating the expression
 
 <div id="scheme-ex-cond-pre-desugar">
 (cond ((> x 0) x)
@@ -477,7 +475,7 @@ C.prompt("scheme-define-application-p");
 C.no_output_frozen_prompt("scheme-ex-cond-pre-desugar");
 </script>
 
-<p> to the problem of evaluating the following expression involving <tt>if</tt> and <tt>begin</tt> expressions:
+<p> to the problem of evaluating the following expression involving <code>if</code> and <code>begin</code> expressions:
 
 <div id="scheme-ex-cond-post-desugar">
 (if (> x 0)
@@ -491,9 +489,9 @@ C.no_output_frozen_prompt("scheme-ex-cond-pre-desugar");
 C.no_output_frozen_prompt("scheme-ex-cond-post-desugar");
 </script>
 
-<p> Implementing the evaluation of <tt>cond</tt> in this way simplifies the evaluator because it reduces the number of special forms for which the evaluation process must be explicitly specified.
+<p> Implementing the evaluation of <code>cond</code> in this way simplifies the evaluator because it reduces the number of special forms for which the evaluation process must be explicitly specified.
 
-<p> We include syntax procedures that extract the parts of a <tt>cond</tt> expression, and a procedure <tt>cond->if</tt> that transforms <tt>cond</tt> expressions into <tt>if</tt> expressions. A case analysis begins with <tt>cond</tt> and has a list of predicate-action clauses. A clause is an <tt>else</tt> clause if its predicate is the symbol <tt>else</tt>.<a name="footnote_link_1-12" class="footnote_link" href="#footnote_1-12">12</a>
+<p> We include syntax procedures that extract the parts of a <code>cond</code> expression, and a procedure <code>cond->if</code> that transforms <code>cond</code> expressions into <code>if</code> expressions. A case analysis begins with <code>cond</code> and has a list of predicate-action clauses. A clause is an <code>else</code> clause if its predicate is the symbol <code>else</code>.<a id="footnote_link_1-12" class="footnote_link" href="#footnote_1-12">12</a>
 
 <div id="scheme-define-cond-p">
 (define (cond? exp) (tagged-list? exp 'cond))
@@ -512,7 +510,7 @@ C.no_output_frozen_prompt("scheme-ex-cond-post-desugar");
 
 (define (expand-clauses clauses)
   (if (null? clauses)
-      'false                          ; no <tt>else</tt> clause
+      'false                          ; no <code>else</code> clause
       (let ((first (car clauses))
             (rest (cdr clauses)))
         (if (cond-else-clause? first)
@@ -528,45 +526,45 @@ C.no_output_frozen_prompt("scheme-ex-cond-post-desugar");
 C.prompt("scheme-define-cond-p");
 </script>
 
-<p> Expressions (such as <tt>cond</tt>) that we choose to implement as syntactic transformations are called <tt>derived expressions</tt>. <tt>Let</tt> expressions are also derived expressions (see Exercise 4-6).<a name="footnote_link_1-13" class="footnote_link" href="#footnote_1-13">4</a>
+<p> Expressions (such as <code>cond</code>) that we choose to implement as syntactic transformations are called <code>derived expressions</code>. <code>Let</code> expressions are also derived expressions (see Exercise 4-6).<a id="footnote_link_1-13" class="footnote_link" href="#footnote_1-13">4</a>
 
-<div class="exercise">
-<p> <b>Exercise 4.2:</b> Louis Reasoner plans to reorder the <tt>cond</tt> clauses in <tt>eval</tt> so that the clause for procedure applications appears before the clause for assignments. He argues that this will make the interpreter more efficient: Since programs usually contain more applications than assignments, definitions, and so on, his modified <tt>eval</tt> will usually check fewer clauses than the original <tt>eval</tt> before identifying the type of an expression.
+<div class="exercise" id="thm_4.2">
+<p> <b>Exercise 4.2:</b> Louis Reasoner plans to reorder the <code>cond</code> clauses in <code>eval</code> so that the clause for procedure applications appears before the clause for assignments. He argues that this will make the interpreter more efficient: Since programs usually contain more applications than assignments, definitions, and so on, his modified <code>eval</code> will usually check fewer clauses than the original <code>eval</code> before identifying the type of an expression.
 
 <ul>
 <li>
-<p> What is wrong with Louis's plan?  (Hint: What will Louis's evaluator do with the expression <tt>(define x 3)</tt>?)
+<p> What is wrong with Louis's plan?  (Hint: What will Louis's evaluator do with the expression <code>(define x 3)</code>?)
 
 <li>
-<p> Louis is upset that his plan didn't work. He is willing to go to any lengths to make his evaluator recognize procedure applications before it checks for most other kinds of expressions. Help him by changing the syntax of the evaluated language so that procedure applications start with <tt>call</tt>. For example, instead of <tt>(factorial 3)</tt> we will now have to write <tt>(call factorial 3)</tt> and instead of <tt>(+ 1 2)</tt> we will have to write <tt>(call + 1 2)</tt>.
+<p> Louis is upset that his plan didn't work. He is willing to go to any lengths to make his evaluator recognize procedure applications before it checks for most other kinds of expressions. Help him by changing the syntax of the evaluated language so that procedure applications start with <code>call</code>. For example, instead of <code>(factorial 3)</code> we will now have to write <code>(call factorial 3)</code> and instead of <code>(+ 1 2)</code> we will have to write <code>(call + 1 2)</code>.
 
 </ul>
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 4.3:</b> Rewrite <tt>eval</tt> so that the dispatch is done in data-directed style. Compare this with the data-directed differentiation procedure of Exercise 2-73. (You may use the <tt>car</tt> of a compound expression as the type of the expression, as is appropriate for the syntax implemented in this section.)
+<div class="exercise" id="thm_4.3">
+<p> <b>Exercise 4.3:</b> Rewrite <code>eval</code> so that the dispatch is done in data-directed style. Compare this with the data-directed differentiation procedure of Exercise 2-73. (You may use the <code>car</code> of a compound expression as the type of the expression, as is appropriate for the syntax implemented in this section.)
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 4.4:</b> Recall the definitions of the special forms <tt>and</tt> and <tt>or</tt> from Chapter 1:
+<div class="exercise" id="thm_4.4">
+<p> <b>Exercise 4.4:</b> Recall the definitions of the special forms <code>and</code> and <code>or</code> from Chapter 1:
 
 <ul>
 
 <li>
-<p> <tt>and</tt>: The expressions are evaluated from left to right. If any expression evaluates to false, false is returned; any remaining expressions are not evaluated. If all the expressions evaluate to true values, the value of the last expression is returned. If there are no expressions then true is returned.
+<p> <code>and</code>: The expressions are evaluated from left to right. If any expression evaluates to false, false is returned; any remaining expressions are not evaluated. If all the expressions evaluate to true values, the value of the last expression is returned. If there are no expressions then true is returned.
 
 <li>
-<p> <tt>or</tt>: The expressions are evaluated from left to right. If any expression evaluates to a true value, that value is returned; any remaining expressions are not evaluated. If all expressions evaluate to false, or if there are no expressions, then false is returned.
+<p> <code>or</code>: The expressions are evaluated from left to right. If any expression evaluates to a true value, that value is returned; any remaining expressions are not evaluated. If all expressions evaluate to false, or if there are no expressions, then false is returned.
 </ul>
 
-<p> Install <tt>and</tt> and <tt>or</tt> as new special forms for the evaluator by defining appropriate syntax procedures and evaluation procedures <tt>eval-and</tt> and <tt>eval-or</tt>. Alternatively, show how to implement <tt>and</tt> and <tt>or</tt> as derived expressions.
+<p> Install <code>and</code> and <code>or</code> as new special forms for the evaluator by defining appropriate syntax procedures and evaluation procedures <code>eval-and</code> and <code>eval-or</code>. Alternatively, show how to implement <code>and</code> and <code>or</code> as derived expressions.
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 4.5:</b> Scheme allows an additional syntax for <tt>cond</tt> clauses, (test => recipient)}. If <test> evaluates to a true value, then <recipient> is evaluated. Its value must be a procedure of one argument; this procedure is then invoked on the value of the <test>, and the result is returned as the value of
-the <tt>cond</tt> expression. For example
+<div class="exercise" id="thm_4.5">
+<p> <b>Exercise 4.5:</b> Scheme allows an additional syntax for <code>cond</code> clauses, (test => recipient)}. If &lt;test&gt; evaluates to a true value, then &lt;recipient&gt; is evaluated. Its value must be a procedure of one argument; this procedure is then invoked on the value of the &lt;test&gt;, and the result is returned as the value of
+the <code>cond</code> expression. For example
 
-<div id="">
+<div>
 (cond ((assoc 'b '((a 1) (b 2))) => cadr)
       (else false))
 </div>
@@ -574,15 +572,15 @@ the <tt>cond</tt> expression. For example
 C.prompt();
 </script>
 
-<p> returns 2. Modify the handling of <tt>cond</tt> so that it supports this extended syntax.
+<p> returns 2. Modify the handling of <code>cond</code> so that it supports this extended syntax.
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 4.6:</b> <tt>Let</tt> expressions are derived expressions, because
+<div class="exercise" id="thm_4.6">
+<p> <b>Exercise 4.6:</b> <code>Let</code> expressions are derived expressions, because
 
-<div id="">
-(let ((<var_1> <exp_1>) ... (<var_n> <exp_n>))
-  <body>)
+<div>
+(let ((&lt;var_1&gt; &lt;exp_1&gt;) ... (&lt;var_n&gt; &lt;exp_n&gt;))
+  &lt;body&gt;)
 </div>
 <script>
 C.prompt();
@@ -591,24 +589,24 @@ C.prompt();
 
 <p> is equivalent to
 
-<div id="">
-((lambda (<var_1> ... <var_n>)
-   <body>)
- <exp_1>
+<div>
+((lambda (&lt;var_1&gt; ... &lt;var_n&gt;)
+   &lt;body&gt;)
+ &lt;exp_1&gt;
  ...
- <exp_n>)
+ &lt;exp_n&gt;)
 </div>
 <script>
 C.prompt();
 </script>
 
-<p> Implement a syntactic transformation <tt>let->combination</tt> that reduces evaluating <tt>let</tt> expressions to evaluating combinations of the type shown above, and add the appropriate clause to <tt>eval</tt> to handle <tt>let</tt> expressions.
+<p> Implement a syntactic transformation <code>let->combination</code> that reduces evaluating <code>let</code> expressions to evaluating combinations of the type shown above, and add the appropriate clause to <code>eval</code> to handle <code>let</code> expressions.
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 4.7:</b> <tt>Let*</tt> is similar to <tt>let</tt>, except that the bindings of the <tt>let</tt> variables are performed sequentially from left to right, and each binding is made in an environment in which all of the preceding bindings are visible. For example
+<div class="exercise" id="thm_4.7">
+<p> <b>Exercise 4.7:</b> <code>Let*</code> is similar to <code>let</code>, except that the bindings of the <code>let</code> variables are performed sequentially from left to right, and each binding is made in an environment in which all of the preceding bindings are visible. For example
 
-<div id="">
+<div>
 (let* ((x 3)
        (y (+ x 2))
        (z (+ x y 5)))
@@ -619,9 +617,9 @@ C.prompt();
 </script>
 
 
-<p> returns 39. Explain how a <tt>let*</tt> expression can be rewritten as a set of nested <tt>let</tt> expressions, and write a procedure <tt>let*->nested-lets</tt> that performs this transformation. If we have already implemented <tt>let</tt> (Exercise 4-6) and we want to extend the evaluator to handle <tt>let*</tt>, is it sufficient to add a clause to <tt>eval</tt> whose action is
+<p> returns 39. Explain how a <code>let*</code> expression can be rewritten as a set of nested <code>let</code> expressions, and write a procedure <code>let*->nested-lets</code> that performs this transformation. If we have already implemented <code>let</code> (Exercise 4-6) and we want to extend the evaluator to handle <code>let*</code>, is it sufficient to add a clause to <code>eval</code> whose action is
 
-<div id="">
+<div>
 (eval (let*->nested-lets exp) env)
 </div>
 <script>
@@ -629,23 +627,23 @@ C.prompt();
 </script>
 
 
-<p> or must we explicitly expand <tt>let*</tt> in terms of non-derived expressions?
+<p> or must we explicitly expand <code>let*</code> in terms of non-derived expressions?
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 4.8:</b> ``Named <tt>let</tt>'' is a variant
-of <tt>let</tt> that has the form
+<div class="exercise" id="thm_4.8">
+<p> <b>Exercise 4.8:</b> ``Named <code>let</code>'' is a variant
+of <code>let</code> that has the form
 
-<div id="">
-(let <var> <bindings> <body>)
+<div>
+(let &lt;var&gt; &lt;bindings&gt; &lt;body&gt;)
 </div>
 <script>
 C.prompt();
 </script>
 
-<p> The <bindings> and <body> are just as in ordinary <tt>let</tt>, except that <var> is bound within <body> to a procedure whose body is <body> and whose parameters are the variables in the <bindings>. Thus, one can repeatedly execute the <body> by invoking the procedure named <var>. For example, the iterative Fibonacci procedure (section 1-2-2) can be rewritten using named <tt>let</tt> as follows:
+<p> The &lt;bindings&gt; and &lt;body&gt; are just as in ordinary <code>let</code>, except that &lt;var&gt; is bound within &lt;body&gt; to a procedure whose body is &lt;body&gt; and whose parameters are the variables in the &lt;bindings&gt;. Thus, one can repeatedly execute the &lt;body&gt; by invoking the procedure named &lt;var&gt;. For example, the iterative Fibonacci procedure (section 1-2-2) can be rewritten using named <code>let</code> as follows:
 
-<div id="">
+<div>
 (define (fib n)
   (let fib-iter ((a 1)
                  (b 0)
@@ -658,29 +656,28 @@ C.prompt();
 C.prompt();
 </script>
 
-<p> Modify <tt>let->combination</tt> of Exercise 4-6 to also support named
-<tt>let</tt>.
+<p> Modify <code>let->combination</code> of Exercise 4-6 to also support named
+<code>let</code>.
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 4.9:</b> Many languages support a variety of iteration constructs, such as <tt>do</tt>, <tt>for</tt>, <tt>while</tt>, and <tt>until</tt>. In Scheme, iterative processes can be expressed in terms of ordinary procedure calls, so special iteration constructs provide no essential gain in computational power. On the other hand, such constructs are often convenient. Design some iteration constructs, give examples of their use, and
+<div class="exercise" id="thm_4.9">
+<p> <b>Exercise 4.9:</b> Many languages support a variety of iteration constructs, such as <code>do</code>, <code>for</code>, <code>while</code>, and <code>until</code>. In Scheme, iterative processes can be expressed in terms of ordinary procedure calls, so special iteration constructs provide no essential gain in computational power. On the other hand, such constructs are often convenient. Design some iteration constructs, give examples of their use, and
 show how to implement them as derived expressions.
 </div>
 
 <div class="exercise">
-<b>Exercise 4.10:</b> By using data abstraction, we were able to write an <tt>eval</tt> procedure that is independent of the particular syntax of the language to be evaluated. To illustrate this, design and implement a new syntax for Scheme by modifying the procedures in this section, without changing <tt>eval</tt> or <tt>apply</tt>.
+<b>Exercise 4.10:</b> By using data abstraction, we were able to write an <code>eval</code> procedure that is independent of the particular syntax of the language to be evaluated. To illustrate this, design and implement a new syntax for Scheme by modifying the procedures in this section, without changing <code>eval</code> or <code>apply</code>.
 </div>
 
-<a name="%_sec_4.1.3" />
-<h3> 4.1.3 Evaluator Data Structures </h3>
+<h3 id="sec_4.1.3"> 4.1.3 Evaluator Data Structures </h3>
 
 <p> In addition to defining the external syntax of expressions, the evaluator implementation must also define the data structures that the evaluator manipulates internally, as part of the execution of a program, such as the representation of procedures and environments and the representation of true and false.
 
 <h4> Testing of predicates </h4>
 
-<p> For conditionals, we accept anything to be true that is not the explicit <tt>false</tt> object.
+<p> For conditionals, we accept anything to be true that is not the explicit <code>false</code> object.
 
-<div id="">
+<div>
 (define (true? x)
   (not (eq? x false)))
 
@@ -698,17 +695,15 @@ C.prompt();
 <ul>
 
 <li>
-<tt>(apply-primitive-procedure proc args)}
-
+<code>(apply-primitive-procedure proc args)</code>
 
 applies the given primitive procedure to the argument values in the list
-<args> and returns the result of the application.
+&lt;args&gt; and returns the result of the application.
 
 <li>
-<tt>(primitive-procedure? proc)
+<code>(primitive-procedure? proc)</code>
 
-
-<p> tests whether <proc> is a primitive procedure.
+tests whether &lt;proc&gt; is a primitive procedure.
 
 </ul>
 
@@ -716,9 +711,9 @@ applies the given primitive procedure to the argument values in the list
 4-1-4.
 
 <p> Compound procedures are constructed from parameters, procedure bodies, and
-environments using the constructor <tt>make-procedure</tt>:
+environments using the constructor <code>make-procedure</code>:
 
-<div id="">
+<div>
 (define (make-procedure parameters body env)
   (list 'procedure parameters body env))
 
@@ -745,39 +740,39 @@ We use the following operations for manipulating environments:
 <ul>
 
 <li>
-<tt>(lookup-variable-value var env)}
+<code>(lookup-variable-value var env)</code>
 
-returns the value that is bound to the symbol <var> in the environment
-<env>, or signals an error if the variable is unbound.
-
+returns the value that is bound to the symbol &lt;var&gt; in the environment
+&lt;env&gt;, or signals an error if the variable is unbound.
+</li>
 <li>
-<tt>(extend-environment variables values base-env)}
+<code>(extend-environment variables values base-env)</code>
 
 <p> returns a new environment, consisting of a new frame in which the symbols in
-the list <variables> are bound to the corresponding elements in the list
-<values>, where the enclosing environment is the environment
-<base-env>.
-
+the list &lt;variables> are bound to the corresponding elements in the list
+&lt;values>, where the enclosing environment is the environment
+&lt;base-env>.
+</li>
 <li>
-<tt>(define-variable! var value env)}
+<code>(define-variable! var value env)</code>
 
-adds to the first frame in the environment <env> a new binding that
-associates the variable <var> with the value <value>.
-
+adds to the first frame in the environment &lt;env> a new binding that
+associates the variable &lt;var&gt; with the value &lt;value>.
+</li>
 <li>
-<tt>(set-variable-value! var value env)}
+<code>(set-variable-value! var value env)</code>
 
-changes the binding of the variable <var> in the environment <env>
-so that the variable is now bound to the value <value>, or signals an
+changes the binding of the variable &lt;var&gt; in the environment &lt;env>
+so that the variable is now bound to the value &lt;value>, or signals an
 error if the variable is unbound.
-
+</li>
 </ul>
 
 <p> To implement these operations we represent an environment as a list of frames.
-The enclosing environment of an environment is the <tt>cdr</tt> of the list. The
+The enclosing environment of an environment is the <code>cdr</code> of the list. The
 empty environment is simply the empty list.
 
-<div id="">
+<div>
 (define (enclosing-environment env) (cdr env))
 
 (define (first-frame env) (car env))
@@ -790,9 +785,9 @@ C.prompt();
 
 <p> Each frame of an environment is represented as a pair of lists: a list of the
 variables bound in that frame and a list of the associated
-values.<a name="footnote_link_1-14" class="footnote_link" href="#footnote_1-14">14</a>
+values.<a id="footnote_link_1-14" class="footnote_link" href="#footnote_1-14">14</a>
 
-<div id="">
+<div>
 (define (make-frame variables values)
   (cons variables values))
 
@@ -813,11 +808,11 @@ we make a frame consisting of the list of variables and the list of values, and
 we adjoin this to the environment. We signal an error if the number of
 variables does not match the number of values.
 
-<div id="">
+<div>
 (define (extend-environment vars vals base-env)
   (if (= (length vars) (length vals))
       (cons (make-frame vars vals) base-env)
-      (if (< (length vars) (length vals))
+      (if (&lt; (length vars) (length vals))
           (error "Too many arguments supplied" vars vals)
           (error "Too few arguments supplied" vars vals))))
 </div>
@@ -831,7 +826,7 @@ element in the list of values. If we do not find the variable in the current
 frame, we search the enclosing environment, and so on. If we reach the empty
 environment, we signal an ``unbound variable'' error.
 
-<div id="">
+<div>
 (define (lookup-variable-value var env)
   (define (env-loop env)
     (define (scan vars vals)
@@ -852,10 +847,10 @@ C.prompt();
 </script>
 
 <p> To set a variable to a new value in a specified environment, we scan for the
-variable, just as in <tt>lookup-variable-value</tt>, and change the corresponding
+variable, just as in <code>lookup-variable-value</code>, and change the corresponding
 value when we find it.
 
-<div id="">
+<div>
 (define (set-variable-value! var val env)
   (define (env-loop env)
     (define (scan vars vals)
@@ -876,10 +871,10 @@ C.prompt();
 </script>
 
 <p> To define a variable, we search the first frame for a binding for the variable,
-and change the binding if it exists (just as in <tt>set-variable-value!</tt>).
+and change the binding if it exists (just as in <code>set-variable-value!</code>).
 If no such binding exists, we adjoin one to the first frame.
 
-<div id="">
+<div>
 (define (define-variable! var val env)
   (let ((frame (first-frame env)))
     (define (scan vars vals)
@@ -895,37 +890,36 @@ If no such binding exists, we adjoin one to the first frame.
 C.prompt();
 </script>
 
-<p> The method described here is only one of many plausible ways to represent environments. Since we used data abstraction to isolate the rest of the evaluator from the detailed choice of representation, we could change the environment representation if we wanted to. (See Exercise 4-11.)  In a production-quality Lisp system, the speed of the evaluator's environment operations---especially that of variable lookup---has a major impact on the performance of the system. The representation described here, although conceptually simple, is not efficient and would not ordinarily be used in a production system.<a name="footnote_link_1-15" class="footnote_link" href="#footnote_1-15">15</a>
+<p> The method described here is only one of many plausible ways to represent environments. Since we used data abstraction to isolate the rest of the evaluator from the detailed choice of representation, we could change the environment representation if we wanted to. (See Exercise 4-11.)  In a production-quality Lisp system, the speed of the evaluator's environment operations---especially that of variable lookup---has a major impact on the performance of the system. The representation described here, although conceptually simple, is not efficient and would not ordinarily be used in a production system.<a id="footnote_link_1-15" class="footnote_link" href="#footnote_1-15">15</a>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.11">
 <p> <b>Exercise 4.11:</b> Instead of representing a frame
 as a pair of lists, we can represent a frame as a list of bindings, where each
 binding is a name-value pair. Rewrite the environment operations to use this
 alternative representation.
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.12">
 <p> <b>Exercise 4.12:</b> The procedures
-<tt>set-variable-value!</tt>, <tt>define-variable!</tt>, and
-<tt>lookup-variable-value</tt> can be expressed in terms of more abstract
+<code>set-variable-value!</code>, <code>define-variable!</code>, and
+<code>lookup-variable-value</code> can be expressed in terms of more abstract
 procedures for traversing the environment structure. Define abstractions that
 capture the common patterns and redefine the three procedures in terms of these
 abstractions.
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.13">
 <p> <b>Exercise 4.13:</b> Scheme allows us to create new
-bindings for variables by means of <tt>define</tt>, but provides no way to get
+bindings for variables by means of <code>define</code>, but provides no way to get
 rid of bindings. Implement for the evaluator a special form
-<tt>make-unbound!</tt> that removes the binding of a given symbol from the
-environment in which the <tt>make-unbound!</tt> expression is evaluated. This
+<code>make-unbound!</code> that removes the binding of a given symbol from the
+environment in which the <code>make-unbound!</code> expression is evaluated. This
 problem is not completely specified. For example, should we remove only the
 binding in the first frame of the environment?  Complete the specification and
 justify any choices you make.
 </div>
 
-<a name="%_sec_4.1.4" />
-<h3> 4.1.4 Running the Evaluator as a Program </h3>
+<h3 id="sec_4.1.4"> 4.1.4 Running the Evaluator as a Program </h3>
 
 <p> Given the evaluator, we have in our hands a description (expressed in Lisp) of
 the process by which Lisp expressions are evaluated. One advantage of
@@ -940,14 +934,14 @@ create a mechanism that calls on the underlying Lisp system to model the
 application of primitive procedures.
 
 <p> There must be a binding for each primitive procedure name, so that when
-<tt>eval</tt> evaluates the operator of an application of a primitive, it will
-find an object to pass to <tt>apply</tt>. We thus set up a global environment
+<code>eval</code> evaluates the operator of an application of a primitive, it will
+find an object to pass to <code>apply</code>. We thus set up a global environment
 that associates unique objects with the names of the primitive procedures that
 can appear in the expressions we will be evaluating. The global environment
-also includes bindings for the symbols <tt>true</tt> and <tt>false</tt>, so that
+also includes bindings for the symbols <code>true</code> and <code>false</code>, so that
 they can be used as variables in expressions to be evaluated.
 
-<div id="">
+<div>
 (define (setup-environment)
   (let ((initial-env
          (extend-environment (primitive-procedure-names)
@@ -964,13 +958,13 @@ C.prompt();
 </script>
 
 <p> It does not matter how we represent the primitive procedure objects, so long as
-<tt>apply</tt> can identify and apply them by using the procedures
-<tt>primitive-procedure?</tt> and <tt>apply-primitive-procedure</tt>. We have
+<code>apply</code> can identify and apply them by using the procedures
+<code>primitive-procedure?</code> and <code>apply-primitive-procedure</code>. We have
 chosen to represent a primitive procedure as a list beginning with the symbol
-<tt>primitive</tt> and containing a procedure in the underlying Lisp that
+<code>primitive</code> and containing a procedure in the underlying Lisp that
 implements that primitive.
 
-<div id="">
+<div>
 (define (primitive-procedure? proc)
   (tagged-list? proc 'primitive))
 
@@ -980,16 +974,16 @@ implements that primitive.
 C.prompt();
 </script>
 
-<p> <tt>Setup-environment</tt> will get the primitive names and implementation
-procedures from a list:<a name="footnote_link_1-16" class="footnote_link" href="#footnote_1-16">16</a>
+<p> <code>Setup-environment</code> will get the primitive names and implementation
+procedures from a list:<a id="footnote_link_1-16" class="footnote_link" href="#footnote_1-16">16</a>
 
-<div id="">
+<div>
 (define primitive-procedures
   (list (list 'car car)
         (list 'cdr cdr)
         (list 'cons cons)
         (list 'null? null?)
-        <more primitives>
+        &lt;more primitives&gt;
         ))
 
 (define (primitive-procedure-names)
@@ -1006,9 +1000,9 @@ C.prompt();
 
 <p> To apply a primitive procedure, we simply apply the implementation procedure to
 the arguments, using the underlying Lisp
-system:<a name="footnote_link_1-17" class="footnote_link" href="#footnote_1-17">17</a>
+system:<a id="footnote_link_1-17" class="footnote_link" href="#footnote_1-17">17</a>
 
-<div id="">
+<div>
 (define (apply-primitive-procedure proc args)
   (apply-in-underlying-scheme
    (primitive-implementation proc) args))
@@ -1018,16 +1012,16 @@ C.prompt();
 </script>
 
 <p> For convenience in running the metacircular evaluator, we provide a
-<tt>driver loop</tt>
+<code>driver loop</code>
  that models the read-eval-print loop of the underlying
-Lisp system. It prints a <tt>prompt</tt>
+Lisp system. It prints a <code>prompt</code>
 , reads an input expression,
 evaluates this expression in the global environment, and prints the result. We
-precede each printed result by an <tt>output prompt</tt>
+precede each printed result by an <code>output prompt</code>
  so as to distinguish
-the value of the expression from other output that may be printed.<a name="footnote_link_1-18" class="footnote_link" href="#footnote_1-18">18</a>
+the value of the expression from other output that may be printed.<a id="footnote_link_1-18" class="footnote_link" href="#footnote_1-18">18</a>
 
-<div id="">
+<div>
 (define input-prompt ";;; M-Eval input:")
 (define output-prompt ";;; M-Eval value:")
 
@@ -1049,17 +1043,17 @@ the value of the expression from other output that may be printed.<a name="footn
 C.prompt();
 </script>
 
-<p> We use a special printing procedure, <tt>user-print</tt>, to avoid printing the
+<p> We use a special printing procedure, <code>user-print</code>, to avoid printing the
 environment part of a compound procedure, which may be a very long list (or may
 even contain cycles).
 
-<div id="">
+<div>
 (define (user-print object)
   (if (compound-procedure? object)
       (display (list 'compound-procedure
                      (procedure-parameters object)
                      (procedure-body object)
-                     '<procedure-env>))
+                     '&lt;procedure-env&gt;))
       (display object)))
 </div>
 <script>
@@ -1069,7 +1063,7 @@ C.prompt();
 <p> Now all we need to do to run the evaluator is to initialize the global
 environment and start the driver loop. Here is a sample interaction:
 
-<div id="">
+<div>
 (define the-global-environment (setup-environment))
 
 (driver-loop)
@@ -1092,24 +1086,23 @@ ok
 C.prompt();
 </script>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.14">
 <p> <b>Exercise 4.14:</b> Eva Lu Ator and Louis Reasoner
 are each experimenting with the metacircular evaluator. Eva types in the
-definition of <tt>map</tt>, and runs some test programs that use it. They work
-fine. Louis, in contrast, has installed the system version of <tt>map</tt> as a
+definition of <code>map</code>, and runs some test programs that use it. They work
+fine. Louis, in contrast, has installed the system version of <code>map</code> as a
 primitive for the metacircular evaluator. When he tries it, things go terribly
-wrong. Explain why Louis's <tt>map</tt> fails even though Eva's works.
+wrong. Explain why Louis's <code>map</code> fails even though Eva's works.
 </div>
 
-<a name="%_sec_4.1.5" />
-<h3> 4.1.5 Data as Programs </h3>
+<h3 id="sec_4.1.5"> 4.1.5 Data as Programs </h3>
 
 <p> In thinking about a Lisp program that evaluates Lisp expressions, an analogy
 might be helpful. One operational view of the meaning of a program is that a
 program is a description of an abstract (perhaps infinitely large) machine.
 For example, consider the familiar program to compute factorials:
 
-<div id="">
+<div>
 (define (factorial n)
   (if (= n 1)
       1
@@ -1159,7 +1152,7 @@ abstract machine.
 <p> In a similar way, we can regard the evaluator as a very special machine that
 takes as input a description of a machine. Given this input, the evaluator
 configures itself to emulate the machine described. For example, if we feed
-our evaluator the definition of <tt>factorial</tt>, as shown in Figure 4-3,
+our evaluator the definition of <code>factorial</code>, as shown in Figure 4-3,
 the evaluator will be able to compute factorials.
 
 <div class="exercise">
@@ -1170,8 +1163,8 @@ machine.
 </pre>
 </div>
 
-<p> From this perspective, our evaluator is seen to be a <tt>universal
-machine</tt>
+<p> From this perspective, our evaluator is seen to be a <code>universal
+machine</code>
 . It mimics other machines when these are described as Lisp
 programs.@footnote{The fact that the machines are described in Lisp is
 inessential. If we give our evaluator a Lisp program that behaves as an
@@ -1182,14 +1175,14 @@ any Lisp program. The deep idea here is that any evaluator can emulate any
 other. Thus, the notion of ``what can in principle be computed'' (ignoring
 practicalities of time and memory required) is independent of the language or
 the computer, and instead reflects an underlying notion of
-<tt>computability</tt>
+<code>computability</code>
 . This was first demonstrated in a clear way by Alan
 M. Turing (1912-1954), whose 1936 paper laid the foundations for theoretical
 computer science. In the paper, Turing presented a simple computational
-model---now known as a <tt>Turing machine</tt>
+model---now known as a <code>Turing machine</code>
 ---and argued that any
 ``effective process'' can be formulated as a program for such a machine. (This
-argument is known as the <tt>Church-Turing thesis</tt>
+argument is known as the <code>Church-Turing thesis</code>
 .)  Turing then
 implemented a universal machine, i.e., a Turing machine that behaves as an
 evaluator for Turing-machine programs. He used this framework to demonstrate
@@ -1207,8 +1200,8 @@ complex. It is remarkable that the program evaluator is a rather simple
 program.@footnote{Some people find it counterintuitive that an evaluator, which
 is implemented by a relatively simple procedure, can emulate programs that are
 more complex than the evaluator itself. The existence of a universal evaluator
-machine is a deep and wonderful property of computation. <tt>Recursion
-theory</tt>
+machine is a deep and wonderful property of computation. <code>Recursion
+theory</code>
 , a branch of mathematical logic, is concerned with logical limits of
 computation. Douglas Hofstadter's beautiful book @cite{G@"odel, Escher, Bach}
 (1979) explores some of these ideas.}
@@ -1218,25 +1211,25 @@ the data objects that are manipulated by our programming language and the
 programming language itself. Imagine that the evaluator program (implemented
 in Lisp) is running, and that a user is typing expressions to the evaluator and
 observing the results. From the perspective of the user, an input expression
-such as <tt>(* x x)</tt> is an expression in the programming language, which the
+such as <code>(* x x)</code> is an expression in the programming language, which the
 evaluator should execute. From the perspective of the evaluator, however, the
-expression is simply a list (in this case, a list of three symbols: <tt>*</tt>,
-<tt>x</tt>, and <tt>x</tt>) that is to be manipulated according to a well-defined
+expression is simply a list (in this case, a list of three symbols: <code>*</code>,
+<code>x</code>, and <code>x</code>) that is to be manipulated according to a well-defined
 set of rules.
 
 That the user's programs are the evaluator's data need not be a source of
 confusion. In fact, it is sometimes convenient to ignore this distinction, and
 to give the user the ability to explicitly evaluate a data object as a Lisp
-expression, by making <tt>eval</tt> available for use in programs. Many Lisp
-dialects provide a primitive <tt>eval</tt> procedure that takes as arguments an
+expression, by making <code>eval</code> available for use in programs. Many Lisp
+dialects provide a primitive <code>eval</code> procedure that takes as arguments an
 expression and an environment and evaluates the expression relative to the
-environment.@footnote{Warning: This <tt>eval</tt> primitive is not identical to
-the <tt>eval</tt> procedure we implemented in section <a href="4-1-metacircular.html">4.1.1</a>, because it
+environment.@footnote{Warning: This <code>eval</code> primitive is not identical to
+the <code>eval</code> procedure we implemented in section <a href="4-1-metacircular.html">4.1.1</a>, because it
 uses <em>actual</em> Scheme environments rather than the sample environment
 structures we built in section <a href="4-1-metacircular.html">4.1.3</a>. These actual environments cannot
 be manipulated by the user as ordinary lists; they must be accessed via
-<tt>eval</tt> or other special operations. Similarly, the <tt>apply</tt> primitive
-we saw earlier is not identical to the metacircular <tt>apply</tt>, because it
+<code>eval</code> or other special operations. Similarly, the <code>apply</code> primitive
+we saw earlier is not identical to the metacircular <code>apply</code>, because it
 uses actual Scheme procedures rather than the procedure objects we constructed
 in sections 4-1-3 and 4-1-4.} Thus,
 
@@ -1258,18 +1251,18 @@ C.no_output_frozen_prompt("scheme-eval-uie-2");
 
 
 <p> will both return 25.@footnote{The @acronym{MIT} implementation of Scheme
-includes <tt>eval</tt>, as well as a symbol <tt>user-initial-environment</tt> that
+includes <code>eval</code>, as well as a symbol <code>user-initial-environment</code> that
 is bound to the initial environment in which the user's input expressions are
 evaluated.}
 
-<div class="exercise">
+<div class="exercise" id="thm_4.15">
 <p> <b>Exercise 4.15:</b> Given a one-argument procedure
-<tt>p</tt> and an object <tt>a</tt>, <tt>p</tt> is said to ``halt'' on <tt>a</tt> if
-evaluating the expression <tt>(p a)</tt> returns a value (as opposed to
+<code>p</code> and an object <code>a</code>, <code>p</code> is said to ``halt'' on <code>a</code> if
+evaluating the expression <code>(p a)</code> returns a value (as opposed to
 terminating with an error message or running forever). Show that it is
-impossible to write a procedure <tt>halts?</tt> that correctly determines whether
-<tt>p</tt> halts on <tt>a</tt> for any procedure <tt>p</tt> and object <tt>a</tt>. Use
-the following reasoning: If you had such a procedure <tt>halts?</tt>, you could
+impossible to write a procedure <code>halts?</code> that correctly determines whether
+<code>p</code> halts on <code>a</code> for any procedure <code>p</code> and object <code>a</code>. Use
+the following reasoning: If you had such a procedure <code>halts?</code>, you could
 implement the following program:
 
 <div id="scheme-define-run-forever">
@@ -1284,20 +1277,19 @@ implement the following program:
 C.no_output_frozen_prompt("scheme-define-run-forever");
 </script>
 
-<p> Now consider evaluating the expression <tt>(try try)</tt> and show that any
+<p> Now consider evaluating the expression <code>(try try)</code> and show that any
 possible outcome (either halting or running forever) violates the intended
-behavior of <tt>halts?</tt>.@footnote{Although we stipulated that <tt>halts?</tt>
+behavior of <code>halts?</code>.@footnote{Although we stipulated that <code>halts?</code>
 is given a procedure object, notice that this reasoning still applies even if
-<tt>halts?</tt> can gain access to the procedure's text and its environment.
-This is Turing's celebrated <tt>Halting Theorem</tt>
+<code>halts?</code> can gain access to the procedure's text and its environment.
+This is Turing's celebrated <code>Halting Theorem</code>
 , which gave the first
-clear example of a <tt>non-computable</tt>
+clear example of a <code>non-computable</code>
  problem, i.e., a well-posed task
 that cannot be carried out as a computational procedure.}
 </div>
 
-<a name="%_sec_4.1.6" />
-<h3> 4.1.6 Internal Definitions </h3>
+<h3 id="sec_4.1.6"> 4.1.6 Internal Definitions </h3>
 
 <p> Our environment model of evaluation and our metacircular evaluator execute
 definitions in sequence, extending the environment frame one definition at a
@@ -1320,29 +1312,30 @@ Consider a procedure with internal definitions, such as
     (if (= n 0)
         false
         (even? (- n 1))))
-  ⟨rest of body of f⟩)
+  ; rest of body of f
+  )
 </div>
 <script>
 C.prompt("scheme-internal-defs");
 </script>
 
-<p> Our intention here is that the name <tt>odd?</tt> in the body of the procedure
-<tt>even?</tt> should refer to the procedure <tt>odd?</tt> that is defined after
-<tt>even?</tt>. The scope of the name <tt>odd?</tt> is the entire body of
-<tt>f</tt>, not just the portion of the body of <tt>f</tt> starting at the point
-where the <tt>define</tt> for <tt>odd?</tt> occurs. Indeed, when we consider that
-<tt>odd?</tt> is itself defined in terms of <tt>even?</tt>---so that <tt>even?</tt>
-and <tt>odd?</tt> are mutually recursive procedures---we see that the only
-satisfactory interpretation of the two <tt>define</tt>s is to regard them as if
-the names <tt>even?</tt> and <tt>odd?</tt> were being added to the environment
+<p> Our intention here is that the name <code>odd?</code> in the body of the procedure
+<code>even?</code> should refer to the procedure <code>odd?</code> that is defined after
+<code>even?</code>. The scope of the name <code>odd?</code> is the entire body of
+<code>f</code>, not just the portion of the body of <code>f</code> starting at the point
+where the <code>define</code> for <code>odd?</code> occurs. Indeed, when we consider that
+<code>odd?</code> is itself defined in terms of <code>even?</code>---so that <code>even?</code>
+and <code>odd?</code> are mutually recursive procedures---we see that the only
+satisfactory interpretation of the two <code>define</code>s is to regard them as if
+the names <code>even?</code> and <code>odd?</code> were being added to the environment
 simultaneously. More generally, in block structure, the scope of a local name
-is the entire procedure body in which the <tt>define</tt> is evaluated.
+is the entire procedure body in which the <code>define</code> is evaluated.
 
-As it happens, our interpreter will evaluate calls to <tt>f</tt> correctly, but
+As it happens, our interpreter will evaluate calls to <code>f</code> correctly, but
 for an ``accidental'' reason: Since the definitions of the internal procedures
 come first, no calls to these procedures will be evaluated until all of them
-have been defined. Hence, <tt>odd?</tt>  will have been defined by the time
-<tt>even?</tt> is executed. In fact, our sequential evaluation mechanism will
+have been defined. Hence, <code>odd?</code>  will have been defined by the time
+<code>even?</code> is executed. In fact, our sequential evaluation mechanism will
 give the same result as a mechanism that directly implements simultaneous
 definition for any procedure in which the internal definitions come first in a
 body and evaluation of the value expressions for the defined variables doesn't
@@ -1363,17 +1356,17 @@ that would otherwise arise in implementing a compiler.}
 There is, however, a simple way to treat definitions so that internally defined
 names have truly simultaneous scope---just create all local variables that will
 be in the current environment before evaluating any of the value expressions.
-One way to do this is by a syntax transformation on <tt>lambda</tt> expressions.
-Before evaluating the body of a <tt>lambda</tt> expression, we ``scan out'' and
+One way to do this is by a syntax transformation on <code>lambda</code> expressions.
+Before evaluating the body of a <code>lambda</code> expression, we ``scan out'' and
 eliminate all the internal definitions in the body. The internally defined
-variables will be created with a <tt>let</tt> and then set to their values by
+variables will be created with a <code>let</code> and then set to their values by
 assignment. For example, the procedure
 
-<div id="">
-(lambda <vars>
-  (define u <e1>)
-  (define v <e2>)
-  <e3>)
+<div>
+(lambda &lt;vars&gt;
+  (define u &lt;e1&gt;)
+  (define v &lt;e2&gt;)
+  &lt;e3&gt;)
 </div>
 <script>
 C.prompt();
@@ -1382,20 +1375,20 @@ C.prompt();
 
 would be transformed into
 
-<div id="">
-(lambda <vars>
+<div>
+(lambda &lt;vars&gt;
   (let ((u '*unassigned*)
         (v '*unassigned*))
-    (set! u <e1>)
-    (set! v <e2>)
-    <e3>))
+    (set! u &lt;e1&gt;)
+    (set! v &lt;e2&gt;)
+    &lt;e3&gt;))
 </div>
 <script>
 C.prompt();
 </script>
 
 
-where <tt>*unassigned*</tt> is a special symbol that causes looking up a variable
+where <code>*unassigned*</code> is a special symbol that causes looking up a variable
 to signal an error if an attempt is made to use the value of the
 not-yet-assigned variable.
 
@@ -1409,24 +1402,24 @@ enforce it. Some Scheme implementations, including @acronym{MIT} Scheme, use
 the transformation shown above. Thus, some programs that don't obey this
 restriction will in fact run in such implementations.}
 
-<div class="exercise">
+<div class="exercise" id="thm_4.16">
 <p> <b>Exercise 4.16:</b> In this exercise we implement the
 method just described for interpreting internal definitions. We assume that
-the evaluator supports <tt>let</tt> (see Exercise 4-6).
+the evaluator supports <code>let</code> (see Exercise 4-6).
 
 <ul>
 <li>
-Change <tt>lookup-variable-value</tt> (section <a href="4-1-metacircular.html">4.1.3</a>) to signal an error if
-the value it finds is the symbol <tt>*unassigned*</tt>.
+Change <code>lookup-variable-value</code> (section <a href="4-1-metacircular.html">4.1.3</a>) to signal an error if
+the value it finds is the symbol <code>*unassigned*</code>.
 
 <li>
-Write a procedure <tt>scan-out-defines</tt> that takes a procedure body and
+Write a procedure <code>scan-out-defines</code> that takes a procedure body and
 returns an equivalent one that has no internal definitions, by making the
 transformation described above.
 
 <li>
-Install <tt>scan-out-defines</tt> in the interpreter, either in
-<tt>make-procedure</tt> or in <tt>procedure-body</tt> (see section <a href="4-1-metacircular.html">4.1.3</a>).
+Install <code>scan-out-defines</code> in the interpreter, either in
+<code>make-procedure</code> or in <code>procedure-body</code> (see section <a href="4-1-metacircular.html">4.1.3</a>).
 Which place is better?  Why?
 
 </ul>
@@ -1434,9 +1427,9 @@ Which place is better?  Why?
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.17">
 <p> <b>Exercise 4.17:</b> Draw diagrams of the environment
-in effect when evaluating the expression <e3> in the procedure in the
+in effect when evaluating the expression &lt;e3&gt; in the procedure in the
 text, comparing how this will be structured when definitions are interpreted
 sequentially with how it will be structured if definitions are scanned out as
 described. Why is there an extra frame in the transformed program?  Explain
@@ -1448,29 +1441,29 @@ the extra frame.
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.18">
 <p> <b>Exercise 4.18:</b> Consider an alternative strategy
 for scanning out definitions that translates the example in the text to
 
-<div id="">
-(lambda <vars>
+<div>
+(lambda &lt;vars&gt;
   (let ((u '*unassigned*)
         (v '*unassigned*))
-    (let ((a <e1>)
-          (b <e2>))
+    (let ((a &lt;e1&gt;)
+          (b &lt;e2&gt;))
       (set! u a)
       (set! v b))
-    <e3>))
+    &lt;e3&gt;))
 </div>
 <script>
 C.prompt();
 </script>
 
-Here <tt>a</tt> and <tt>b</tt> are meant to represent new variable names, created
+Here <code>a</code> and <code>b</code> are meant to represent new variable names, created
 by the interpreter, that do not appear in the user's program. Consider the
-<tt>solve</tt> procedure from section <a href="3-5-streams.html">3.5.4</a>:
+<code>solve</code> procedure from section <a href="3-5-streams.html">3.5.4</a>:
 
-<div id="">
+<div>
 (define (solve f y0 dt)
   (define y (integral (delay dy) y0 dt))
   (define dy (stream-map f y))
@@ -1486,12 +1479,12 @@ this exercise?  What if they are scanned out as shown in the text?  Explain.
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.19">
 <p> <b>Exercise 4.19:</b> Ben Bitdiddle, Alyssa P. Hacker,
 and Eva Lu Ator are arguing about the desired result of evaluating the
 expression
 
-<div id="">
+<div>
 (let ((a 1))
   (define (f x)
     (define b (+ a x))
@@ -1504,17 +1497,17 @@ C.prompt();
 </script>
 
 <p> Ben asserts that the result should be obtained using the sequential rule for
-<tt>define</tt>: <tt>b</tt> is defined to be 11, then <tt>a</tt> is defined to be 5,
+<code>define</code>: <code>b</code> is defined to be 11, then <code>a</code> is defined to be 5,
 so the result is 16. Alyssa objects that mutual recursion requires the
 simultaneous scope rule for internal procedure definitions, and that it is
 unreasonable to treat procedure names differently from other names. Thus, she
 argues for the mechanism implemented in Exercise 4-16. This would lead
-to <tt>a</tt> being unassigned at the time that the value for <tt>b</tt> is to be
+to <code>a</code> being unassigned at the time that the value for <code>b</code> is to be
 computed. Hence, in Alyssa's view the procedure should produce an error. Eva
-has a third opinion. She says that if the definitions of <tt>a</tt> and <tt>b</tt>
-are truly meant to be simultaneous, then the value 5 for <tt>a</tt> should be
-used in evaluating <tt>b</tt>. Hence, in Eva's view <tt>a</tt> should be 5,
-<tt>b</tt> should be 15, and the result should be 20. Which (if any) of these
+has a third opinion. She says that if the definitions of <code>a</code> and <code>b</code>
+are truly meant to be simultaneous, then the value 5 for <code>a</code> should be
+used in evaluating <code>b</code>. Hence, in Eva's view <code>a</code> should be 5,
+<code>b</code> should be 15, and the result should be 20. Which (if any) of these
 viewpoints do you support?  Can you devise a way to implement internal
 definitions so that they behave as Eva prefers?@footnote{The @acronym{MIT}
 implementors of Scheme support Alyssa on the following grounds: Eva is in
@@ -1527,16 +1520,16 @@ to produce an incorrect answer (as Ben would have it).}
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.20">
 <p> <b>Exercise 4.20:</b> Because internal definitions look
 sequential but are actually simultaneous, some people prefer to avoid them
-entirely, and use the special form <tt>letrec</tt> instead. <tt>Letrec</tt> looks
-like <tt>let</tt>, so it is not surprising that the variables it binds are bound
+entirely, and use the special form <code>letrec</code> instead. <code>Letrec</code> looks
+like <code>let</code>, so it is not surprising that the variables it binds are bound
 simultaneously and have the same scope as each other. The sample procedure
-<tt>f</tt> above can be written without internal definitions, but with exactly
+<code>f</code> above can be written without internal definitions, but with exactly
 the same meaning, as
 
-<div id="">
+<div>
 (define (f x)
   (letrec ((even?
             (lambda (n)
@@ -1554,25 +1547,25 @@ the same meaning, as
 C.prompt();
 </script>
 
-<p> <tt>Letrec</tt> expressions, which have the form
+<p> <code>Letrec</code> expressions, which have the form
 
-<div id="">
-(letrec ((<var_1> <exp_1>) ... (<var_n> <exp_n>))
-  <body>)
+<div>
+(letrec ((&lt;var_1&gt; &lt;exp_1&gt;) ... (&lt;var_n&gt; &lt;exp_n&gt;))
+  &lt;body&gt;)
 </div>
 <script>
 C.prompt();
 </script>
 
 
-<p> are a variation on <tt>let</tt> in which the expressions
-<exp_k> that provide the initial values for the
-variables <var_k> are evaluated in an environment
-that includes all the <tt>letrec</tt> bindings. This permits recursion in the
-bindings, such as the mutual recursion of <tt>even?</tt> and <tt>odd?</tt> in the
+<p> are a variation on <code>let</code> in which the expressions
+&lt;exp_k&gt; that provide the initial values for the
+variables &lt;var_k&gt; are evaluated in an environment
+that includes all the <code>letrec</code> bindings. This permits recursion in the
+bindings, such as the mutual recursion of <code>even?</code> and <code>odd?</code> in the
 example above, or the evaluation of 10 factorial with
 
-<div id="">
+<div>
 (letrec ((fact
           (lambda (n)
             (if (= n 1)
@@ -1586,42 +1579,42 @@ C.prompt();
 
 <ul>
 <li>
-<p> Implement <tt>letrec</tt> as a derived expression, by transforming a
-<tt>letrec</tt> expression into a <tt>let</tt> expression as shown in the text
-above or in Exercise 4-18. That is, the <tt>letrec</tt> variables should
-be created with a <tt>let</tt> and then be assigned their values with
-<tt>set!</tt>.
+<p> Implement <code>letrec</code> as a derived expression, by transforming a
+<code>letrec</code> expression into a <code>let</code> expression as shown in the text
+above or in Exercise 4-18. That is, the <code>letrec</code> variables should
+be created with a <code>let</code> and then be assigned their values with
+<code>set!</code>.
 
 <li>
 <p> Louis Reasoner is confused by all this fuss about internal definitions. The
-way he sees it, if you don't like to use <tt>define</tt> inside a procedure, you
-can just use <tt>let</tt>. Illustrate what is loose about his reasoning by
+way he sees it, if you don't like to use <code>define</code> inside a procedure, you
+can just use <code>let</code>. Illustrate what is loose about his reasoning by
 drawing an environment diagram that shows the environment in which the
-<tt>⟨rest of body of f⟩</tt> is evaluated during evaluation of the
-expression <tt>(f 5)</tt>, with <tt>f</tt> defined as in this exercise. Draw an
-environment diagram for the same evaluation, but with <tt>let</tt> in place of
-<tt>letrec</tt> in the definition of <tt>f</tt>.
+<code>⟨rest of body of f⟩</code> is evaluated during evaluation of the
+expression <code>(f 5)</code>, with <code>f</code> defined as in this exercise. Draw an
+environment diagram for the same evaluation, but with <code>let</code> in place of
+<code>letrec</code> in the definition of <code>f</code>.
 
 </ul>
 </div>
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.21">
 <p> <b>Exercise 4.21:</b> Amazingly, Louis's intuition in
 Exercise 4-20 is correct. It is indeed possible to specify recursive
-procedures without using <tt>letrec</tt> (or even <tt>define</tt>), although the
+procedures without using <code>letrec</code> (or even <code>define</code>), although the
 method for accomplishing this is much more subtle than Louis imagined. The
 following expression computes 10 factorial by applying a recursive factorial
 procedure:@footnote{This example illustrates a programming trick for
-formulating recursive procedures without using <tt>define</tt>. The most general
-trick of this sort is the Y <tt>operator</tt>
+formulating recursive procedures without using <code>define</code>. The most general
+trick of this sort is the Y <code>operator</code>
 , which can be used to give a
 ``pure [lambda]-calculus'' implementation of recursion. (See Stoy 1977 for
 details on the [lambda] calculus, and Gabriel 1988 for an exposition of the
 Y operator in Scheme.)}
 
-<div id="">
+<div>
 ((lambda (n)
    ((lambda (fact)
       (fact fact n))
@@ -1644,7 +1637,7 @@ Devise an analogous expression for computing Fibonacci numbers.
 <p> Consider the following procedure, which includes mutually recursive internal
 definitions:
 
-<div id="">
+<div>
 (define (f x)
   (define (even? n)
     (if (= n 0)
@@ -1661,16 +1654,16 @@ C.prompt();
 </script>
 
 <p> Fill in the missing expressions to complete an alternative definition of
-<tt>f</tt>, which uses neither internal definitions nor <tt>letrec</tt>:
+<code>f</code>, which uses neither internal definitions nor <code>letrec</code>:
 
-<div id="">
+<div>
 (define (f x)
   ((lambda (even? odd?)
      (even? even? odd? x))
    (lambda (ev? od? n)
-     (if (= n 0) true (od? <??> <??> <??>)))
+     (if (= n 0) true (od? &lt;??> &lt;??> &lt;??>)))
    (lambda (ev? od? n)
-     (if (= n 0) false (ev? <??> <??> <??>)))))
+     (if (= n 0) false (ev? &lt;??> &lt;??> &lt;??>)))))
 </div>
 <script>
 C.prompt();
@@ -1678,16 +1671,15 @@ C.prompt();
 </ul>
 </div>
 
-<a name="%_sec_4.1.7" />
-<h3> 4.1.7 Separating Syntactic Analysis from Execution </h3>
+<h3 id="sec_4.1.7"> 4.1.7 Separating Syntactic Analysis from Execution </h3>
 
 <p> The evaluator implemented above is simple, but it is very inefficient, because
 the syntactic analysis of expressions is interleaved with their execution.
 Thus if a program is executed many times, its syntax is analyzed many times.
-Consider, for example, evaluating <tt>(factorial 4)</tt> using the following
-definition of <tt>factorial</tt>:
+Consider, for example, evaluating <code>(factorial 4)</code> using the following
+definition of <code>factorial</code>:
 
-<div id="">
+<div>
 (define (factorial n)
   (if (= n 1)
       1
@@ -1697,12 +1689,12 @@ definition of <tt>factorial</tt>:
 C.prompt();
 </script>
 
-<p> Each time <tt>factorial</tt> is called, the evaluator must determine that the
-body is an <tt>if</tt> expression and extract the predicate. Only then can it
+<p> Each time <code>factorial</code> is called, the evaluator must determine that the
+body is an <code>if</code> expression and extract the predicate. Only then can it
 evaluate the predicate and dispatch on its value. Each time it evaluates the
-expression <tt>(* (factorial (- n 1)) n)</tt>, or the subexpressions
-<tt>(factorial (- n 1))</tt> and <tt>(- n 1)</tt>, the evaluator must perform the
-case analysis in <tt>eval</tt> to determine that the expression is an
+expression <code>(* (factorial (- n 1)) n)</code>, or the subexpressions
+<code>(factorial (- n 1))</code> and <code>(- n 1)</code>, the evaluator must perform the
+case analysis in <code>eval</code> to determine that the expression is an
 application, and must extract its operator and operands. This analysis is
 expensive. Performing it repeatedly is wasteful.
 
@@ -1712,19 +1704,19 @@ technique is an integral part of the compilation process, which we shall
 discuss in Chapter 5. Jonathan Rees wrote a Scheme interpreter like this
 in about 1982 for the T project (Rees and Adams 1982). Marc Feeley (1986) (see
 also Feeley and Lapalme 1987) independently invented this technique in his
-master's thesis.} We split <tt>eval</tt>, which takes an expression and an
-environment, into two parts. The procedure <tt>analyze</tt> takes only the
+master's thesis.} We split <code>eval</code>, which takes an expression and an
+environment, into two parts. The procedure <code>analyze</code> takes only the
 expression. It performs the syntactic analysis and returns a new procedure,
-the <tt>execution procedure</tt>
+the <code>execution procedure</code>
 , that encapsulates the work to be done in
 executing the analyzed expression. The execution procedure takes an
 environment as its argument and completes the evaluation. This saves work
-because <tt>analyze</tt> will be called only once on an expression, while the
+because <code>analyze</code> will be called only once on an expression, while the
 execution procedure may be called many times.
 
-<p> With the separation into analysis and execution, <tt>eval</tt> now becomes
+<p> With the separation into analysis and execution, <code>eval</code> now becomes
 
-<div id="">
+<div>
 (define (eval exp env)
   ((analyze exp) env))
 </div>
@@ -1732,12 +1724,12 @@ execution procedure may be called many times.
 C.prompt();
 </script>
 
-<p> The result of calling <tt>analyze</tt> is the execution procedure to be applied
-to the environment. The <tt>analyze</tt> procedure is the same case analysis as
-performed by the original <tt>eval</tt> of section <a href="4-1-metacircular.html">4.1.1</a>, except that the
+<p> The result of calling <code>analyze</code> is the execution procedure to be applied
+to the environment. The <code>analyze</code> procedure is the same case analysis as
+performed by the original <code>eval</code> of section <a href="4-1-metacircular.html">4.1.1</a>, except that the
 procedures to which we dispatch perform only analysis, not full evaluation:
 
-<div id="">
+<div>
 (define (analyze exp)
   (cond ((self-evaluating? exp)
          (analyze-self-evaluating exp))
@@ -1761,7 +1753,7 @@ C.prompt();
 self-evaluating expressions. It returns an execution procedure that ignores
 its environment argument and just returns the expression:
 
-<div id="">
+<div>
 (define (analyze-self-evaluating exp)
   (lambda (env) exp))
 </div>
@@ -1773,7 +1765,7 @@ C.prompt();
 of the quotation only once, in the analysis phase, rather than in the execution
 phase.
 
-<div id="">
+<div>
 (define (analyze-quoted exp)
   (let ((qval (text-of-quotation exp)))
     (lambda (env) qval)))
@@ -1790,7 +1782,7 @@ the position in the environment structure where the value of the variable will
 be found, thus obviating the need to scan the environment for the entry that
 matches the variable.}
 
-<div id="">
+<div>
 (define (analyze-variable exp)
   (lambda (env) (lookup-variable-value exp env)))
 </div>
@@ -1798,14 +1790,14 @@ matches the variable.}
 C.prompt();
 </script>
 
-<p> <tt>Analyze-assignment</tt> also must defer actually setting the variable until
+<p> <code>Analyze-assignment</code> also must defer actually setting the variable until
 the execution, when the environment has been supplied. However, the fact that
-the <tt>assignment-value</tt> expression can be analyzed (recursively) during
-analysis is a major gain in efficiency, because the <tt>assignment-value</tt>
+the <code>assignment-value</code> expression can be analyzed (recursively) during
+analysis is a major gain in efficiency, because the <code>assignment-value</code>
 expression will now be analyzed only once. The same holds true for
 definitions.
 
-<div id="">
+<div>
 (define (analyze-assignment exp)
   (let ((var (assignment-variable exp))
         (vproc (analyze (assignment-value exp))))
@@ -1824,10 +1816,10 @@ definitions.
 C.prompt();
 </script>
 
-<p> For <tt>if</tt> expressions, we extract and analyze the predicate, consequent,
+<p> For <code>if</code> expressions, we extract and analyze the predicate, consequent,
 and alternative at analysis time.
 
-<div id="">
+<div>
 (define (analyze-if exp)
   (let ((pproc (analyze (if-predicate exp)))
         (cproc (analyze (if-consequent exp)))
@@ -1841,11 +1833,11 @@ and alternative at analysis time.
 C.prompt();
 </script>
 
-<p> Analyzing a <tt>lambda</tt> expression also achieves a major gain in efficiency:
-We analyze the <tt>lambda</tt> body only once, even though procedures resulting
-from evaluation of the <tt>lambda</tt> may be applied many times.
+<p> Analyzing a <code>lambda</code> expression also achieves a major gain in efficiency:
+We analyze the <code>lambda</code> body only once, even though procedures resulting
+from evaluation of the <code>lambda</code> may be applied many times.
 
-<div id="">
+<div>
 (define (analyze-lambda exp)
   (let ((vars (lambda-parameters exp))
         (bproc (analyze-sequence (lambda-body exp))))
@@ -1855,15 +1847,15 @@ from evaluation of the <tt>lambda</tt> may be applied many times.
 C.prompt();
 </script>
 
-<p> Analysis of a sequence of expressions (as in a <tt>begin</tt> or the body of a
-<tt>lambda</tt> expression) is more involved.@footnote{See Exercise 4-23
+<p> Analysis of a sequence of expressions (as in a <code>begin</code> or the body of a
+<code>lambda</code> expression) is more involved.@footnote{See Exercise 4-23
 for some insight into the processing of sequences.} Each expression in the
 sequence is analyzed, yielding an execution procedure. These execution
 procedures are combined to produce an execution procedure that takes an
 environment as argument and sequentially calls each individual execution
 procedure with the environment as argument.
 
-<div id="">
+<div>
 (define (analyze-sequence exps)
   (define (sequentially proc1 proc2)
     (lambda (env) (proc1 env) (proc2 env)))
@@ -1885,13 +1877,13 @@ C.prompt();
 an execution procedure that calls the operator execution procedure (to obtain
 the actual procedure to be applied) and the operand execution procedures (to
 obtain the actual arguments). We then pass these to
-<tt>execute-application</tt>, which is the analog of <tt>apply</tt> in section
-4-1-1. <tt>Execute-application</tt> differs from <tt>apply</tt> in that the
+<code>execute-application</code>, which is the analog of <code>apply</code> in section
+4-1-1. <code>Execute-application</code> differs from <code>apply</code> in that the
 procedure body for a compound procedure has already been analyzed, so there is
 no need to do further analysis. Instead, we just call the execution procedure
 for the body on the extended environment.
 
-<div id="">
+<div>
 (define (analyze-application exp)
   (let ((fproc (analyze (operator exp)))
         (aprocs (map analyze (operands exp))))
@@ -1921,21 +1913,21 @@ C.prompt();
 run-time support procedures as in sections 4-1-2, 4-1-3, and
 4-1-4.
 
-<div class="exercise">
+<div class="exercise" id="thm_4.22">
 <p> <b>Exercise 4.22:</b> Extend the evaluator in this
-section to support the special form <tt>let</tt>. (See Exercise 4-6.)
+section to support the special form <code>let</code>. (See Exercise 4-6.)
 </div>
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.23">
 <p> <b>Exercise 4.23:</b> Alyssa P. Hacker doesn't
-understand why <tt>analyze-sequence</tt> needs to be so complicated. All the
+understand why <code>analyze-sequence</code> needs to be so complicated. All the
 other analysis procedures are straightforward transformations of the
-corresponding evaluation procedures (or <tt>eval</tt> clauses) in section
-4-1-1. She expected <tt>analyze-sequence</tt> to look like this:
+corresponding evaluation procedures (or <code>eval</code> clauses) in section
+4-1-1. She expected <code>analyze-sequence</code> to look like this:
 
-<div id="">
+<div>
 (define (analyze-sequence exps)
   (define (execute-sequence procs env)
     (cond ((null? (cdr procs)) ((car procs) env))
@@ -1957,7 +1949,7 @@ built in, loops through the procedures in order to call them: In effect,
 although the individual expressions in the sequence have been analyzed, the
 sequence itself has not been.
 
-<p> Compare the two versions of <tt>analyze-sequence</tt>. For example, consider the
+<p> Compare the two versions of <code>analyze-sequence</code>. For example, consider the
 common case (typical of procedure bodies) where the sequence has just one
 expression. What work will the execution procedure produced by Alyssa's
 program do?  What about the execution procedure produced by the program in the
@@ -1967,7 +1959,7 @@ expressions?
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_4.24">
 <p> <b>Exercise 4.24:</b> Design and carry out some
 experiments to compare the speed of the original metacircular evaluator with
 the version in this section. Use your results to estimate the fraction of time
@@ -1985,11 +1977,11 @@ that is spent in analysis versus execution for various procedures.
 
 <ul>
 <li>
-<p> The evaluator enables us to deal with nested expressions. For example, although simply applying primitives would suffice for evaluating the expression <tt>(+ 1 6)</tt>, it is not adequate for handling <tt>(+ 1 (* 2 3))</tt>. As far as the primitive procedure <tt>+</tt> is concerned, its arguments must be numbers, and it would choke if we passed it the expression <tt>(* 2 3)</tt> as an argument. One important role of the evaluator is to choreograph procedure composition so that <tt>(* 2 3)</tt> is reduced to 6 before being passed as an argument to <tt>+</tt>.
+<p> The evaluator enables us to deal with nested expressions. For example, although simply applying primitives would suffice for evaluating the expression <code>(+ 1 6)</code>, it is not adequate for handling <code>(+ 1 (* 2 3))</code>. As far as the primitive procedure <code>+</code> is concerned, its arguments must be numbers, and it would choke if we passed it the expression <code>(* 2 3)</code> as an argument. One important role of the evaluator is to choreograph procedure composition so that <code>(* 2 3)</code> is reduced to 6 before being passed as an argument to <code>+</code>.
 </li>
 
 <li>
-<p> The evaluator allows us to use variables. For example, the primitive procedure for addition has no way to deal with expressions such as <tt>(+ x 1)</tt>. We need an evaluator to keep track of variables and obtain their values before invoking the primitive procedures.
+<p> The evaluator allows us to use variables. For example, the primitive procedure for addition has no way to deal with expressions such as <code>(+ x 1)</code>. We need an evaluator to keep track of variables and obtain their values before invoking the primitive procedures.
 </li>
 
 <li>
@@ -2006,33 +1998,33 @@ from procedure calls.
 
 <div id="footnote_1-5" class="footnote">
 <p><a href="#footnote_link_1-5" class="footnote_backlink">5</a>
-We could have simplified the <tt>application?</tt> clause in <tt>eval</tt> by using <tt>map</tt> (and stipulating that <tt>operands</tt> returns a list) rather than writing an explicit <tt>list-of-values</tt> procedure. We chose not to use <tt>map</tt> here to emphasize the fact that the evaluator can be implemented without any use of higher-order procedures (and thus could be written in a language that doesn't have higher-order procedures), even though the language that it supports will include higher-order procedures.
+We could have simplified the <code>application?</code> clause in <code>eval</code> by using <code>map</code> (and stipulating that <code>operands</code> returns a list) rather than writing an explicit <code>list-of-values</code> procedure. We chose not to use <code>map</code> here to emphasize the fact that the evaluator can be implemented without any use of higher-order procedures (and thus could be written in a language that doesn't have higher-order procedures), even though the language that it supports will include higher-order procedures.
 </div>
 
 <div id="footnote_1-6" class="footnote">
 <p><a href="#footnote_link_1-6" class="footnote_backlink">6</a>
-In this case, the language being implemented and the implementation language are the same. Contemplation of the meaning of <tt>true?</tt> here yields expansion of consciousness without
+In this case, the language being implemented and the implementation language are the same. Contemplation of the meaning of <code>true?</code> here yields expansion of consciousness without
 the abuse of substance.
 </div>
 
 <div id="footnote_1-7" class="footnote">
 <p><a href="#footnote_link_1-7" class="footnote_backlink">7</a>
-This implementation of <tt>define</tt> ignores a subtle issue in the handling of internal definitions, although it works correctly in most cases. We will see what the problem is and how to solve it in section <a href="4-1-metacircular.html">4.1.6</a>.
+This implementation of <code>define</code> ignores a subtle issue in the handling of internal definitions, although it works correctly in most cases. We will see what the problem is and how to solve it in section <a href="4-1-metacircular.html">4.1.6</a>.
 </div>
 
 <div id="footnote_1-8" class="footnote">
 <p><a href="#footnote_link_1-8" class="footnote_backlink">8</a>
-As we said when we introduced <tt>define</tt> and <tt>set!</tt>, these values are implementation-dependent in Scheme---that is, the implementor can choose what value to return.
+As we said when we introduced <code>define</code> and <code>set!</code>, these values are implementation-dependent in Scheme---that is, the implementor can choose what value to return.
 </div>
 
 <div id="footnote_1-9" class="footnote">
 <p><a href="#footnote_link_1-9" class="footnote_backlink">9</a>
-As mentioned in section <a href="2-3-symbolic.html">2.3.1</a>, the evaluator sees a quoted expression as a list beginning with <tt>quote</tt>, even if the expression is typed with the quotation mark. For example, the expression <tt>'a</tt> would be seen by the evaluator as <tt>(quote a)</tt>. See Exercise 2-55.
+As mentioned in section <a href="2-3-symbolic.html">2.3.1</a>, the evaluator sees a quoted expression as a list beginning with <code>quote</code>, even if the expression is typed with the quotation mark. For example, the expression <code>'a</code> would be seen by the evaluator as <code>(quote a)</code>. See Exercise 2-55.
 </div>
 
 <div id="footnote_1-10" class="footnote">
 <p><a href="#footnote_link_1-10" class="footnote_backlink">10</a>
-The value of an <tt>if</tt> expression when the predicate is false and there is no alternative is unspecified in Scheme; we have chosen here to make it false. We will support the use of the variables <tt>true</tt> and <tt>false</tt> in expressions to be evaluated by binding them in the global environment. See section <a href="4-1-metacircular.html">4.1.4</a>.
+The value of an <code>if</code> expression when the predicate is false and there is no alternative is unspecified in Scheme; we have chosen here to make it false. We will support the use of the variables <code>true</code> and <code>false</code> in expressions to be evaluated by binding them in the global environment. See section <a href="4-1-metacircular.html">4.1.4</a>.
 </div>
 
 <div id="footnote_1-11" class="footnote">
@@ -2042,44 +2034,44 @@ These selectors for a list of expressions---and the corresponding ones for a lis
 
 <div id="footnote_1-12" class="footnote">
 <p><a href="#footnote_link_1-12" class="footnote_backlink">12</a>
-The value of a <tt>cond</tt> expression when all the predicates are false and there is no <tt>else</tt> clause is unspecified in Scheme; we have chosen here to make it false.
+The value of a <code>cond</code> expression when all the predicates are false and there is no <code>else</code> clause is unspecified in Scheme; we have chosen here to make it false.
 </div>
 
 <div id="footnote_1-13" class="footnote">
 <p> <a href="#footnote_link_1-13" class="footnote_backlink">13</a>
-Practical Lisp systems provide a mechanism that allows a user to add new derived expressions and specify their implementation as syntactic transformations without modifying the evaluator. Such a user-defined transformation is called a <tt>macro</tt> . Although it is easy to add an elementary mechanism for defining macros, the resulting language has subtle name-conflict problems. There has been much research on mechanisms for macro definition that do not cause these difficulties. See, for example, Kohlbecker 1986, Clinger and Rees 1991, and Hanson 1991.
+Practical Lisp systems provide a mechanism that allows a user to add new derived expressions and specify their implementation as syntactic transformations without modifying the evaluator. Such a user-defined transformation is called a <code>macro</code> . Although it is easy to add an elementary mechanism for defining macros, the resulting language has subtle name-conflict problems. There has been much research on mechanisms for macro definition that do not cause these difficulties. See, for example, Kohlbecker 1986, Clinger and Rees 1991, and Hanson 1991.
 </div>
 
 <div id="footnote_1-14" class="footnote">
 <p> <a href="#footnote_link_1-14" class="footnote_backlink">14</a>
-Frames are not really a data abstraction in the following code: <tt>Set-variable-value!</tt> and <tt>define-variable!</tt> use <tt>set-car!</tt>  to directly modify the values in a frame. The purpose of the frame procedures is to make the environment-manipulation procedures easy to read.
+Frames are not really a data abstraction in the following code: <code>Set-variable-value!</code> and <code>define-variable!</code> use <code>set-car!</code>  to directly modify the values in a frame. The purpose of the frame procedures is to make the environment-manipulation procedures easy to read.
 </div>
 
 <div id="footnote_1-15" class="footnote">
 <p> <a href="#footnote_link_1-15" class="footnote_backlink">15</a>
-The drawback of this representation (as well as the variant in Exercise 4-11) is that the evaluator may have to search through many frames in order to find the binding for a given variable. (Such an approach is referred to as <tt>deep binding</tt> .)  One way to avoid this inefficiency is to make use of a strategy called <tt>lexical addressing</tt>, which will be discussed in section <a href="5-5-compilation.html">5.5.6</a>.
+The drawback of this representation (as well as the variant in Exercise 4-11) is that the evaluator may have to search through many frames in order to find the binding for a given variable. (Such an approach is referred to as <code>deep binding</code> .)  One way to avoid this inefficiency is to make use of a strategy called <code>lexical addressing</code>, which will be discussed in section <a href="5-5-compilation.html">5.5.6</a>.
 </div>
 
 <div id="footnote_1-16" class="footnote">
 <p> <a href="#footnote_link_1-16" class="footnote_backlink">16</a>
-Any procedure defined in the underlying Lisp can be used as a primitive for the metacircular evaluator. The name of a primitive installed in the evaluator need not be the same as the name of its implementation in the underlying Lisp; the names are the same here because the metacircular evaluator implements Scheme itself. Thus, for example, we could put <tt>(list 'first car)</tt> or <tt>(list 'square (lambda (x) (* x x)))</tt> in the list of <tt>primitive-procedures</tt>.
+Any procedure defined in the underlying Lisp can be used as a primitive for the metacircular evaluator. The name of a primitive installed in the evaluator need not be the same as the name of its implementation in the underlying Lisp; the names are the same here because the metacircular evaluator implements Scheme itself. Thus, for example, we could put <code>(list 'first car)</code> or <code>(list 'square (lambda (x) (* x x)))</code> in the list of <code>primitive-procedures</code>.
 </div>
 
 <div id="footnote_1-17" class="footnote">
 <p> <a href="#footnote_link_1-17" class="footnote_backlink">17</a>
-<tt>Apply-in-underlying-scheme</tt> is the <tt>apply</tt> procedure we have used in earlier chapters. The metacircular evaluator's <tt>apply</tt> procedure (section <a href="4-1-metacircular.html">4.1.1</a>) models the working of this primitive. Having two different things called <tt>apply</tt> leads to a technical problem in running the metacircular evaluator, because defining the metacircular evaluator's <tt>apply</tt> will mask the definition of the primitive. One way around this is to rename the metacircular <tt>apply</tt> to avoid conflict with the name of the primitive procedure. We have assumed instead that we have saved a reference to the underlying <tt>apply</tt> by doing
+<code>Apply-in-underlying-scheme</code> is the <code>apply</code> procedure we have used in earlier chapters. The metacircular evaluator's <code>apply</code> procedure (section <a href="4-1-metacircular.html">4.1.1</a>) models the working of this primitive. Having two different things called <code>apply</code> leads to a technical problem in running the metacircular evaluator, because defining the metacircular evaluator's <code>apply</code> will mask the definition of the primitive. One way around this is to rename the metacircular <code>apply</code> to avoid conflict with the name of the primitive procedure. We have assumed instead that we have saved a reference to the underlying <code>apply</code> by doing
 
-<div id="scheme-apply-in-underlying-scheme">
+<div id="apply-in-underlying-scheme">
 (define apply-in-underlying-scheme apply)
 </div>
 <script>
 C.no_output_frozen_prompt("apply-in-underlying-scheme");
 </script>
 
-<p> before defining the metacircular <tt>apply</tt>. This allows us to access the original version of <tt>apply</tt> under a different name.
+<p> before defining the metacircular <code>apply</code>. This allows us to access the original version of <code>apply</code> under a different name.
 </div>
 
 <div id="footnote_1-18" class="footnote">
-<p> <a href="#footnote_link_1-18" class="footnote_backlink">18</a> The primitive procedure <tt>read</tt> waits for input from the user, and returns the next complete expression that is typed. For example, if the user types <tt>(+ 23 x)</tt>, <tt>read</tt> returns a three-element list containing the symbol <tt>+</tt>, the number 23, and the symbol <tt>x</tt>. If the user types <tt>'x</tt>, <tt>read</tt> returns a two-element list containing the symbol <tt>quote</tt> and the symbol <tt>x</tt>.
+<p> <a href="#footnote_link_1-18" class="footnote_backlink">18</a> The primitive procedure <code>read</code> waits for input from the user, and returns the next complete expression that is typed. For example, if the user types <code>(+ 23 x)</code>, <code>read</code> returns a three-element list containing the symbol <code>+</code>, the number 23, and the symbol <code>x</code>. If the user types <code>'x</code>, <code>read</code> returns a two-element list containing the symbol <code>quote</code> and the symbol <code>x</code>.
 </div>
 @@

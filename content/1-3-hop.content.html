@@ -3,10 +3,10 @@
 @@
 
 {{main_text}}
-<a href='index.html' style="float:left"> <img src='images/chevron-up.svg' height=64 width=64> </a>
+<a href='index.html' style="float:left"><img src='images/chevron-up.svg' height=64 width=64></a>
 <span style="float:right">
-<a href='1-2-procedures.html'> <img src='images/chevron-left.svg' height=64 width=64> </a>
-<a href='2-0-building-abstractions-with-data.html'> <img src='images/chevron-right.svg' height=64 width=64> </a>
+<a href='1-2-procedures.html'><img src='images/chevron-left.svg' height=64 width=64></a>
+<a href='2-0-building-abstractions-with-data.html'><img src='images/chevron-right.svg' height=64 width=64></a>
 </span>
 
 <br> <br>
@@ -47,8 +47,7 @@ C.no_output_prompt("scheme-cube-ex");
 
 <p> Yet even in numerical processing we will be severely limited in our ability to create abstractions if we are restricted to procedures whose parameters must be numbers. Often the same programming pattern will be used with a number of different procedures. To express such patterns as concepts, we will need to construct procedures that can accept procedures as arguments or return procedures as values. Procedures that manipulate procedures are called higher-order procedures. This section shows how higher-order procedures can serve as powerful abstraction mechanisms, vastly increasing the expressive power of our language.
 
-<a name="%_sec_1.3.1" />
-<h3> 1.3.1 Procedures as Arguments </h3>
+<h3 id="sec_1.3.1"> 1.3.1 Procedures as Arguments </h3>
 
 <p> Consider the following three procedures. The first computes the sum of the integers from <i>a</i> through <i>b</i>:
 
@@ -80,7 +79,7 @@ $$
 \frac{1}{1 \cdot 3} + \frac{1}{5 \cdot 7} + \frac{1}{9 \cdot 11} + \cdots
 $$
 
-<p> which converges to $\pi/8$ (very slowly):<a name="footnote_link_1-49" class="footnote_link" href="#footnote_1-49">49</a>
+<p> which converges to $\pi/8$ (very slowly):<a id="footnote_link_1-49" class="footnote_link" href="#footnote_1-49">49</a>
 
 <div id="scheme-define-pi-sum">
 (define (pi-sum a b)
@@ -126,7 +125,7 @@ $$
 C.prompt("scheme-define-sum");
 </script>
 
-<p> Notice that sum takes as its arguments the lower and upper bounds <i>a</i> and <i>b</i> together with the procedures <tt>term</tt> and <tt>next</tt>. We can use <tt>sum</tt> just as we would any procedure. For example, we can use it (along with a procedure <tt>inc</tt> that increments its argument by 1) to define <tt>sum-cubes</tt>:
+<p> Notice that sum takes as its arguments the lower and upper bounds <i>a</i> and <i>b</i> together with the procedures <code>term</code> and <code>next</code>. We can use <code>sum</code> just as we would any procedure. For example, we can use it (along with a procedure <code>inc</code> that increments its argument by 1) to define <code>sum-cubes</code>:
 
 <div id="scheme-define-inc">
 (define (inc n) (+ n 1))
@@ -155,7 +154,7 @@ C.prompt("scheme-sum-cubes-1-10");
 C.deps_of["scheme-sum-cubes-1-10"] = ["scheme-define-sum-cubes-sum"];
 </script>
 
-<p> With the aid of an identity procedure to compute the term, we can define <tt>sum-integers</tt> in terms of <tt>sum</tt>:
+<p> With the aid of an identity procedure to compute the term, we can define <code>sum-integers</code> in terms of <code>sum</code>:
 
 <div id="scheme-define-sum-integers-sum">
 (define (identity x) x)
@@ -178,7 +177,7 @@ C.prompt("scheme-sum-integers-1-10");
 C.deps_of["scheme-sum-integers-1-10"] = ["scheme-define-sum-integers-sum"];
 </script>
 
-<p> We can also define <tt>pi-sum</tt> in the same way:<a name="footnote_link_1-50" class="footnote_link" href="#footnote_1-50">50</a>
+<p> We can also define <code>pi-sum</code> in the same way:<a id="footnote_link_1-50" class="footnote_link" href="#footnote_1-50">50</a>
 
 <div id="scheme-define-pi-sum-sum">
 (define (pi-sum a b)
@@ -203,7 +202,7 @@ C.prompt("scheme-pi-sum-pi");
 C.deps_of["scheme-pi-sum-pi"] = ["scheme-define-pi-sum-sum"];
 </script>
 
-<p> Once we have <tt>sum,</tt> we can use it as a building block in formulating further concepts. For instance, the definite integral of a function <i>f</i> between the limits <i>a</i> and <i>b</i> can be approximated numerically using the formula
+<p> Once we have <code>sum,</code> we can use it as a building block in formulating further concepts. For instance, the definite integral of a function <i>f</i> between the limits <i>a</i> and <i>b</i> can be approximated numerically using the formula
 
 $$
 {\int_a^b f}
@@ -246,7 +245,7 @@ C.deps_of["scheme-integral-cube-finer"] = ["scheme-define-cube", "scheme-define-
 
 <p> (The exact value of the integral of cube between $0$ and $1$ is $1/4$.)
 
-<div class="exercise">
+<div class="exercise" id="thm_1.29">
 <p> <b> Exercise 1.29. </b> Simpson's Rule is a more accurate method of numerical integration than the method illustrated above. Using Simpson's Rule, the integral of a function <i>f</i> between <i>a</i> and <i>b</i> is approximated as
 
 $$
@@ -336,7 +335,7 @@ C.make_editable("scheme-ex-simpson-input").setOption("onBlur", function() {
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.30">
 <p> <b> Exercise 1.30. </b> The sum procedure above generates a linear recursion. The procedure can be rewritten so that the sum is performed iteratively. Show how to do this by filling in the missing expressions in the following definition:
 
 <div id="scheme-ex-sum-iter">
@@ -368,10 +367,10 @@ C.make_editable("scheme-ex-sum-iter").setOption("onBlur", function() {
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.31">
 <p> <b> Exercise 1.31. </b>
 
-<p> The sum procedure is only the simplest of a vast number of similar abstractions that can be captured as higher-order procedures.<a name="footnote_link_1-51" class="footnote_link" href="#footnote_1-51">51</a> Write an analogous procedure called product that returns the product of the values of a function at points over a given range. Try both a recursive and an iterative approach. Show how to define factorial in terms of product. Also use product to compute approximations to  using the formula<a name="footnote_link_1-52" class="footnote_link" href="#footnote_1-52">52</a>
+<p> The sum procedure is only the simplest of a vast number of similar abstractions that can be captured as higher-order procedures.<a id="footnote_link_1-51" class="footnote_link" href="#footnote_1-51">51</a> Write an analogous procedure called product that returns the product of the values of a function at points over a given range. Try both a recursive and an iterative approach. Show how to define factorial in terms of product. Also use product to compute approximations to  using the formula<a id="footnote_link_1-52" class="footnote_link" href="#footnote_1-52">52</a>
 
 $$
 \frac{\pi}{4} = \frac{2 \cdot 4 \cdot 4 \cdot 6 \cdot 6 \cdot 8 \cdots}{3 \cdot 3 \cdot 5 \cdot 5 \cdot 7 \cdot 7 \cdots}
@@ -409,7 +408,7 @@ C.make_editable("scheme-ex-define-product").setOption("onBlur", function() {
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.32">
 <p> <b> Exercise 1.32. </b>
 
 <p> Show that sum and product (exercise 1.31) are both special cases of a still more general notion called accumulate that combines a collection of terms, using some general accumulation function:
@@ -457,7 +456,7 @@ C.make_editable("scheme-ex-define-accumulate").setOption("onBlur", function() {
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.33">
 <p> <b> Exercise 1.33. </b> You can obtain an even more general version of accumulate (exercise 1.32) by introducing the notion of a <em>filter</em> on the terms to be combined. That is, combine only those terms derived from values in the range that satisfy a specified condition. The resulting filtered-accumulate abstraction takes the same arguments as accumulate, together with an additional predicate of one argument that specifies the filter. Write filtered-accumulate as a procedure.
 
 <div id="scheme-ex-define-filtered-accumulate">
@@ -494,7 +493,7 @@ C.make_editable("scheme-ex-define-filtered-accumulate").setOption("onBlur", func
 
 <ol style="list-style-type: lower-alpha">
 <li>
-<p> the sum of the squares of the prime numbers in the interval <i>a</i> to <i>b</i> (assuming that you have a <tt>prime?</tt> predicate already written)
+<p> the sum of the squares of the prime numbers in the interval <i>a</i> to <i>b</i> (assuming that you have a <code>prime?</code> predicate already written)
 </li>
 
 <li>
@@ -504,10 +503,9 @@ C.make_editable("scheme-ex-define-filtered-accumulate").setOption("onBlur", func
 
 </div>
 
-<a name="%_sec_1.3.2" />
-<h3> 1.3.2 Constructing Procedures Using Lambda </h3>
+<h3 id="sec_1.3.2"> 1.3.2 Constructing Procedures Using Lambda </h3>
 
-<p> In using sum as in section <a href="1-3-hop.html#%_sec_1.3.1">1.3.1</a>, it seems terribly awkward to have to define trivial procedures such as pi-term and pi-next just so we can use them as arguments to our higher-order procedure. Rather than define pi-next and pi-term, it would be more convenient to have a way to directly specify &ldquo;the procedure that returns its input incremented by 4&rdquo; and &ldquo;the procedure that returns the reciprocal of its input times its input plus 2.&rdquo; We can do this by introducing the special form lambda, which creates procedures. Using lambda we can describe what we want as
+<p> In using sum as in section <a href="1-3-hop.html#sec_1.3.1">1.3.1</a>, it seems terribly awkward to have to define trivial procedures such as pi-term and pi-next just so we can use them as arguments to our higher-order procedure. Rather than define pi-next and pi-term, it would be more convenient to have a way to directly specify &ldquo;the procedure that returns its input incremented by 4&rdquo; and &ldquo;the procedure that returns the reciprocal of its input times its input plus 2.&rdquo; We can do this by introducing the special form lambda, which creates procedures. Using lambda we can describe what we want as
 
 <div id="scheme-lambda-plus-4">
 (lambda (x) (+ x 4))
@@ -583,10 +581,10 @@ C.prompt("scheme-define-plus4-lambda");
 
 <p> We can read a lambda expression as follows:
 
-<p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;(lambda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(x)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4))<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif" border="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif" border="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif" border="0">&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif" border="0">&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif" border="0"><br>
-&nbsp;the&nbsp;procedure&nbsp;&nbsp;&nbsp;of&nbsp;an&nbsp;argument&nbsp;<tt>x</tt>&nbsp;&nbsp;that&nbsp;adds&nbsp;&nbsp;<tt>x</tt>&nbsp;and&nbsp;4<br>
-</tt><p><p>
+<p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;(lambda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(x)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif">&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif">&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/book-Z-G-D-16.gif"><br>
+&nbsp;the&nbsp;procedure&nbsp;&nbsp;&nbsp;of&nbsp;an&nbsp;argument&nbsp;<code>x</code>&nbsp;&nbsp;that&nbsp;adds&nbsp;&nbsp;<code>x</code>&nbsp;and&nbsp;4<br>
+</code><p><p>
 
 <p> Like any expression that has a procedure as its value, a lambda expression can be used as the operator in a combination such as
 
@@ -598,11 +596,11 @@ C.prompt("scheme-apply-lambda");
 C.deps_of["scheme-apply-lambda"] = ["scheme-define-square"];
 </script>
 
-<p> or, more generally, in any context where we would normally use a procedure name.<a name="footnote_link_1-53" class="footnote_link" href="#footnote_1-53">53</a>
+<p> or, more generally, in any context where we would normally use a procedure name.<a id="footnote_link_1-53" class="footnote_link" href="#footnote_1-53">53</a>
 
 <h4> Using let to create local variables </h4>
 
-<p> Another use of <tt>lambda</tt> is in creating local variables. We often need local variables in our procedures other than those that have been bound as formal parameters. For example, suppose we wish to compute the function
+<p> Another use of <code>lambda</code> is in creating local variables. We often need local variables in our procedures other than those that have been bound as formal parameters. For example, suppose we wish to compute the function
 
 $$
 f(x,y) = x (1 + xy)^2 + y(1-y) + (1 + xy)(1 - y)
@@ -632,7 +630,7 @@ C.prompt("scheme-define-f-helpers");
 C.deps_of["scheme-define-f-helpers"] = ["scheme-define-square"];
 </script>
 
-<p> Of course, we could use a <tt>lambda</tt> expression to specify an anonymous procedure for binding our local variables. The body of <tt>f</tt> then becomes a single call to that procedure:
+<p> Of course, we could use a <code>lambda</code> expression to specify an anonymous procedure for binding our local variables. The body of <code>f</code> then becomes a single call to that procedure:
 
 <div id="scheme-define-f-lambda">
 (define (f x y)
@@ -648,7 +646,7 @@ C.prompt("scheme-define-f-lambda");
 C.deps_of["scheme-define-f-lambda"] = ["scheme-define-square"];
 </script>
 
-<p> This construct is so useful that there is a special form called <tt>let</tt> to make its use more convenient. Using <tt>let</tt>, the <tt>f</tt> procedure could be written as
+<p> This construct is so useful that there is a special form called <code>let</code> to make its use more convenient. Using <code>let</code>, the <code>f</code> procedure could be written as
 
 <div id="scheme-define-f-let">
 (define (f x y)
@@ -663,7 +661,7 @@ C.prompt("scheme-define-f-let");
 C.deps_of["scheme-define-f-let"] = ["scheme-define-square"];
 </script>
 
-<p> The general form of a <tt>let</tt> expression is
+<p> The general form of a <code>let</code> expression is
 
 <div id="scheme-let-syntax">
 (let ((&lt;var1&gt; &lt;exp1&gt;)
@@ -686,7 +684,7 @@ let &lt;var_1&gt; have the value &lt;exp_1&gt; and
 in  &lt;body&gt;
 </pre>
 
-<p> The first part of the <tt>let</tt> expression is a list of name-expression pairs. When the <tt>let</tt> is evaluated, each name is associated with the value of the corresponding expression. The body of the <tt>let</tt> is evaluated with these names bound as local variables. The way this happens is that the <tt>let</tt> expression is interpreted as an alternate syntax for
+<p> The first part of the <code>let</code> expression is a list of name-expression pairs. When the <code>let</code> is evaluated, each name is associated with the value of the corresponding expression. The body of the <code>let</code> is evaluated with these names bound as local variables. The way this happens is that the <code>let</code> expression is interpreted as an alternate syntax for
 
 <div id="scheme-let-expanded-syntax">
 ((lambda (&lt;var_1&gt; ... &lt;var_n&gt;)
@@ -699,14 +697,14 @@ in  &lt;body&gt;
 C.make_static("scheme-let-expanded-syntax");
 </script>
 
-<p> No new mechanism is required in the interpreter in order to provide local variables. A <tt>let</tt> expression is simply syntactic sugar for the underlying <tt>lambda</tt> application.
+<p> No new mechanism is required in the interpreter in order to provide local variables. A <code>let</code> expression is simply syntactic sugar for the underlying <code>lambda</code> application.
 
-<p> We can see from this equivalence that the scope of a variable specified by a <tt>let</tt> expression is the body of the <tt>let</tt>. This implies that:
+<p> We can see from this equivalence that the scope of a variable specified by a <code>let</code> expression is the body of the <code>let</code>. This implies that:
 
 <ul>
 
 <li>
-<tt>let</tt> allows one to bind variables as locally as possible to where they are to be used. For example, if the value of <tt>x</tt> is 5, the value of the expression
+<code>let</code> allows one to bind variables as locally as possible to where they are to be used. For example, if the value of <code>x</code> is 5, the value of the expression
 
 <div id="scheme-let-close-prelude">
 (define x 5)
@@ -732,11 +730,11 @@ C.editor_of["scheme-let-close"].setOption("onBlur", function(){
 });
 </script>
 
-<p> Here, the <tt>x</tt> in the body of the <tt>let</tt> is 3, so the value of the <tt>let</tt> expression is 33. On the other hand, the <tt>x</tt> that is the second argument to the outermost <tt>+</tt> is still 5.
+<p> Here, the <code>x</code> in the body of the <code>let</code> is 3, so the value of the <code>let</code> expression is 33. On the other hand, the <code>x</code> that is the second argument to the outermost <code>+</code> is still 5.
 </li>
 
 <li>
-<p> The variables' values are computed outside the <tt>let</tt>. This matters when the expressions that provide the values for the local variables depend upon variables having the same names as the local variables themselves. For example, if the value of <tt>x</tt> is 2, the expression
+<p> The variables' values are computed outside the <code>let</code>. This matters when the expressions that provide the values for the local variables depend upon variables having the same names as the local variables themselves. For example, if the value of <code>x</code> is 2, the expression
 
 <div id="scheme-let-shadow-prelude">
 (define x 2)
@@ -760,11 +758,11 @@ C.editor_of["scheme-let-shadow"].setOption("onBlur", function(){
 });
 </script>
 
-<p> will have the value <span id="scheme-let-shadow-output" class="output"></span> because, inside the body of the <tt>let</tt>, <tt>x</tt> will be 3 and <tt>y</tt> will be 4 (which is the outer <tt>x</tt> plus 2).
+<p> will have the value <span id="scheme-let-shadow-output" class="output"></span> because, inside the body of the <code>let</code>, <code>x</code> will be 3 and <code>y</code> will be 4 (which is the outer <code>x</code> plus 2).
 </li>
 </ul>
 
-<p> Sometimes we can use internal definitions to get the same effect as with <tt>let</tt>.  For example, we could have defined the procedure <tt>f</tt> above as
+<p> Sometimes we can use internal definitions to get the same effect as with <code>let</code>.  For example, we could have defined the procedure <code>f</code> above as
 
 <div id="scheme-define-f-close-define">
 (define (f x y)
@@ -779,9 +777,9 @@ C.prompt("scheme-define-f-close-define");
 C.deps_of["scheme-define-f-close-define"] = ["scheme-define-square"];
 </script>
 
-<p> We prefer, however, to use <tt>let</tt> in situations like this and to use internal <tt>define</tt> only for internal procedures.<a name="footnote_link_1-54" class="footnote_link" href="#footnote_1-54">54</a>
+<p> We prefer, however, to use <code>let</code> in situations like this and to use internal <code>define</code> only for internal procedures.<a id="footnote_link_1-54" class="footnote_link" href="#footnote_1-54">54</a>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.34">
 <p> <b> Exercise 1.34: </b> Suppose we define the procedure
 
 <div id="scheme-define-f-g2">
@@ -809,24 +807,23 @@ C.prompt("scheme-f-lambda-poly", ["scheme-define-f-g2"]);
 </script>
 
 <p> What happens if we (perversely) ask the interpreter to evaluate the combination
-<tt>(f f)?</tt>  Explain.
+<code>(f f)?</code>  Explain.
 
 <div id="scheme-ex-f-f-mcq"></div>
 <script>
 C.make_MCQ("scheme-ex-f-f-mcq",
-    ["An error occurs, because <tt>2</tt> is not a procedure."],
-    ["It evaluates to <tt>(2 2)</tt>, which is <tt>4</tt>.",
+    ["An error occurs, because <code>2</code> is not a procedure."],
+    ["It evaluates to <code>(2 2)</code>, which is <code>4</code>.",
      "The interpreter enters an infinite loop.",
-     "The result is <tt>2</tt>."
+     "The result is <code>2</code>."
      ]);
 </script>
 
 </div>
 
-<a name="%_sec_1.3.3" />
-<h3> 1.3.3 Procedures as General Methods </h3>
+<h3 id="sec_1.3.3"> 1.3.3 Procedures as General Methods </h3>
 
-<p> We introduced compound procedures in section @ref{1-1-4} as a mechanism for abstracting patterns of numerical operations so as to make them independent of the particular numbers involved. With higher-order procedures, such as the <tt>integral</tt> procedure of section @ref{1-3-1}, we began to see a more powerful kind of abstraction: procedures used to express general methods of computation, independent of the particular functions involved. In this section we discuss two more elaborate examples &mdash; general methods for finding zeros and fixed points of functions &mdash; and show how these methods can be expressed directly as procedures.
+<p> We introduced compound procedures in section <a href="1-1-elements.html#sec_1.1.4">1.1.4</a> as a mechanism for abstracting patterns of numerical operations so as to make them independent of the particular numbers involved. With higher-order procedures, such as the <code>integral</code> procedure of section <a href="1-3-hop.html#sec_1.3.1">1.3.1</a>, we began to see a more powerful kind of abstraction: procedures used to express general methods of computation, independent of the particular functions involved. In this section we discuss two more elaborate examples &mdash; general methods for finding zeros and fixed points of functions &mdash; and show how these methods can be expressed directly as procedures.
 
 <h4> Finding roots of equations by the half-interval method </h4>
 
@@ -860,7 +857,7 @@ C.deps_of["scheme-define-search"] = ["scheme-define-average", "scheme-define-clo
 
 <p> We assume that we are initially given the function <em> f </em> together with points at which its values are negative and positive. We first compute the midpoint of the two given points. Next we check to see if the given interval is small enough, and if so we simply return the midpoint as our answer. Otherwise, we compute as a test value the value of <em> f </em> at the midpoint. If the test value is positive, then we continue the process with a new interval running from the original negative point to the midpoint. If the test value is negative, we continue with the interval from the midpoint to the positive point. Finally, there is the possibility that the test value is 0, in which case the midpoint is itself the root we are searching for.
 
-<p> To test whether the endpoints are &ldquo;close enough&rdquo; we can use a procedure similar to the one used in section <a href="1-1-elements.html">1.1.7</a> for computing square roots:<a name="footnote_link_1-55" class="footnote_link" href="#footnote_1-55">55</a>
+<p> To test whether the endpoints are &ldquo;close enough&rdquo; we can use a procedure similar to the one used in section <a href="1-1-elements.html#sec_1.1.7">1.1.7</a> for computing square roots:<a id="footnote_link_1-55" class="footnote_link" href="#footnote_1-55">55</a>
 
 <div id="scheme-define-close-enough">
 (define (close-enough? x y)
@@ -870,11 +867,11 @@ C.deps_of["scheme-define-search"] = ["scheme-define-average", "scheme-define-clo
 C.prompt("scheme-define-close-enough");
 </script>
 
-<p> <tt>search</tt> is awkward to use directly, because we can accidentally give it points at which <em> f </em>'s values do not have the required sign, in which case we get a wrong answer. Instead we will use <tt>search</tt> via the following procedure, which checks to see which of the endpoints has a negative function value and which has a positive value, and calls the <tt>search</tt> procedure accordingly. If the function has the same sign on the two given points, the half-interval method cannot be used, in which case the procedure signals an error.<a name="footnote_link_1-56" class="footnote_link" href="#footnote_1-56">56</a>
+<p> <code>search</code> is awkward to use directly, because we can accidentally give it points at which <em> f </em>'s values do not have the required sign, in which case we get a wrong answer. Instead we will use <code>search</code> via the following procedure, which checks to see which of the endpoints has a negative function value and which has a positive value, and calls the <code>search</code> procedure accordingly. If the function has the same sign on the two given points, the half-interval method cannot be used, in which case the procedure signals an error.<a id="footnote_link_1-56" class="footnote_link" href="#footnote_1-56">56</a>
 
 <div id="scheme-define-negative-positive">
 (define (negative? x)
-  (< x 0))
+  (&lt; x 0))
 
 (define (positive? x)
   (> x 0))
@@ -929,7 +926,7 @@ $$
 f(x), f(f(x), (f(f(f(x))))
 $$
 
-<p> until the value does not change very much. Using this idea, we can devise a procedure <tt>fixed-point</tt> that takes as inputs a function and an initial guess and produces an approximation to a fixed point of the function. We apply the function repeatedly until we find two successive values whose difference is less than some prescribed tolerance:
+<p> until the value does not change very much. Using this idea, we can devise a procedure <code>fixed-point</code> that takes as inputs a function and an initial guess and produces an approximation to a fixed point of the function. We apply the function repeatedly until we find two successive values whose difference is less than some prescribed tolerance:
 
 <div id="scheme-define-fixed-point">
 (define tolerance 0.00001)
@@ -948,7 +945,7 @@ $$
 C.prompt("scheme-define-fixed-point", ["scheme-define-close-enough"]);
 </script>
 
-<p> For example, we can use this method to approximate the fixed point of the cosine function, starting with 1 as an initial approximation:<a name="footnote_link_1-57" class="footnote_link" href="#footnote_1-57">57</a>
+<p> For example, we can use this method to approximate the fixed point of the cosine function, starting with 1 as an initial approximation:<a id="footnote_link_1-57" class="footnote_link" href="#footnote_1-57">57</a>
 
 <div id="scheme-fixed-point-cos">
 (fixed-point cos 1.0)
@@ -967,7 +964,7 @@ C.prompt("scheme-fixed-point-cos", ["scheme-define-fixed-point"]);
 C.prompt("scheme-fixed-point-sin-cos", ["scheme-define-fixed-point"]);
 </script>
 
-<p> The fixed-point process is reminiscent of the process we used for finding square roots in section <a href="1-1-elements.html#%_sec_1.1.7">1.1.7</a>. Both are based on the idea of repeatedly improving a guess until the result satisfies some criterion. In fact, we can readily formulate the square-root computation as a fixed-point search. Computing the square root of some number $x$ requires finding a $y$ such that $y^2 = x$. Putting this equation into the equivalent form $y = x/y$, we recognize that we are looking for a fixed point of the function<a name="footnote_link_1-58" class="footnote_link" href="#footnote_1-58">58</a> $y \mapsto x/y$, and we can therefore try to compute square roots as
+<p> The fixed-point process is reminiscent of the process we used for finding square roots in section <a href="1-1-elements.html#sec_1.1.7">1.1.7</a>. Both are based on the idea of repeatedly improving a guess until the result satisfies some criterion. In fact, we can readily formulate the square-root computation as a fixed-point search. Computing the square root of some number $x$ requires finding a $y$ such that $y^2 = x$. Putting this equation into the equivalent form $y = x/y$, we recognize that we are looking for a fixed point of the function<a id="footnote_link_1-58" class="footnote_link" href="#footnote_1-58">58</a> $y \mapsto x/y$, and we can therefore try to compute square roots as
 
 <div id="scheme-define-sqrt">
 (define (sqrt x)
@@ -994,10 +991,10 @@ C.deps_of["scheme-define-sqrt-average"] = ["scheme-define-fixed-point", "scheme-
 
 <p> (Note that $y = \frac{1}{2}(y + \frac{x}{y})$ is a simple transformation of the equation $y = \frac{x}{y}$; to derive it, add $y$ to both sides of the equation and divide by $2$.)
 
-<p> With this modification, the square-root procedure works. In fact, if we unravel the definitions, we can see that the sequence of approximations to the square root generated here is precisely the same as the one generated by our original square-root procedure of section <a href="1-1-elements.html#%_sec_1.1.7">1.1.7</a>. This approach of averaging successive approximations to a solution, a technique we that we call average damping, often aids the convergence of fixed-point searches.
+<p> With this modification, the square-root procedure works. In fact, if we unravel the definitions, we can see that the sequence of approximations to the square root generated here is precisely the same as the one generated by our original square-root procedure of section <a href="1-1-elements.html#sec_1.1.7">1.1.7</a>. This approach of averaging successive approximations to a solution, a technique we that we call average damping, often aids the convergence of fixed-point searches.
 
-<div class="exercise">
-<p> <b> Exercise 1.35. </b> Show that the golden ratio  (section <a href="1-2-procedures.html#%_sec_1.2.2">1.2.2</a>) is a fixed point of the transformation $x \mapsto 1 + \frac{1}{x}$, and use this fact to compute $\phi$ by means of the fixed-point procedure.
+<div class="exercise" id="thm_1.35">
+<p> <b> Exercise 1.35. </b> Show that the golden ratio  (section <a href="1-2-procedures.html#sec_1.2.2">1.2.2</a>) is a fixed point of the transformation $x \mapsto 1 + \frac{1}{x}$, and use this fact to compute $\phi$ by means of the fixed-point procedure.
 
 <div id="scheme-define-phi-fixed-point">
 (define phi
@@ -1011,8 +1008,8 @@ C.prompt("scheme-define-phi-fixed-point", ["scheme-define-fixed-point"]); //todo
 
 <p>
 
-<div class="exercise">
-<p> <b> Exercise 1.36. </b> Modify fixed-point so that it prints the sequence of approximations it generates, using the <tt>newline</tt> and <tt>display</tt> primitives shown in exercise 1.22. Then find a solution to $x^x = 1000$ by finding a fixed point of $x \mapsto \frac{\log(1000)}{\log(x)}$. (Use Scheme's primitive <tt>log</tt> procedure, which computes natural logarithms.) Compare the number of steps this takes with and without average damping. (Note that you cannot start fixed-point with a guess of 1, as this would cause division by $\log(1) = 0.$)
+<div class="exercise" id="thm_1.36">
+<p> <b> Exercise 1.36. </b> Modify fixed-point so that it prints the sequence of approximations it generates, using the <code>newline</code> and <code>display</code> primitives shown in exercise 1.22. Then find a solution to $x^x = 1000$ by finding a fixed point of $x \mapsto \frac{\log(1000)}{\log(x)}$. (Use Scheme's primitive <code>log</code> procedure, which computes natural logarithms.) Compare the number of steps this takes with and without average damping. (Note that you cannot start fixed-point with a guess of 1, as this would cause division by $\log(1) = 0.$)
 
 <div id="scheme-ex-define-printing-fixed-point">
 (define tolerance 0.00001)
@@ -1055,20 +1052,20 @@ C.prompt("scheme-ex-define-printing-fixed-point", ["scheme-define-close-enough"]
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.37">
 <p> <b> Exercise 1.37. </b> An infinite continued fraction is an expression of the form
 
 $$
 f = \cfrac{N_1}{D_1 + \cfrac{N_2}{D_2 + \cfrac{N_3}{D_3 + \cdots}}}
 $$
 
-<p> As an example, one can show that the infinite continued fraction expansion with the $N_i$ and the $D_i$ all equal to $1$ produces $\frac{1}{\phi}$, where $\phi$ is the golden ratio (described in section <a href="1-2-procedures.html#%_sec_1.2.2">1.2.2</a>). One way to approximate an infinite continued fraction is to truncate the expansion after a given number of terms. Such a truncation &mdash; a so-called <em> k-term finite continued fraction </em> &mdash; has the form
+<p> As an example, one can show that the infinite continued fraction expansion with the $N_i$ and the $D_i$ all equal to $1$ produces $\frac{1}{\phi}$, where $\phi$ is the golden ratio (described in section <a href="1-2-procedures.html#sec_1.2.2">1.2.2</a>). One way to approximate an infinite continued fraction is to truncate the expansion after a given number of terms. Such a truncation &mdash; a so-called <em> k-term finite continued fraction </em> &mdash; has the form
 
 $$
 f = \cfrac{N_1}{D_1 + \cfrac{N_2}{\ddots + \cfrac{N_k}{D_k}}}
 $$
 
-<p> Suppose that <tt>n</tt> and <tt>d</tt> are procedures of one argument (the term index $i$ that return the $N_i$ and $D_i$ of the terms of the continued fraction. Define a procedure <tt>cont-frac</tt> such that evaluating <tt>(cont-frac n d k)</tt> computes the value of the $k$-term finite continued fraction.
+<p> Suppose that <code>n</code> and <code>d</code> are procedures of one argument (the term index $i$ that return the $N_i$ and $D_i$ of the terms of the continued fraction. Define a procedure <code>cont-frac</code> such that evaluating <code>(cont-frac n d k)</code> computes the value of the $k$-term finite continued fraction.
 
 <div id="scheme-ex-define-cont-frac">
 (define (cont-frac n d k)
@@ -1099,16 +1096,16 @@ C.prompt("scheme-ex-define-cont-frac");
 C.prompt("scheme-test-cont-frac", ["scheme-ex-define-cont-frac"]);
 </script>
 
-<p> for successive values of <tt>k</tt>. How large must you make <tt>k</tt> in order to get an approximation that is accurate to 4 decimal places?
+<p> for successive values of <code>k</code>. How large must you make <code>k</code> in order to get an approximation that is accurate to 4 decimal places?
 
-<p> Try to write both an iterative and a recursive version of <tt>cont-frac</tt>.
+<p> Try to write both an iterative and a recursive version of <code>cont-frac</code>.
 
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b> Exercise 1.38. </b> In 1737, the Swiss mathematician Leonhard Euler published a memoir De Fractionibus Continuis, which included a continued fraction expansion for $e - 2$, where $e$ is the base of the natural logarithms. In this fraction, the $N_i$ are all $1$, and the $D_i$ are successively $1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, \ldots$ Write a program that uses your <tt>cont-frac</tt> procedure from exercise 1.37 to approximate $e$, based on Euler's expansion.
+<div class="exercise" id="thm_1.38">
+<p> <b> Exercise 1.38. </b> In 1737, the Swiss mathematician Leonhard Euler published a memoir De Fractionibus Continuis, which included a continued fraction expansion for $e - 2$, where $e$ is the base of the natural logarithms. In this fraction, the $N_i$ are all $1$, and the $D_i$ are successively $1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, \ldots$ Write a program that uses your <code>cont-frac</code> procedure from exercise 1.37 to approximate $e$, based on Euler's expansion.
 
 <div id="scheme-ex-euler">
 (cont-frac n d 10)
@@ -1127,14 +1124,14 @@ C.prompt("scheme-ex-euler", ["scheme-ex-define-cont-frac"]);
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.39">
 <p> <b> Exercise 1.39. </b> A continued fraction representation of the tangent function was published in 1770 by the German mathematician J.H. Lambert:
 
 $$
 \tan x = \cfrac{x}{1 - \cfrac{x^2}{3 - \cfrac{x^2}{5 - \ddots}}}
 $$
 
-<p> where <em> x </em> is in radians. Define a procedure <tt>(tan-cf x k)</tt> that computes an approximation to the tangent function based on Lambert's formula. <tt>k</tt> specifies the number of terms to compute, as in Exercise 1-37.
+<p> where <em> x </em> is in radians. Define a procedure <code>(tan-cf x k)</code> that computes an approximation to the tangent function based on Lambert's formula. <code>k</code> specifies the number of terms to compute, as in Exercise 1-37.
 
 <div id="scheme-ex-define-tan-cf">
 (define (tan-cf x k)
@@ -1157,16 +1154,11 @@ C.prompt("scheme-ex-define-tan-cf", ["scheme-ex-define-cont-frac"]);
 </script>
 </div>
 
-<a name="%_sec_1.3.4" />
-<h3> 1.3.4 Procedures as Returned Values </h3>
+<h3 id="sec_1.3.4"> 1.3.4 Procedures as Returned Values </h3>
 
 <p> The above examples demonstrate how the ability to pass procedures as arguments significantly enhances the expressive power of our programming language. We can achieve even more expressive power by creating procedures whose returned values are themselves procedures.
 
-<p> We can illustrate this idea by looking again at the fixed-point example described at the end of section <a href="1-3-hop.html#%_sec_1.3.3">1.3.3</a>. We formulated a new version of the square-root procedure as a fixed-point search, starting with the observation that x is a fixed-point of the function y -&gt; x/y. Then we used average damping to make the approximations converge. Average damping is a useful general technique in itself. Namely, given a function f, we consider the function whose value at x is equal to the average of x and f(x).
-
-<p> Average damping is a useful general technique in itself. Namely, given a
-function $f$, we consider the function whose value at $x$ is equal to the
-average of $x$ and $f(x)$.
+<p> We can illustrate this idea by looking again at the fixed-point example described at the end of section <a href="1-3-hop.html#sec_1.3.3">1.3.3</a>. We formulated a new version of the square-root procedure as a fixed-point search, starting with the observation that x is a fixed-point of the function y -&gt; x/y. Then we used average damping to make the approximations converge. Average damping is a useful general technique in itself. Namely, given a function $f$, we consider the function whose value at $x$ is equal to the average of $x$ and $f(x)$.
 
 <p> We can express the idea of average damping by means of the following procedure:
 
@@ -1178,7 +1170,7 @@ average of $x$ and $f(x)$.
 C.prompt("scheme-define-average-damp", ["scheme-define-average"]);
 </script>
 
-<p> <tt>average-damp</tt> is a procedure that takes as its argument a procedure f and returns as its value a procedure (produced by the lambda) that, when applied to a number <tt>x</tt>, produces the average of <tt>x</tt> and <tt>(f x)</tt>. For example, applying average-damp to the square procedure produces a procedure whose value at some number $x$ is the average of $x$ and $x^2$. Applying this resulting procedure to $10$ returns the average of $10$ and $100$, or $55$:<a name="footnote_link_1-59" class="footnote_link" href="#footnote_1-59">59</a>
+<p> <code>average-damp</code> is a procedure that takes as its argument a procedure f and returns as its value a procedure (produced by the lambda) that, when applied to a number <code>x</code>, produces the average of <code>x</code> and <code>(f x)</code>. For example, applying average-damp to the square procedure produces a procedure whose value at some number $x$ is the average of $x$ and $x^2$. Applying this resulting procedure to $10$ returns the average of $10$ and $100$, or $55$:<a id="footnote_link_1-59" class="footnote_link" href="#footnote_1-59">59</a>
 
 <div id="scheme-average-damp-square-10">
 ((average-damp square) 10)
@@ -1187,7 +1179,7 @@ C.prompt("scheme-define-average-damp", ["scheme-define-average"]);
 C.prompt("scheme-average-damp-square-10", ["scheme-define-average-damp", "scheme-define-square"]);
 </script>
 
-<p> Using <tt>average-damp</tt>, we can reformulate the square-root procedure as follows:
+<p> Using <code>average-damp</code>, we can reformulate the square-root procedure as follows:
 
 <div id="scheme-define-sqrt-average-damp">
 (define (sqrt x)
@@ -1199,7 +1191,7 @@ C.prompt("scheme-define-sqrt-average-damp");
 C.add_dep("scheme-define-sqrt-average-damp", ["scheme-define-fixed-point", "scheme-define-average-damp"]);
 </script>
 
-<p> Notice how this formulation makes explicit the three ideas in the method: fixed-point search, average damping, and the function $y \mapsto \frac{x}{y}$. It is instructive to compare this formulation of the square-root method with the original version given in section <a href="1-1-elements.html#%_sec_1.1.7">1.1.7</a>. Bear in mind that these procedures express the same process, and notice how much clearer the idea becomes when we express the process in terms of these abstractions. In general, there are many ways to formulate a process as a procedure. Experienced programmers know how to choose procedural formulations that are particularly perspicuous, and where useful elements of the process are exposed as separate entities that can be reused in other applications. As a simple example of reuse, notice that the cube root of $x$ is a fixed point of the function $y \mapsto \frac{x}{y^2}$, so we can immediately generalize our square-root procedure to one that extracts cube roots:<a name="footnote_link_1-60" class="footnote_link" href="#footnote_1-60">60</a>
+<p> Notice how this formulation makes explicit the three ideas in the method: fixed-point search, average damping, and the function $y \mapsto \frac{x}{y}$. It is instructive to compare this formulation of the square-root method with the original version given in section <a href="1-1-elements.html#sec_1.1.7">1.1.7</a>. Bear in mind that these procedures express the same process, and notice how much clearer the idea becomes when we express the process in terms of these abstractions. In general, there are many ways to formulate a process as a procedure. Experienced programmers know how to choose procedural formulations that are particularly perspicuous, and where useful elements of the process are exposed as separate entities that can be reused in other applications. As a simple example of reuse, notice that the cube root of $x$ is a fixed point of the function $y \mapsto \frac{x}{y^2}$, so we can immediately generalize our square-root procedure to one that extracts cube roots:<a id="footnote_link_1-60" class="footnote_link" href="#footnote_1-60">60</a>
 
 <div id="scheme-define-cube-root-average-damp">
 (define (cube-root x)
@@ -1213,13 +1205,13 @@ C.add_dep("scheme-define-cube-root-average-damp", ["scheme-define-fixed-point", 
 
 <h4> Newton's method </h4>
 
-<p> When we first introduced the square-root procedure, in section <a href="1-1-elements.html#%_sec_1.1.7">1.1.7</a>, we mentioned that this was a special case of Newton's method. If x  g(x) is a differentiable function, then a solution of the equation g(x) = 0 is a fixed point of the function x  f(x) where
+<p> When we first introduced the square-root procedure, in section <a href="1-1-elements.html#sec_1.1.7">1.1.7</a>, we mentioned that this was a special case of Newton's method. If x  g(x) is a differentiable function, then a solution of the equation g(x) = 0 is a fixed point of the function x  f(x) where
 
 $$
 f(x) = x - \frac{g(x)}{Dg(x)}
 $$
 
-<p> and $Dg(x)$ is the derivative of $g$ evaluated at $x$. Newton's method is the use of the fixed-point method we saw above to approximate a solution of the equation by finding a fixed point of the function $f$.<a name="footnote_link_1-61" class="footnote_link" href="#footnote_1-61">61</a> For many functions $g$ and for sufficiently good initial guesses for $x$, Newton's method converges very rapidly to a solution of g(x) = 0.<a name="footnote_link_1-62" class="footnote_link" href="#footnote_1-62">62</a>
+<p> and $Dg(x)$ is the derivative of $g$ evaluated at $x$. Newton's method is the use of the fixed-point method we saw above to approximate a solution of the equation by finding a fixed point of the function $f$.<a id="footnote_link_1-61" class="footnote_link" href="#footnote_1-61">61</a> For many functions $g$ and for sufficiently good initial guesses for $x$, Newton's method converges very rapidly to a solution of g(x) = 0.<a id="footnote_link_1-62" class="footnote_link" href="#footnote_1-62">62</a>
 
 <p> In order to implement Newton's method as a procedure, we must first express the idea of derivative. Note that &ldquo;derivative&rdquo;, like average damping, is something that transforms a function into another function. For instance, the derivative of the function $x \mapsto x^3$ is the function $x \mapsto 3x^2$. In general, if $g$ is a function and $dx$ is a small number, then the derivative $Dg$ of $g$ is the function whose value at any number $x$ is given (in the limit of small $dx$) by
 
@@ -1259,7 +1251,7 @@ C.prompt("scheme-define-dx");
 C.prompt("scheme-deriv-cube", ["scheme-define-deriv", "scheme-define-dx"]);
 </script>
 
-<p> With the aid of <tt>deriv</tt>, we can express Newton's method as a fixed-point process:
+<p> With the aid of <code>deriv</code>, we can express Newton's method as a fixed-point process:
 
 <div id="scheme-define-newton-transform">
 (define (newton-transform g)
@@ -1273,7 +1265,7 @@ C.prompt("scheme-deriv-cube", ["scheme-define-deriv", "scheme-define-dx"]);
 C.prompt("scheme-define-newton-transform", ["scheme-define-deriv", "scheme-define-dx", "scheme-define-fixed-point"]);
 </script>
 
-<p> The newton-transform procedure expresses the formula at the beginning of this section, and newtons-method is readily defined in terms of this. It takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of x, we can use Newton's method to find a zero of the function $y \mapsto y^2 - x$ starting with an initial guess of 1.<a name="footnote_link_1-63" class="footnote_link" href="#footnote_1-63">63</a> This provides yet another form of the square-root procedure:
+<p> The newton-transform procedure expresses the formula at the beginning of this section, and newtons-method is readily defined in terms of this. It takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of x, we can use Newton's method to find a zero of the function $y \mapsto y^2 - x$ starting with an initial guess of 1.<a id="footnote_link_1-63" class="footnote_link" href="#footnote_1-63">63</a> This provides yet another form of the square-root procedure:
 
 <div id="scheme-define-sqrt-newton">
 (define (sqrt x)
@@ -1328,23 +1320,22 @@ C.prompt("scheme-define-sqrt-fixed-point-of-newton-transform", ["scheme-define-f
 
 <p> As programmers, we should be alert to opportunities to identify the underlying abstractions in our programs and to build upon them and generalize them to create more powerful abstractions. This is not to say that one should always write programs in the most abstract way possible; expert programmers know how to choose the level of abstraction appropriate to their task. But it is important to be able to think in terms of these abstractions, so that we can be ready to apply them in new contexts. The significance of higher-order procedures is that they enable us to represent these abstractions explicitly as elements in our programming language, so that they can be handled just like other computational elements.
 
-<p> In general, programming languages impose restrictions on the ways in which computational elements can be manipulated. Elements with the fewest restrictions are said to have <em> first-class </em> status. Some of the &ldquo;rights and privileges&rdquo; of first-class elements are:<a name="footnote_link_1-64" class="footnote_link" href="#footnote_1-64">64</a>
+<p> In general, programming languages impose restrictions on the ways in which computational elements can be manipulated. Elements with the fewest restrictions are said to have <em> first-class </em> status. Some of the &ldquo;rights and privileges&rdquo; of first-class elements are:<a id="footnote_link_1-64" class="footnote_link" href="#footnote_1-64">64</a>
 
 <ul>
 
 <li> <p> They may be named by variables. </li>
 <li> <p> They may be passed as arguments to procedures. </li>
 <li> <p> They may be returned as the results of procedures. </li>
-<li> <p> They may be included in data structures.<a name="footnote_link_1-65" class="footnote_link" href="#footnote_1-65">65</a> </li>
+<li> <p> They may be included in data structures.<a id="footnote_link_1-65" class="footnote_link" href="#footnote_1-65">65</a> </li>
 
 </ul>
 
-<p> Lisp, unlike other common programming languages, awards procedures full first-class status. This poses challenges for efficient implementation, but the resulting gain in expressive power is enormous.<a name="footnote_link_1-66" class="footnote_link" href="#footnote_1-66">66</a>
+<p> Lisp, unlike other common programming languages, awards procedures full first-class status. This poses challenges for efficient implementation, but the resulting gain in expressive power is enormous.<a id="footnote_link_1-66" class="footnote_link" href="#footnote_1-66">66</a>
 
-<div class="exercise">
-
-<p> <b> Exercise 1.40. </b> Define a procedure <tt>cubic</tt>
-that can be used together with the <tt>newtons-method</tt> procedure in
+<div class="exercise" id="thm_1.40">
+<p> <b> Exercise 1.40. </b> Define a procedure <code>cubic</code>
+that can be used together with the <code>newtons-method</code> procedure in
 expressions of the form
 
 <div id="scheme-newtons-method-cubic">
@@ -1363,8 +1354,8 @@ C.prompt("scheme-newtons-method-cubic", ["scheme-define-newton-transform"]);
 
 <p>
 
-<div class="exercise">
-<p> <b> Exercise 1.41. </b> Define a procedure <tt>double</tt> that takes a procedure of one argument as argument and returns a procedure that applies the original procedure twice. For example, if <tt>inc</tt> is a procedure that adds 1 to its argument, then <tt>(double inc)</tt> should be a procedure that adds 2.
+<div class="exercise" id="thm_1.41">
+<p> <b> Exercise 1.41. </b> Define a procedure <code>double</code> that takes a procedure of one argument as argument and returns a procedure that applies the original procedure twice. For example, if <code>inc</code> is a procedure that adds 1 to its argument, then <code>(double inc)</code> should be a procedure that adds 2.
 
 <div id="scheme-ex-define-double">
 (define (double f)
@@ -1402,7 +1393,7 @@ C.answer("scheme-double-itered-inc", 21);
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.42">
 <p> <b> Exercise 1.42. </b> Let f and g be two one-argument functions. The composition f after g is defined to be the function x f(g(x)). Define a procedure compose that implements composition.
 
 <div id="scheme-ex-define-compose">
@@ -1447,7 +1438,7 @@ C.prompt("scheme-compose-square-inc", ["scheme-define-square", "scheme-define-in
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_1.43">
 <p> <b> Exercise 1.43. </b> If f is a numerical function and n is a positive integer, then we can form the $n^{th}$ repeated application of $f$, which is defined to be the function whose value at $x$ is $f(f(\cdots(f(x))\cdots))$. For example, if $f$ is the function $x \mapsto x + 1$, then the $n^{th}$ repeated application of $f$ is the function $x \mapsto x + n$. If $f$ is the operation of squaring a number, then the $n^{th}$ repeated application of $f$ is the function that raises its argument to the $2n^{th}$ power. Write a procedure that takes as inputs a procedure that computes $f$ and a positive integer $n$ and returns the procedure that computes the $n^{th}$ repeated application of $f$.
 
 <div id="scheme-ex-define-repeated">
@@ -1492,14 +1483,14 @@ C.editor_of["scheme-ex-define-repeated"].setOption("onBlur", function(){
 C.frozen_prompt("scheme-repeated-square-2-5", ["scheme-ex-define-repeated", "scheme-define-square"]);
 </script>
 
-<p> and should return 625. Hint: You may find it convenient to use <tt>compose</tt> from Exercise 1-42.
+<p> and should return 625. Hint: You may find it convenient to use <code>compose</code> from Exercise 1-42.
 
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b> Exercise 1.44. </b> The idea of smoothing a function is an important concept in signal processing. If $f$ is a function and $dx$ is some small number, then the smoothed version of f is the function whose value at a point $x$ is the average of $f(x - dx)$, $f(x)$, and $f(x + dx)$. Write a procedure <tt>smooth</tt> that takes as input a procedure that computes f and returns a procedure that computes the smoothed f. It is sometimes valuable to repeatedly smooth a function (that is, smooth the smoothed function, and so on) to obtained the n-fold smoothed function. Show how to generate the n-fold smoothed function of any given function using smooth and repeated from exercise 1.43.
+<div class="exercise" id="thm_1.44">
+<p> <b> Exercise 1.44. </b> The idea of smoothing a function is an important concept in signal processing. If $f$ is a function and $dx$ is some small number, then the smoothed version of f is the function whose value at a point $x$ is the average of $f(x - dx)$, $f(x)$, and $f(x + dx)$. Write a procedure <code>smooth</code> that takes as input a procedure that computes f and returns a procedure that computes the smoothed f. It is sometimes valuable to repeatedly smooth a function (that is, smooth the smoothed function, and so on) to obtained the n-fold smoothed function. Show how to generate the n-fold smoothed function of any given function using smooth and repeated from exercise 1.43.
 
 <div id="scheme-ex-define-smooth">
 (define dx 0.1)
@@ -1538,8 +1529,8 @@ C.editor_of["scheme-ex-define-smooth"].setOption("onBlur", function(){
 
 <p>
 
-<div class="exercise">
-<p> <b> Exercise 1.45. </b> We saw in section <a href="1-3-hop.html#%_sec_1.3.3">1.3.3</a> that attempting to compute square roots by naively finding a fixed point of $y \mapsto \frac{x}{y}$ does not converge, and that this can be fixed by average damping. The same method works for finding cube roots as fixed points of the average-damped $y \mapsto \frac{x}{y^2}$. Unfortunately, the process does not work for fourth roots &mdash; a single average damp is not enough to make a fixed-point search for $y \mapsto \frac{x}{y^3}$ converge. On the other hand, if we average damp twice (i.e., use the average damp of the average damp of $y \mapsto \frac{x}{y^3}$) the fixed-point search does converge. Do some experiments to determine how many average damps are required to compute $n^{th}$ roots as a fixed-point search based upon repeated average damping of $y \mapsto \frac{x}{y^{n-1}}$. Use this to implement a simple procedure for computing $n^{th}$ roots using fixed-point, average-damp, and the repeated procedure of exercise 1.43. Assume that any arithmetic operations you need are available as primitives.
+<div class="exercise" id="thm_1.45">
+<p> <b> Exercise 1.45. </b> We saw in section <a href="1-3-hop.html#sec_1.3.3">1.3.3</a> that attempting to compute square roots by naively finding a fixed point of $y \mapsto \frac{x}{y}$ does not converge, and that this can be fixed by average damping. The same method works for finding cube roots as fixed points of the average-damped $y \mapsto \frac{x}{y^2}$. Unfortunately, the process does not work for fourth roots &mdash; a single average damp is not enough to make a fixed-point search for $y \mapsto \frac{x}{y^3}$ converge. On the other hand, if we average damp twice (i.e., use the average damp of the average damp of $y \mapsto \frac{x}{y^3}$) the fixed-point search does converge. Do some experiments to determine how many average damps are required to compute $n^{th}$ roots as a fixed-point search based upon repeated average damping of $y \mapsto \frac{x}{y^{n-1}}$. Use this to implement a simple procedure for computing $n^{th}$ roots using fixed-point, average-damp, and the repeated procedure of exercise 1.43. Assume that any arithmetic operations you need are available as primitives.
 
 <div id="scheme-ex-define-nth-root">
 (define (root n x)
@@ -1553,8 +1544,8 @@ C.prompt("scheme-ex-define-nth-root");
 
 <p>
 
-<div class="exercise">
-<p> <b> Exercise 1.46. </b> Several of the numerical methods described in this chapter are instances of an extremely general computational strategy known as iterative improvement. Iterative improvement says that, to compute something, we start with an initial guess for the answer, test if the guess is good enough, and otherwise improve the guess and continue the process using the improved guess as the new guess. Write a procedure <tt>iterative-improve</tt> that takes two procedures as arguments: a method for telling whether a guess is good enough and a method for improving a guess. Iterative-improve should return as its value a procedure that takes a guess as argument and keeps improving the guess until it is good enough. Rewrite the sqrt procedure of section <a href="1-1-elements.html#%_sec_1.1.7">1.1.7</a> and the fixed-point procedure of section <a href="1-3-hop.html#%_sec_1.3.3">1.3.3</a> in terms of iterative-improve.
+<div class="exercise" id="thm_1.46">
+<p> <b> Exercise 1.46. </b> Several of the numerical methods described in this chapter are instances of an extremely general computational strategy known as iterative improvement. Iterative improvement says that, to compute something, we start with an initial guess for the answer, test if the guess is good enough, and otherwise improve the guess and continue the process using the improved guess as the new guess. Write a procedure <code>iterative-improve</code> that takes two procedures as arguments: a method for telling whether a guess is good enough and a method for improving a guess. Iterative-improve should return as its value a procedure that takes a guess as argument and keeps improving the guess until it is good enough. Rewrite the sqrt procedure of section <a href="1-1-elements.html#sec_1.1.7">1.1.7</a> and the fixed-point procedure of section <a href="1-3-hop.html#sec_1.3.3">1.3.3</a> in terms of iterative-improve.
 
 <div id="scheme-ex-define-iterative-improve">
 (define (iterative-improve good-enough? improve)
@@ -1572,17 +1563,17 @@ C.prompt("scheme-ex-define-iterative-improve");
 
 <div id="footnote_1-49" class="footnote">
 <p><a href="#footnote_link_1-49" class="footnote_backlink">49</a>
- This series, usually written in the equivalent form $\frac{\pi}{4}  =  1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots$, is due to Leibniz. We'll see how to use this as the basis for some fancy numerical tricks in section&nbsp;<a href="3-5-streams.html#%_sec_3.5.3">3.5.3</a>.
+ This series, usually written in the equivalent form $\frac{\pi}{4}  =  1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots$, is due to Leibniz. We'll see how to use this as the basis for some fancy numerical tricks in section&nbsp;<a href="3-5-streams.html#sec_3.5.3">3.5.3</a>.
 </p></div>
 
 <div id="footnote_1-50" class="footnote">
 <p><a href="#footnote_link_1-50" class="footnote_backlink">50</a>
- Notice that we have used block structure (section&nbsp;<a href="1-1-elements.html#%_sec_1.1.8">1.1.8</a>) to embed the definitions of <tt>pi-next</tt> and <tt>pi-term</tt> within <tt>pi-sum</tt>, since these procedures are unlikely to be useful for any other purpose. We will see how to get rid of them altogether in section&nbsp;<a href="1-3-hop.html#%_sec_1.3.2">1.3.2</a>.
+ Notice that we have used block structure (section&nbsp;<a href="1-1-elements.html#sec_1.1.8">1.1.8</a>) to embed the definitions of <code>pi-next</code> and <code>pi-term</code> within <code>pi-sum</code>, since these procedures are unlikely to be useful for any other purpose. We will see how to get rid of them altogether in section&nbsp;<a href="1-3-hop.html#sec_1.3.2">1.3.2</a>.
 </p></div>
 
 <div id="footnote_1-51" class="footnote">
 <p><a href="#footnote_link_1-51" class="footnote_backlink">51</a>
- The intent of exercises&nbsp;<a href="book-Z-H-12.html#%_thm_1.31">1.31</a>-<a href="book-Z-H-12.html#%_thm_1.33">1.33</a> is to demonstrate the expressive power that is attained by using an appropriate abstraction to consolidate many seemingly disparate operations. However, though accumulation and filtering are elegant ideas, our hands are somewhat tied in using them at this point since we do not yet have data structures to provide suitable means of combination for these abstractions. We will return to these ideas in section&nbsp;<a href="2-2-closure.html#%_sec_2.2.3">2.2.3</a> when we show how to use <em>sequences</em> as interfaces for combining filters and accumulators to build even more powerful abstractions. We will see there how these methods really come into their own as a powerful and elegant approach to designing programs.
+ The intent of exercises&nbsp;<a href="1-3-hop.html#thm_1.31">1.31</a>-<a href="1-3-hop.html#thm_1.33">1.33</a> is to demonstrate the expressive power that is attained by using an appropriate abstraction to consolidate many seemingly disparate operations. However, though accumulation and filtering are elegant ideas, our hands are somewhat tied in using them at this point since we do not yet have data structures to provide suitable means of combination for these abstractions. We will return to these ideas in section&nbsp;<a href="2-2-closure.html#sec_2.2.3">2.2.3</a> when we show how to use <em>sequences</em> as interfaces for combining filters and accumulators to build even more powerful abstractions. We will see there how these methods really come into their own as a powerful and elegant approach to designing programs.
 </p></div>
 
 <div id="footnote_1-52" class="footnote">
@@ -1592,12 +1583,12 @@ C.prompt("scheme-ex-define-iterative-improve");
 
 <div id="footnote_1-53" class="footnote">
 <p><a href="#footnote_link_1-53" class="footnote_backlink">53</a>
- It would be clearer and less intimidating to people learning Lisp if a name more obvious than <tt>lambda</tt>, such as <tt>make-procedure</tt>, were used. But the convention is firmly entrenched. The notation is adopted from the $\lambda$ calculus, a mathematical formalism introduced by the mathematical logician Alonzo Church (1941). Church developed the $\lambda$ calculus to provide a rigorous foundation for studying the notions of function and function application. The $\lambda$ calculus has become a basic tool for mathematical investigations of the semantics of programming languages.
+ It would be clearer and less intimidating to people learning Lisp if a name more obvious than <code>lambda</code>, such as <code>make-procedure</code>, were used. But the convention is firmly entrenched. The notation is adopted from the $\lambda$ calculus, a mathematical formalism introduced by the mathematical logician Alonzo Church (1941). Church developed the $\lambda$ calculus to provide a rigorous foundation for studying the notions of function and function application. The $\lambda$ calculus has become a basic tool for mathematical investigations of the semantics of programming languages.
 </p></div>
 
 <div id="footnote_1-54" class="footnote">
 <p><a href="#footnote_link_1-54" class="footnote_backlink">54</a>
- Understanding internal definitions well enough to be sure a program means what we intend it to mean requires a more elaborate model of the evaluation process than we have presented in this chapter. The subtleties do not arise with internal definitions of procedures, however. We will return to this issue in section&nbsp;<a href="4-1-metacircular.html#%_sec_4.1.6">4.1.6</a>, after we learn more about evaluation.
+ Understanding internal definitions well enough to be sure a program means what we intend it to mean requires a more elaborate model of the evaluation process than we have presented in this chapter. The subtleties do not arise with internal definitions of procedures, however. We will return to this issue in section&nbsp;<a href="4-1-metacircular.html#sec_4.1.6">4.1.6</a>, after we learn more about evaluation.
 </p></div>
 
 <div id="footnote_1-55" class="footnote">
@@ -1607,27 +1598,27 @@ C.prompt("scheme-ex-define-iterative-improve");
 
 <div id="footnote_1-56" class="footnote">
 <p><a href="#footnote_link_1-56" class="footnote_backlink">56</a>
- This can be accomplished using <tt>error</tt>, which takes as arguments a number of items that are printed as error messages.
+ This can be accomplished using <code>error</code>, which takes as arguments a number of items that are printed as error messages.
 </p></div>
 
 <div id="footnote_1-57" class="footnote">
 <p><a href="#footnote_link_1-57" class="footnote_backlink">57</a>
- Try this during a boring lecture: Set your calculator to radians mode and then repeatedly press the <tt>cos</tt> button until you obtain the fixed point.
+ Try this during a boring lecture: Set your calculator to radians mode and then repeatedly press the <code>cos</code> button until you obtain the fixed point.
 </p></div>
 
 <div id="footnote_1-58" class="footnote">
 <p><a href="#footnote_link_1-58" class="footnote_backlink">58</a>
-  $\mapsto$ (pronounced &ldquo;maps to&rdquo;) is the mathematician's way of writing <tt>lambda</tt>. $y \mapsto x/y$ means <tt>(lambda(y) (/ x y))</tt>, that is, the function whose value at $y$ is $x/y$.
+  $\mapsto$ (pronounced &ldquo;maps to&rdquo;) is the mathematician's way of writing <code>lambda</code>. $y \mapsto x/y$ means <code>(lambda(y) (/ x y))</code>, that is, the function whose value at $y$ is $x/y$.
 </p></div>
 
 <div id="footnote_1-59" class="footnote">
 <p><a href="#footnote_link_1-59" class="footnote_backlink">59</a>
- Observe that this is a combination whose operator is itself a combination. Exercise&nbsp;<a href="book-Z-H-10.html#%_thm_1.4">1.4</a> already demonstrated the ability to form such combinations, but that was only a toy example. Here we begin to see the real need for such combinations &mdash; when applying a procedure that is obtained as the value returned by a higher-order procedure.
+ Observe that this is a combination whose operator is itself a combination. Exercise&nbsp;<a href="1-1-elements.html#thm_1.4">1.4</a> already demonstrated the ability to form such combinations, but that was only a toy example. Here we begin to see the real need for such combinations &mdash; when applying a procedure that is obtained as the value returned by a higher-order procedure.
 </p></div>
 
 <div id="footnote_1-60" class="footnote">
 <p><a href="#footnote_link_1-60" class="footnote_backlink">60</a>
- See exercise&nbsp;<a href="book-Z-H-12.html#%_thm_1.45">1.45</a> for a further generalization.
+ See exercise&nbsp;<a href="1-3-hop.html#thm_1.45">1.45</a> for a further generalization.
 </p></div>
 
 <div id="footnote_1-61" class="footnote">
@@ -1657,7 +1648,7 @@ C.prompt("scheme-ex-define-iterative-improve");
 
 <div id="footnote_1-66" class="footnote">
 <p><a href="#footnote_link_1-66" class="footnote_backlink">66</a>
- The major implementation cost of first-class procedures is that allowing procedures to be returned as values requires reserving storage for a procedure's free variables even while the procedure is not executing. In the Scheme implementation we will study in section&nbsp;<a href="4-1-metacircular.html#%_sec_4.1">4.1</a>, these variables are stored in the procedure's environment.
+ The major implementation cost of first-class procedures is that allowing procedures to be returned as values requires reserving storage for a procedure's free variables even while the procedure is not executing. In the Scheme implementation we will study in section&nbsp;<a href="4-1-metacircular.html#sec_4.1">4.1</a>, these variables are stored in the procedure's environment.
 </p></div>
 
 @@

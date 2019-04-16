@@ -3,10 +3,10 @@
 @@
 
 {{main_text}}
-<a href='index.html' style="float:left"> <img src='images/chevron-up.svg' height=64 width=64> </a>
+<a href='index.html' style="float:left"><img src='images/chevron-up.svg' height=64 width=64></a>
 <span style="float:right">
-<a href='2-4-representation.html'> <img src='images/chevron-left.svg' height=64 width=64> </a>
-<a href='3-0-modularity-objects-and-state.html'> <img src='images/chevron-right.svg' height=64 width=64> </a>
+<a href='2-4-representation.html'><img src='images/chevron-left.svg' height=64 width=64></a>
+<a href='3-0-modularity-objects-and-state.html'><img src='images/chevron-right.svg' height=64 width=64></a>
 </span>
 
 <br> <br>
@@ -14,19 +14,18 @@
 
 <hr>
 
-<p> In the previous section, we saw how to design systems in which data objects can be represented in more than one way. The key idea is to link the code that specifies the data operations to the several representations by means of generic interface procedures. Now we will see how to use this same idea not only to define operations that are generic over different representations but also to define operations that are generic over different kinds of arguments. We have already seen several different packages of arithmetic operations: the primitive arithmetic (<tt>+</tt>, <tt>-</tt>, <tt>*</tt>, <tt>/</tt>) built into our language, the rational-number arithmetic (<tt>add-rat</tt>, <tt>sub-rat</tt>, <tt>mul-rat</tt>, <tt>div-rat</tt>) of section <a href="2-1-data.html">2.1.1</a>, and the complex-number arithmetic that we implemented in section <a href="2-4-representation.html">2.4.3</a>. We will now use data-directed techniques to construct a package of arithmetic operations that incorporates all the arithmetic packages we have already constructed.
+<p> In the previous section, we saw how to design systems in which data objects can be represented in more than one way. The key idea is to link the code that specifies the data operations to the several representations by means of generic interface procedures. Now we will see how to use this same idea not only to define operations that are generic over different representations but also to define operations that are generic over different kinds of arguments. We have already seen several different packages of arithmetic operations: the primitive arithmetic (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>) built into our language, the rational-number arithmetic (<code>add-rat</code>, <code>sub-rat</code>, <code>mul-rat</code>, <code>div-rat</code>) of section <a href="2-1-data.html">2.1.1</a>, and the complex-number arithmetic that we implemented in section <a href="2-4-representation.html">2.4.3</a>. We will now use data-directed techniques to construct a package of arithmetic operations that incorporates all the arithmetic packages we have already constructed.
 
-<p> Figure 2-23 shows the structure of the system we shall build. Notice the abstraction barriers. From the perspective of someone using ``numbers,'' there is a single procedure <tt>add</tt> that operates on whatever numbers are supplied. <tt>Add</tt> is part of a generic interface that allows the separate ordinary-arithmetic, rational-arithmetic, and complex-arithmetic packages to be accessed uniformly by programs that use numbers. Any individual arithmetic package (such as the complex package) may itself be accessed through generic procedures (such as <tt>add-complex</tt>) that combine packages designed for different representations (such as rectangular and polar). Moreover, the structure of the system is additive, so that one can design the individual arithmetic packages separately and combine them to produce a generic arithmetic system.
+<p> Figure 2-23 shows the structure of the system we shall build. Notice the abstraction barriers. From the perspective of someone using ``numbers,'' there is a single procedure <code>add</code> that operates on whatever numbers are supplied. <code>Add</code> is part of a generic interface that allows the separate ordinary-arithmetic, rational-arithmetic, and complex-arithmetic packages to be accessed uniformly by programs that use numbers. Any individual arithmetic package (such as the complex package) may itself be accessed through generic procedures (such as <code>add-complex</code>) that combine packages designed for different representations (such as rectangular and polar). Moreover, the structure of the system is additive, so that one can design the individual arithmetic packages separately and combine them to produce a generic arithmetic system.
 
 <div class="figure">
 <img src="images/ch2-Z-G-64.gif">
 <p> <b>Figure 2.23:</b> Generic arithmetic system.
 </div>
 
-<a name="%_sec_2.5.1" />
-<h3> 2.5.1 Generic Arithmetic Operations </h3>
+<h3 id="sec_2.5.1"> 2.5.1 Generic Arithmetic Operations </h3>
 
-<p> The task of designing generic arithmetic operations is analogous to that of designing the generic complex-number operations. We would like, for instance, to have a generic addition procedure <tt>add</tt> that acts like ordinary primitive addition <tt>+</tt> on ordinary numbers, like <tt>add-rat</tt> on rational numbers, and like <tt>add-complex</tt> on complex numbers. We can implement <tt>add</tt>, and the other generic arithmetic operations, by following the same strategy we used in section <a href="2-4-representation.html">2.4.3</a> to implement the generic selectors for complex numbers. We will attach a type tag to each kind of number and cause the generic procedure to dispatch to an appropriate package according to the data type of its arguments.
+<p> The task of designing generic arithmetic operations is analogous to that of designing the generic complex-number operations. We would like, for instance, to have a generic addition procedure <code>add</code> that acts like ordinary primitive addition <code>+</code> on ordinary numbers, like <code>add-rat</code> on rational numbers, and like <code>add-complex</code> on complex numbers. We can implement <code>add</code>, and the other generic arithmetic operations, by following the same strategy we used in section <a href="2-4-representation.html">2.4.3</a> to implement the generic selectors for complex numbers. We will attach a type tag to each kind of number and cause the generic procedure to dispatch to an appropriate package according to the data type of its arguments.
 
 <p> The generic arithmetic procedures are defined as follows:
 
@@ -40,7 +39,7 @@
 C.prompt("scheme-define-generic-arith");
 </script>
 
-<p> We begin by installing a package for handling <tt>ordinary</tt> numbers, that is, the primitive numbers of our language. We will tag these with the symbol <tt>scheme-number</tt>. The arithmetic operations in this package are the primitive arithmetic procedures (so there is no need to define extra procedures to handle the untagged numbers). Since these operations each take two arguments, they are installed in the table keyed by the list <tt>(scheme-number scheme-number)</tt>:
+<p> We begin by installing a package for handling <code>ordinary</code> numbers, that is, the primitive numbers of our language. We will tag these with the symbol <code>scheme-number</code>. The arithmetic operations in this package are the primitive arithmetic procedures (so there is no need to define extra procedures to handle the untagged numbers). Since these operations each take two arguments, they are installed in the table keyed by the list <code>(scheme-number scheme-number)</code>:
 
 <div id="scheme-define-install-scheme-number-package">
 (define (install-scheme-number-package)
@@ -119,7 +118,7 @@ C.prompt("scheme-define-make-scheme-number");
 C.prompt("scheme-define-install-rational-package");
 </script>
 
-<p> We can install a similar package to handle complex numbers, using the tag <tt>complex</tt>. In creating the package, we extract from the table the operations <tt>make-from-real-imag</tt> and <tt>make-from-mag-ang</tt> that were defined by the rectangular and polar packages. Additivity permits us to use, as the internal operations, the same <tt>add-complex</tt>, <tt>sub-complex</tt>, <tt>mul-complex</tt>, and <tt>div-complex</tt> procedures from section <a href="2-4-representation.html">2.4.1</a>.
+<p> We can install a similar package to handle complex numbers, using the tag <code>complex</code>. In creating the package, we extract from the table the operations <code>make-from-real-imag</code> and <code>make-from-mag-ang</code> that were defined by the rectangular and polar packages. Additivity permits us to use, as the internal operations, the same <code>add-complex</code>, <code>sub-complex</code>, <code>mul-complex</code>, and <code>div-complex</code> procedures from section <a href="2-4-representation.html">2.4.1</a>.
 
 <div id="scheme-define-install-complex-package">
 (define (install-complex-package)
@@ -176,17 +175,17 @@ C.prompt("scheme-define-install-complex-package");
 C.prompt("scheme-define-make-complex");
 </script>
 
-<p> What we have here is a two-level tag system. A typical complex number, such as 3 + 4i in rectangular form, would be represented as shown in Figure 2-24. The outer tag (<tt>complex</tt>) is used to direct the number to the complex package. Once within the complex package, the next tag (<tt>rectangular</tt>) is used to direct the number to the rectangular package. In a large and complicated system there might be many levels, each interfaced with the next by means of generic operations. As a data object is passed ``downward,'' the outer tag that is used to direct it to the appropriate package is stripped off (by applying <tt>contents</tt>) and the next level of tag (if any) becomes visible to be used for further dispatching.
+<p> What we have here is a two-level tag system. A typical complex number, such as 3 + 4i in rectangular form, would be represented as shown in Figure 2-24. The outer tag (<code>complex</code>) is used to direct the number to the complex package. Once within the complex package, the next tag (<code>rectangular</code>) is used to direct the number to the rectangular package. In a large and complicated system there might be many levels, each interfaced with the next by means of generic operations. As a data object is passed ``downward,'' the outer tag that is used to direct it to the appropriate package is stripped off (by applying <code>contents</code>) and the next level of tag (if any) becomes visible to be used for further dispatching.
 
 <div class="figure">
 <img src="images/ch2-Z-G-65.gif">
 <p> <b>Figure 2.24:</b> Representation of 3 + 4i in rectangular form.
 </div>
 
-<p> In the above packages, we used <tt>add-rat</tt>, <tt>add-complex</tt>, and the other arithmetic procedures exactly as originally written. Once these definitions are internal to different installation procedures, however, they no longer need names that are distinct from each other: we could simply name them <tt>add</tt>, <tt>sub</tt>, <tt>mul</tt>, and <tt>div</tt> in both packages.
+<p> In the above packages, we used <code>add-rat</code>, <code>add-complex</code>, and the other arithmetic procedures exactly as originally written. Once these definitions are internal to different installation procedures, however, they no longer need names that are distinct from each other: we could simply name them <code>add</code>, <code>sub</code>, <code>mul</code>, and <code>div</code> in both packages.
 
-<div class="exercise">
-<p> <b>Exercise 2.77:</b> Louis Reasoner tries to evaluate the expression <tt>(magnitude z)</tt> where <tt>z</tt> is the object shown in Figure 2-24. To his surprise, instead of the answer $5$ he gets an error message from <tt>apply-generic</tt>, saying there is no method for the operation <tt>magnitude</tt> on the types <tt>(complex)</tt>. He shows this interaction to Alyssa P. Hacker, who says "The problem is that the complex-number selectors were never defined for <tt>complex</tt> numbers, just for <tt>polar</tt> and <tt>rectangular</tt> numbers. All you have to do to make this work is add the following to the <tt>complex</tt> package:"
+<div class="exercise" id="thm_2.77">
+<p> <b>Exercise 2.77:</b> Louis Reasoner tries to evaluate the expression <code>(magnitude z)</code> where <code>z</code> is the object shown in Figure 2-24. To his surprise, instead of the answer $5$ he gets an error message from <code>apply-generic</code>, saying there is no method for the operation <code>magnitude</code> on the types <code>(complex)</code>. He shows this interaction to Alyssa P. Hacker, who says "The problem is that the complex-number selectors were never defined for <code>complex</code> numbers, just for <code>polar</code> and <code>rectangular</code> numbers. All you have to do to make this work is add the following to the <code>complex</code> package:"
 
 <div id="scheme-complex-selectors-for-complex">
 (put 'real-part '(complex) real-part)
@@ -198,33 +197,32 @@ C.prompt("scheme-define-make-complex");
 C.no_output_frozen_prompt("scheme-complex-selectors-for-complex");
 </script>
 
-<p> Describe in detail why this works. As an example, trace through all the procedures called in evaluating the expression <tt>(magnitude z)</tt> where <tt>z</tt> is the object shown in Figure 2-24. In particular, how many times is <tt>apply-generic</tt> invoked?  What procedure is dispatched to in each case?
+<p> Describe in detail why this works. As an example, trace through all the procedures called in evaluating the expression <code>(magnitude z)</code> where <code>z</code> is the object shown in Figure 2-24. In particular, how many times is <code>apply-generic</code> invoked?  What procedure is dispatched to in each case?
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.78:</b> The internal procedures in the <tt>scheme-number</tt> package are essentially nothing more than calls to the primitive procedures <tt>+</tt>, <tt>-</tt>, etc. It was not possible to use the primitives of the language directly because our type-tag system requires that each data object have a type attached to it. In fact, however, all Lisp implementations do have a type system, which they use internally. Primitive predicates such as <tt>symbol?</tt> and <tt>number?</tt>  determine whether data objects have particular types. Modify the definitions of <tt>type-tag</tt>, <tt>contents</tt>, and <tt>attach-tag</tt> from section <a href="2-4-representation.html">2.4.2</a> so that our generic system takes advantage of Scheme's internal type system. That is to say, the system should work as before except that ordinary numbers should be represented simply as Scheme numbers rather than as pairs whose <tt>car</tt> is the symbol <tt>scheme-number</tt>.
+<div class="exercise" id="thm_2.78">
+<p> <b>Exercise 2.78:</b> The internal procedures in the <code>scheme-number</code> package are essentially nothing more than calls to the primitive procedures <code>+</code>, <code>-</code>, etc. It was not possible to use the primitives of the language directly because our type-tag system requires that each data object have a type attached to it. In fact, however, all Lisp implementations do have a type system, which they use internally. Primitive predicates such as <code>symbol?</code> and <code>number?</code>  determine whether data objects have particular types. Modify the definitions of <code>type-tag</code>, <code>contents</code>, and <code>attach-tag</code> from section <a href="2-4-representation.html">2.4.2</a> so that our generic system takes advantage of Scheme's internal type system. That is to say, the system should work as before except that ordinary numbers should be represented simply as Scheme numbers rather than as pairs whose <code>car</code> is the symbol <code>scheme-number</code>.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.79:</b> Define a generic equality predicate <tt>equ?</tt> that tests the equality of two numbers, and install it in the generic arithmetic package. This operation should work for ordinary numbers, rational numbers, and complex numbers.
+<div class="exercise" id="thm_2.79">
+<p> <b>Exercise 2.79:</b> Define a generic equality predicate <code>equ?</code> that tests the equality of two numbers, and install it in the generic arithmetic package. This operation should work for ordinary numbers, rational numbers, and complex numbers.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.80:</b> Define a generic predicate <tt>=zero?</tt> that tests if its argument is zero, and install it in the generic arithmetic package. This operation should work for ordinary numbers, rational numbers, and complex numbers.
+<div class="exercise" id="thm_2.80">
+<p> <b>Exercise 2.80:</b> Define a generic predicate <code>=zero?</code> that tests if its argument is zero, and install it in the generic arithmetic package. This operation should work for ordinary numbers, rational numbers, and complex numbers.
 </div>
 
-<a name="%_sec_2.5.2" />
-<h3> 2.5.2 Combining Data of Different Types </h3>
+<h3 id="sec_2.5.2"> 2.5.2 Combining Data of Different Types </h3>
 
 <p> We have seen how to define a unified arithmetic system that encompasses ordinary numbers, complex numbers, rational numbers, and any other type of number we might decide to invent, but we have ignored an important issue. The operations we have defined so far treat the different data types as being completely independent. Thus, there are separate packages for adding, say, two ordinary numbers, or two complex numbers. What we have not yet considered is the fact that it is meaningful to define operations that cross the type boundaries, such as the addition of a complex number to an ordinary number. We have gone to great pains to introduce barriers between parts of our programs so that they can be developed and understood separately. We would like to introduce the cross-type operations in some carefully controlled way, so that we can support them without seriously violating our module boundaries.
 
-<p> One way to handle cross-type operations is to design a different procedure for each possible combination of types for which the operation is valid. For example, we could extend the complex-number package so that it provides a procedure for adding complex numbers to ordinary numbers and installs this in the table using the tag <tt>(complex scheme-number)</tt><a name="footnote_link_2-49" class="footnote_link" href="#footnote_2-49">49</a>
+<p> One way to handle cross-type operations is to design a different procedure for each possible combination of types for which the operation is valid. For example, we could extend the complex-number package so that it provides a procedure for adding complex numbers to ordinary numbers and installs this in the table using the tag <code>(complex scheme-number)</code><a id="footnote_link_2-49" class="footnote_link" href="#footnote_2-49">49</a>
 
 <div id="scheme-define-add-complex-to-schemenum">
 ;; to be included in the complex package
@@ -243,7 +241,7 @@ C.prompt("scheme-define-add-complex-to-schemenum");
 
 <h4> Coercion </h4>
 
-<p> In the general situation of completely unrelated operations acting on completely unrelated types, implementing explicit cross-type operations, cumbersome though it may be, is the best that one can hope for. Fortunately, we can usually do better by taking advantage of additional structure that may be latent in our type system. Often the different data types are not completely independent, and there may be ways by which objects of one type may be viewed as being of another type. This process is called <tt>coercion</tt> . For example, if we are asked to arithmetically combine an ordinary number with a complex number, we can view the ordinary number as a complex number whose imaginary part is zero. This transforms the problem to that of combining two complex numbers, which can be handled in the ordinary way by the complex-arithmetic package.
+<p> In the general situation of completely unrelated operations acting on completely unrelated types, implementing explicit cross-type operations, cumbersome though it may be, is the best that one can hope for. Fortunately, we can usually do better by taking advantage of additional structure that may be latent in our type system. Often the different data types are not completely independent, and there may be ways by which objects of one type may be viewed as being of another type. This process is called <code>coercion</code> . For example, if we are asked to arithmetically combine an ordinary number with a complex number, we can view the ordinary number as a complex number whose imaginary part is zero. This transforms the problem to that of combining two complex numbers, which can be handled in the ordinary way by the complex-arithmetic package.
 
 <p> In general, we can implement this idea by designing coercion procedures that transform an object of one type into an equivalent object of another type. Here is a typical coercion procedure, which transforms a given ordinary number to a complex number with that real part and zero imaginary part:
 
@@ -264,9 +262,9 @@ C.prompt("scheme-define-scheme-number-to-complex");
 C.prompt("scheme-put-coercion");
 </script>
 
-<p> (We assume that there are <tt>put-coercion</tt> and <tt>get-coercion</tt> procedures available for manipulating this table.)  Generally some of the slots in the table will be empty, because it is not generally possible to coerce an arbitrary data object of each type into all other types. For example, there is no way to coerce an arbitrary complex number to an ordinary number, so there will be no general <tt>complex->scheme-number</tt> procedure included in the table.
+<p> (We assume that there are <code>put-coercion</code> and <code>get-coercion</code> procedures available for manipulating this table.)  Generally some of the slots in the table will be empty, because it is not generally possible to coerce an arbitrary data object of each type into all other types. For example, there is no way to coerce an arbitrary complex number to an ordinary number, so there will be no general <code>complex->scheme-number</code> procedure included in the table.
 
-<p> Once the coercion table has been set up, we can handle coercion in a uniform manner by modifying the <tt>apply-generic</tt> procedure of section <a href="2-4-representation.html">2.4.3</a>. When asked to apply an operation, we first check whether the operation is defined for the arguments' types, just as before. If so, we dispatch to the procedure found in the operation-and-type table. Otherwise, we try coercion. For simplicity, we consider only the case where there are two arguments.<a name="footnote_link_2-50" class="footnote_link" href="#footnote_2-50">50</a>  We check the coercion table to see if objects of the first type can be coerced to the second type. If so, we coerce the first argument and try the operation again. If objects of the first type cannot in general be coerced to the second type, we try the coercion the other way around to see if there is a way to coerce the second argument to the type of the first argument. Finally, if there is no known way to coerce either type to the other type, we give up. Here is the procedure:
+<p> Once the coercion table has been set up, we can handle coercion in a uniform manner by modifying the <code>apply-generic</code> procedure of section <a href="2-4-representation.html">2.4.3</a>. When asked to apply an operation, we first check whether the operation is defined for the arguments' types, just as before. If so, we dispatch to the procedure found in the operation-and-type table. Otherwise, we try coercion. For simplicity, we consider only the case where there are two arguments.<a id="footnote_link_2-50" class="footnote_link" href="#footnote_2-50">50</a>  We check the coercion table to see if objects of the first type can be coerced to the second type. If so, we coerce the first argument and try the operation again. If objects of the first type cannot in general be coerced to the second type, we try the coercion the other way around to see if there is a way to coerce the second argument to the type of the first argument. Finally, if there is no known way to coerce either type to the other type, we give up. Here is the procedure:
 
 <div id="scheme-define-apply-generic">
 (define (apply-generic op . args)
@@ -295,24 +293,24 @@ C.prompt("scheme-put-coercion");
 C.prompt("scheme-define-apply-generic");
 </script>
 
-<p> This coercion scheme has many advantages over the method of defining explicit cross-type operations, as outlined above. Although we still need to write coercion procedures to relate the types (possibly n^2 procedures for a system with n types), we need to write only one procedure for each pair of types rather than a different procedure for each collection of types and each generic operation.<a name="footnote_link_2-51" class="footnote_link" href="#footnote_2-51">51</a>  What we are counting on here is the fact that the appropriate transformation between types depends only on the types themselves, not on the operation to be applied.
+<p> This coercion scheme has many advantages over the method of defining explicit cross-type operations, as outlined above. Although we still need to write coercion procedures to relate the types (possibly n^2 procedures for a system with n types), we need to write only one procedure for each pair of types rather than a different procedure for each collection of types and each generic operation.<a id="footnote_link_2-51" class="footnote_link" href="#footnote_2-51">51</a>  What we are counting on here is the fact that the appropriate transformation between types depends only on the types themselves, not on the operation to be applied.
 
 <p> On the other hand, there may be applications for which our coercion scheme is not general enough. Even when neither of the objects to be combined can be converted to the type of the other it may still be possible to perform the operation by converting both objects to a third type. In order to deal with such complexity and still preserve modularity in our programs, it is usually necessary to build systems that take advantage of still further structure in the relations among types, as we discuss next.
 
 <h4> Hierarchies of types </h4>
 
-<p> The coercion scheme presented above relied on the existence of natural relations between pairs of types. Often there is more ``global'' structure in how the different types relate to each other. For instance, suppose we are building a generic arithmetic system to handle integers, rational numbers, real numbers, and complex numbers. In such a system, it is quite natural to regard an integer as a special kind of rational number, which is in turn a special kind of real number, which is in turn a special kind of complex number. What we actually have is a so-called <tt>hierarchy of types</tt> , in which, for example, integers are a <tt>subtype</tt> of rational numbers (i.e., any operation that can be applied to a rational number can automatically be applied to an integer). Conversely, we say that rational numbers form a <tt>supertype</tt> of integers. The particular hierarchy we have here is of a very simple kind, in which each type has at most one supertype and at most one subtype. Such a structure, called a <tt>tower</tt> , is illustrated in Figure 2-25.
+<p> The coercion scheme presented above relied on the existence of natural relations between pairs of types. Often there is more ``global'' structure in how the different types relate to each other. For instance, suppose we are building a generic arithmetic system to handle integers, rational numbers, real numbers, and complex numbers. In such a system, it is quite natural to regard an integer as a special kind of rational number, which is in turn a special kind of real number, which is in turn a special kind of complex number. What we actually have is a so-called <code>hierarchy of types</code> , in which, for example, integers are a <code>subtype</code> of rational numbers (i.e., any operation that can be applied to a rational number can automatically be applied to an integer). Conversely, we say that rational numbers form a <code>supertype</code> of integers. The particular hierarchy we have here is of a very simple kind, in which each type has at most one supertype and at most one subtype. Such a structure, called a <code>tower</code> , is illustrated in Figure 2-25.
 
 <div class="figure">
 <img src="images/ch2-Z-G-66.gif">
 <p> <b>Figure 2.25:</b> A tower of types.
 </div>
 
-<p> If we have a tower structure, then we can greatly simplify the problem of adding a new type to the hierarchy, for we need only specify how the new type is embedded in the next supertype above it and how it is the supertype of the type below it. For example, if we want to add an integer to a complex number, we need not explicitly define a special coercion procedure <tt>integer->complex</tt>. Instead, we define how an integer can be transformed into a rational number, how a rational number is transformed into a real number, and how a real number is transformed into a complex number. We then allow the system to transform the integer into a complex number through these steps and then add the two complex numbers.
+<p> If we have a tower structure, then we can greatly simplify the problem of adding a new type to the hierarchy, for we need only specify how the new type is embedded in the next supertype above it and how it is the supertype of the type below it. For example, if we want to add an integer to a complex number, we need not explicitly define a special coercion procedure <code>integer->complex</code>. Instead, we define how an integer can be transformed into a rational number, how a rational number is transformed into a real number, and how a real number is transformed into a complex number. We then allow the system to transform the integer into a complex number through these steps and then add the two complex numbers.
 
-<p> We can redesign our <tt>apply-generic</tt> procedure in the following way: For each type, we need to supply a <tt>raise</tt> procedure, which ``raises'' objects of that type one level in the tower. Then when the system is required to operate on objects of different types it can successively raise the lower types until all the objects are at the same level in the tower. (Exercise 2-83 and Exercise 2-84 concern the details of implementing such a strategy.)
+<p> We can redesign our <code>apply-generic</code> procedure in the following way: For each type, we need to supply a <code>raise</code> procedure, which ``raises'' objects of that type one level in the tower. Then when the system is required to operate on objects of different types it can successively raise the lower types until all the objects are at the same level in the tower. (Exercise 2-83 and Exercise 2-84 concern the details of implementing such a strategy.)
 
-<p> Another advantage of a tower is that we can easily implement the notion that every type ``inherits'' all operations defined on a supertype. For instance, if we do not supply a special procedure for finding the real part of an integer, we should nevertheless expect that <tt>real-part</tt> will be defined for integers by virtue of the fact that integers are a subtype of complex numbers. In a tower, we can arrange for this to happen in a uniform way by modifying <tt>apply-generic</tt>. If the required operation is not directly defined for the type of the object given, we raise the object to its supertype and try again. We thus crawl up the tower, transforming our argument as we go, until we either find a level at which the desired operation can be performed or hit the top (in which case we give up).
+<p> Another advantage of a tower is that we can easily implement the notion that every type ``inherits'' all operations defined on a supertype. For instance, if we do not supply a special procedure for finding the real part of an integer, we should nevertheless expect that <code>real-part</code> will be defined for integers by virtue of the fact that integers are a subtype of complex numbers. In a tower, we can arrange for this to happen in a uniform way by modifying <code>apply-generic</code>. If the required operation is not directly defined for the type of the object given, we raise the object to its supertype and try again. We thus crawl up the tower, transforming our argument as we go, until we either find a level at which the desired operation can be performed or hit the top (in which case we give up).
 
 <p> Yet another advantage of a tower over a more general hierarchy is that it gives us a simple way to ``lower'' a data object to the simplest representation. For example, if we add 2 + 3i to 4 - 3i, it would be nice to obtain the answer as the integer 6 rather than as the complex number 6 + 0i. Exercise 2-85 discusses a way to implement such a lowering operation. (The trick is that we need a general way to distinguish those objects that can be lowered, such as 6 + 0i, from those that cannot, such as 6 + 2i.)
 
@@ -323,10 +321,10 @@ C.prompt("scheme-define-apply-generic");
 
 <h4> Inadequacies of hierarchies </h4>
 
-<p> If the data types in our system can be naturally arranged in a tower, this greatly simplifies the problems of dealing with generic operations on different types, as we have seen. Unfortunately, this is usually not the case. Figure 2-26 illustrates a more complex arrangement of mixed types, this one showing relations among different types of geometric figures. We see that, in general, a type may have more than one subtype. Triangles and quadrilaterals, for instance, are both subtypes of polygons. In addition, a type may have more than one supertype. For example, an isosceles right triangle may be regarded either as an isosceles triangle or as a right triangle. This multiple-supertypes issue is particularly thorny, since it means that there is no unique way to ``raise'' a type in the hierarchy. Finding the ``correct'' supertype in which to apply an operation to an object may involve considerable searching through the entire type network on the part of a procedure such as <tt>apply-generic</tt>. Since there generally are multiple subtypes for a type, there is a similar problem in coercing a value ``down'' the type hierarchy. Dealing with large numbers of interrelated types while still preserving modularity in the design of large systems is very difficult, and is an area of much current research.<a name="footnote_link_2-52" class="footnote_link" href="#footnote_2-52">52</a>
+<p> If the data types in our system can be naturally arranged in a tower, this greatly simplifies the problems of dealing with generic operations on different types, as we have seen. Unfortunately, this is usually not the case. Figure 2-26 illustrates a more complex arrangement of mixed types, this one showing relations among different types of geometric figures. We see that, in general, a type may have more than one subtype. Triangles and quadrilaterals, for instance, are both subtypes of polygons. In addition, a type may have more than one supertype. For example, an isosceles right triangle may be regarded either as an isosceles triangle or as a right triangle. This multiple-supertypes issue is particularly thorny, since it means that there is no unique way to ``raise'' a type in the hierarchy. Finding the ``correct'' supertype in which to apply an operation to an object may involve considerable searching through the entire type network on the part of a procedure such as <code>apply-generic</code>. Since there generally are multiple subtypes for a type, there is a similar problem in coercing a value ``down'' the type hierarchy. Dealing with large numbers of interrelated types while still preserving modularity in the design of large systems is very difficult, and is an area of much current research.<a id="footnote_link_2-52" class="footnote_link" href="#footnote_2-52">52</a>
 
-<div class="exercise">
-<p> <b>Exercise 2.81:</b> Louis Reasoner has noticed that <tt>apply-generic</tt> may try to coerce the arguments to each other's type even if they already have the same type. Therefore, he reasons, we need to put procedures in the coercion table to <tt>coerce</tt> arguments of each type to their own type. For example, in addition to the <tt>scheme-number->complex</tt> coercion shown above, he would do:
+<div class="exercise" id="thm_2.81">
+<p> <b>Exercise 2.81:</b> Louis Reasoner has noticed that <code>apply-generic</code> may try to coerce the arguments to each other's type even if they already have the same type. Therefore, he reasons, we need to put procedures in the coercion table to <code>coerce</code> arguments of each type to their own type. For example, in addition to the <code>scheme-number->complex</code> coercion shown above, he would do:
 
 <div id="scheme-define-scheme-number-to-scheme-number">
 (define (scheme-number->scheme-number n) n)
@@ -341,7 +339,7 @@ C.prompt("scheme-define-scheme-number-to-scheme-number");
 
 <ul>
 <li>
-<p> With Louis's coercion procedures installed, what happens if <tt>apply-generic</tt> is called with two arguments of type <tt>scheme-number</tt> or two arguments of type <tt>complex</tt> for an operation that is not found in the table for those types?  For example, assume that we've defined a generic exponentiation operation:
+<p> With Louis's coercion procedures installed, what happens if <code>apply-generic</code> is called with two arguments of type <code>scheme-number</code> or two arguments of type <code>complex</code> for an operation that is not found in the table for those types?  For example, assume that we've defined a generic exponentiation operation:
 
 <div id="scheme-define-exp">
 (define (exp x y) (apply-generic 'exp x y))
@@ -355,53 +353,52 @@ C.prompt("scheme-define-exp");
 <div id="scheme-put-exp">
 ;; following added to Scheme-number package
 (put 'exp '(scheme-number scheme-number)
-     (lambda (x y) (tag (expt x y)))) ; using primitive <tt>expt</tt>
+     (lambda (x y) (tag (expt x y)))) ; using primitive <code>expt</code>
 </div>
 <script>
 C.prompt("scheme-put-exp");
 </script>
 
-<p> What happens if we call <tt>exp</tt> with two complex numbers as arguments?
+<p> What happens if we call <code>exp</code> with two complex numbers as arguments?
 </li>
 
 <li>
-<p> Is Louis correct that something had to be done about coercion with arguments of the same type, or does <tt>apply-generic</tt> work correctly as is? </li> <li> Modify <tt>apply-generic</tt> so that it doesn't try coercion if the two arguments have the same type.
+<p> Is Louis correct that something had to be done about coercion with arguments of the same type, or does <code>apply-generic</code> work correctly as is? </li> <li> Modify <code>apply-generic</code> so that it doesn't try coercion if the two arguments have the same type.
 </li>
 </ul>
 </div>
 
 <p>
-<div class="exercise">
+<div class="exercise" id="thm_2.82">
 <p> <b>Exercise 2.82:</b> Show how to generalize
-<tt>apply-generic</tt> to handle coercion in the general case of multiple arguments. One strategy is to attempt to coerce all the arguments to the type of the first argument, then to the type of the second argument, and so on. Give an example of a situation where this strategy (and likewise the two-argument version given above) is not sufficiently general. (Hint: Consider the case where there are some suitable mixed-type operations present in the table that will not be tried.)
+<code>apply-generic</code> to handle coercion in the general case of multiple arguments. One strategy is to attempt to coerce all the arguments to the type of the first argument, then to the type of the second argument, and so on. Give an example of a situation where this strategy (and likewise the two-argument version given above) is not sufficiently general. (Hint: Consider the case where there are some suitable mixed-type operations present in the table that will not be tried.)
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.83:</b> Suppose you are designing a generic arithmetic system for dealing with the tower of types shown in Figure 2-25: integer, rational, real, complex. For each type (except complex), design a procedure that raises objects of that type one level in the tower. Show how to install a generic <tt>raise</tt> operation that will work for each type (except complex).
+<div class="exercise" id="thm_2.83">
+<p> <b>Exercise 2.83:</b> Suppose you are designing a generic arithmetic system for dealing with the tower of types shown in Figure 2-25: integer, rational, real, complex. For each type (except complex), design a procedure that raises objects of that type one level in the tower. Show how to install a generic <code>raise</code> operation that will work for each type (except complex).
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.84:</b> Using the <tt>raise</tt> operation of Exercise 2-83, modify the <tt>apply-generic</tt> procedure so that it coerces its arguments to have the same type by the method of successive raising, as discussed in this section. You will need to devise a way to test which of two types is higher in the tower. Do this in a manner that is "compatible" with the rest of the system and will not lead to problems in adding new levels to the tower.
+<div class="exercise" id="thm_2.84">
+<p> <b>Exercise 2.84:</b> Using the <code>raise</code> operation of Exercise 2-83, modify the <code>apply-generic</code> procedure so that it coerces its arguments to have the same type by the method of successive raising, as discussed in this section. You will need to devise a way to test which of two types is higher in the tower. Do this in a manner that is "compatible" with the rest of the system and will not lead to problems in adding new levels to the tower.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.85:</b> This section mentioned a method for "simplifying" a data object by lowering it in the tower of types as far as possible. Design a procedure <tt>drop</tt> that accomplishes this for the tower described in Exercise 2-83. The key is to decide, in some general way, whether an object can be lowered. For example, the complex number $1.5 + 0i$ can be lowered as far as <tt>real</tt>, the complex number $1 + 0i$ can be lowered as far as <tt>integer</tt>, and the complex number $2 + 3i$ cannot be lowered at all. Here is a plan for determining whether an object can be lowered: Begin by defining a generic operation <tt>project</tt> that "pushes" an object down in the tower. For example, projecting a complex number would involve throwing away the imaginary part. Then a number can be dropped if, when we <tt>project</tt> it and <tt>raise</tt> the result back to the type we started with, we end up with something equal to what we started with. Show how to implement this idea in detail, by writing a <tt>drop</tt> procedure that drops an object as far as possible. You will need to design the various projection operations<a name="footnote_link_2-53" class="footnote_link" href="#footnote_2-53">53</a> and install <tt>project</tt> as a generic operation in the system. You will also need to make use of a generic equality predicate, such as described in Exercise 2-79. Finally, use <tt>drop</tt> to rewrite <tt>apply-generic</tt> from Exercise 2-84 so that it "simplifies" its answers.
+<div class="exercise" id="thm_2.85">
+<p> <b>Exercise 2.85:</b> This section mentioned a method for "simplifying" a data object by lowering it in the tower of types as far as possible. Design a procedure <code>drop</code> that accomplishes this for the tower described in Exercise 2-83. The key is to decide, in some general way, whether an object can be lowered. For example, the complex number $1.5 + 0i$ can be lowered as far as <code>real</code>, the complex number $1 + 0i$ can be lowered as far as <code>integer</code>, and the complex number $2 + 3i$ cannot be lowered at all. Here is a plan for determining whether an object can be lowered: Begin by defining a generic operation <code>project</code> that "pushes" an object down in the tower. For example, projecting a complex number would involve throwing away the imaginary part. Then a number can be dropped if, when we <code>project</code> it and <code>raise</code> the result back to the type we started with, we end up with something equal to what we started with. Show how to implement this idea in detail, by writing a <code>drop</code> procedure that drops an object as far as possible. You will need to design the various projection operations<a id="footnote_link_2-53" class="footnote_link" href="#footnote_2-53">53</a> and install <code>project</code> as a generic operation in the system. You will also need to make use of a generic equality predicate, such as described in Exercise 2-79. Finally, use <code>drop</code> to rewrite <code>apply-generic</code> from Exercise 2-84 so that it "simplifies" its answers.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.86:</b> Suppose we want to handle complex numbers whose real parts, imaginary parts, magnitudes, and angles can be either ordinary numbers, rational numbers, or other numbers we might wish to add to the system. Describe and implement the changes to the system needed to accommodate this. You will have to define operations such as <tt>sine</tt> and <tt>cosine</tt> that are generic over ordinary numbers and rational numbers.
+<div class="exercise" id="thm_2.86">
+<p> <b>Exercise 2.86:</b> Suppose we want to handle complex numbers whose real parts, imaginary parts, magnitudes, and angles can be either ordinary numbers, rational numbers, or other numbers we might wish to add to the system. Describe and implement the changes to the system needed to accommodate this. You will have to define operations such as <code>sine</code> and <code>cosine</code> that are generic over ordinary numbers and rational numbers.
 </div>
 
-<a name="%_sec_2.5.3" />
-<h3> 2.5.3 Example: Symbolic Algebra </h3>
+<h3 id="sec_2.5.3"> 2.5.3 Example: Symbolic Algebra </h3>
 
 <p> The manipulation of symbolic algebraic expressions is a complex process that illustrates many of the hardest problems that occur in the design of large-scale systems. An algebraic expression, in general, can be viewed as a hierarchical structure, a tree of operators applied to operands. We can construct algebraic expressions by starting with a set of primitive objects, such as constants and variables, and combining these by means of algebraic operators, such as addition and multiplication. As in other languages, we form abstractions that enable us to refer to compound objects in simple terms. Typical abstractions in symbolic algebra are ideas such as linear combination, polynomial, rational function, or trigonometric function. We can regard these as compound ``types,'' which are often useful for directing the processing of expressions. For example, we could describe the expression
 
@@ -415,7 +412,7 @@ $$
 
 <h4> Arithmetic on polynomials </h4>
 
-<p> Our first task in designing a system for performing arithmetic on polynomials is to decide just what a polynomial is. Polynomials are normally defined relative to certain variables (the <tt>indeterminates</tt> of the polynomial). For simplicity, we will restrict ourselves to polynomials having just one indeterminate (<tt>univariate polynomials</tt>).<a name="footnote_link_2-54" class="footnote_link" href="#footnote_2-54">54</a> below.} We will define a polynomial to be a sum of terms, each of which is either a coefficient, a power of the indeterminate, or a product of a coefficient and a power of the indeterminate. A coefficient is defined as an algebraic expression that is not dependent upon the indeterminate of the polynomial. For example,
+<p> Our first task in designing a system for performing arithmetic on polynomials is to decide just what a polynomial is. Polynomials are normally defined relative to certain variables (the <code>indeterminates</code> of the polynomial). For simplicity, we will restrict ourselves to polynomials having just one indeterminate (<code>univariate polynomials</code>).<a id="footnote_link_2-54" class="footnote_link" href="#footnote_2-54">54</a> below.} We will define a polynomial to be a sum of terms, each of which is either a coefficient, a power of the indeterminate, or a product of a coefficient and a power of the indeterminate. A coefficient is defined as an algebraic expression that is not dependent upon the indeterminate of the polynomial. For example,
 
 $$
 5x^2 + 3x + 7
@@ -429,11 +426,11 @@ $$
 
 <p> is a polynomial in x whose coefficients are polynomials in y.
 
-<p> Already we are skirting some thorny issues. Is the first of these polynomials the same as the polynomial $5y^2 + 3y + 7$, or not?  A reasonable answer might be "yes, if we are considering a polynomial purely as a mathematical function, but no, if we are considering a polynomial to be a syntactic form." The second polynomial is algebraically equivalent to a polynomial in $y$ whose coefficients are polynomials in x. Should our system recognize this, or not?  Furthermore, there are other ways to represent a polynomial &ndash; for example, as a product of factors, or (for a univariate polynomial) as the set of roots, or as a listing of the values of the polynomial at a specified set of points.<a name="footnote_link_2-55" class="footnote_link" href="#footnote_2-55">55</a>  We can finesse these questions by deciding that in our algebraic-manipulation system a "polynomial" will be a particular syntactic form, not its underlying mathematical meaning.
+<p> Already we are skirting some thorny issues. Is the first of these polynomials the same as the polynomial $5y^2 + 3y + 7$, or not?  A reasonable answer might be "yes, if we are considering a polynomial purely as a mathematical function, but no, if we are considering a polynomial to be a syntactic form." The second polynomial is algebraically equivalent to a polynomial in $y$ whose coefficients are polynomials in x. Should our system recognize this, or not?  Furthermore, there are other ways to represent a polynomial &ndash; for example, as a product of factors, or (for a univariate polynomial) as the set of roots, or as a listing of the values of the polynomial at a specified set of points.<a id="footnote_link_2-55" class="footnote_link" href="#footnote_2-55">55</a>  We can finesse these questions by deciding that in our algebraic-manipulation system a "polynomial" will be a particular syntactic form, not its underlying mathematical meaning.
 
 <p> Now we must consider how to go about doing arithmetic on polynomials. In this simple system, we will consider only addition and multiplication. Moreover, we will insist that two polynomials to be combined must have the same indeterminate.
 
-<p> We will approach the design of our system by following the familiar discipline of data abstraction. We will represent polynomials using a data structure called a <tt>poly</tt> , which consists of a variable and a collection of terms. We assume that we have selectors <tt>variable</tt> and <tt>term-list</tt> that extract those parts from a poly and a constructor <tt>make-poly</tt> that assembles a poly from a given variable and a term list. A variable will be just a symbol, so we can use the <tt>same-variable?</tt>  procedure of section <a href="2-3-symbolic.html">2.3.2</a> to compare variables. The following procedures define addition and multiplication of polys:
+<p> We will approach the design of our system by following the familiar discipline of data abstraction. We will represent polynomials using a data structure called a <code>poly</code> , which consists of a variable and a collection of terms. We assume that we have selectors <code>variable</code> and <code>term-list</code> that extract those parts from a poly and a constructor <code>make-poly</code> that assembles a poly from a given variable and a term list. A variable will be just a symbol, so we can use the <code>same-variable?</code>  procedure of section <a href="2-3-symbolic.html">2.3.2</a> to compare variables. The following procedures define addition and multiplication of polys:
 
 <div id="scheme-define-add-mul-poly">
 (define (add-poly p1 p2)
@@ -456,7 +453,7 @@ $$
 C.prompt("scheme-define-add-mul-poly");
 </script>
 
-<p> To incorporate polynomials into our generic arithmetic system, we need to supply them with type tags. We'll use the tag <tt>polynomial</tt>, and install appropriate operations on tagged polynomials in the operation table. We'll embed all our code in an installation procedure for the polynomial package, similar to the ones in section <a href="2-5-generic.html">2.5.1</a>:
+<p> To incorporate polynomials into our generic arithmetic system, we need to supply them with type tags. We'll use the tag <code>polynomial</code>, and install appropriate operations on tagged polynomials in the operation table. We'll embed all our code in an installation procedure for the polynomial package, similar to the ones in section <a href="2-5-generic.html">2.5.1</a>:
 
 <div id="scheme-define-install-polynomial-package">
 (define (install-polynomial-package)
@@ -466,7 +463,7 @@ C.prompt("scheme-define-add-mul-poly");
     (cons variable term-list))
   (define (variable p) (car p))
   (define (term-list p) (cdr p))
-  ;procedures same-variable? and variable? from section <a href="2-3-symbolic.html#%_sec_2.3.2">2.3.2</a>
+  ;procedures same-variable? and variable? from section <a href="2-3-symbolic.html#sec_2.3.2">2.3.2</a>
 
   ;; representation of terms and term lists
   ;procedures adjoin-term ... coeff from text below
@@ -495,9 +492,9 @@ C.prompt("scheme-define-install-polynomial-package");
 
 <p> Polynomial addition is performed termwise. Terms of the same order (i.e., with the same power of the indeterminate) must be combined. This is done by forming a new term of the same order whose coefficient is the sum of the coefficients of the addends. Terms in one addend for which there are no terms of the same order in the other addend are simply accumulated into the sum polynomial being constructed.
 
-<p> In order to manipulate term lists, we will assume that we have a constructor <tt>the-empty-termlist</tt> that returns an empty term list and a constructor <tt>adjoin-term</tt> that adjoins a new term to a term list. We will also assume that we have a predicate <tt>empty-termlist?</tt> that tells if a given term list is empty, a selector <tt>first-term</tt> that extracts the highest-order term from a term list, and a selector <tt>rest-terms</tt> that returns all but the highest-order term. To manipulate terms, we will suppose that we have a constructor <tt>make-term</tt> that constructs a term with given order and coefficient, and selectors <tt>order</tt> and <tt>coeff</tt> that return, respectively, the order and the coefficient of the term. These operations allow us to consider both terms and term lists as data abstractions, whose concrete representations we can worry about separately.
+<p> In order to manipulate term lists, we will assume that we have a constructor <code>the-empty-termlist</code> that returns an empty term list and a constructor <code>adjoin-term</code> that adjoins a new term to a term list. We will also assume that we have a predicate <code>empty-termlist?</code> that tells if a given term list is empty, a selector <code>first-term</code> that extracts the highest-order term from a term list, and a selector <code>rest-terms</code> that returns all but the highest-order term. To manipulate terms, we will suppose that we have a constructor <code>make-term</code> that constructs a term with given order and coefficient, and selectors <code>order</code> and <code>coeff</code> that return, respectively, the order and the coefficient of the term. These operations allow us to consider both terms and term lists as data abstractions, whose concrete representations we can worry about separately.
 
-<p> Here is the procedure that constructs the term list for the sum of two polynomials:<a name="footnote_link_2-56" class="footnote_link" href="#footnote_2-56">56</a>
+<p> Here is the procedure that constructs the term list for the sum of two polynomials:<a id="footnote_link_2-56" class="footnote_link" href="#footnote_2-56">56</a>
 
 <div id="scheme-define-add-terms">
 (define (add-terms L1 L2)
@@ -522,9 +519,9 @@ C.prompt("scheme-define-install-polynomial-package");
 C.prompt("scheme-define-add-terms");
 </script>
 
-<p> The most important point to note here is that we used the generic addition procedure <tt>add</tt> to add together the coefficients of the terms being combined. This has powerful consequences, as we will see below.
+<p> The most important point to note here is that we used the generic addition procedure <code>add</code> to add together the coefficients of the terms being combined. This has powerful consequences, as we will see below.
 
-<p> In order to multiply two term lists, we multiply each term of the first list by all the terms of the other list, repeatedly using <tt>mul-term-by-all-terms</tt>, which multiplies a given term by all terms in a given term list. The resulting term lists (one for each term of the first list) are accumulated into a sum. Multiplying two terms forms a term whose order is the sum of the orders of the factors and whose coefficient is the product of the coefficients of the factors:
+<p> In order to multiply two term lists, we multiply each term of the first list by all the terms of the other list, repeatedly using <code>mul-term-by-all-terms</code>, which multiplies a given term by all terms in a given term list. The resulting term lists (one for each term of the first list) are accumulated into a sum. Multiplying two terms forms a term whose order is the sum of the orders of the factors and whose coefficient is the product of the coefficients of the factors:
 
 <div id="scheme-define-mul-terms">
 (define (mul-terms L1 L2)
@@ -546,25 +543,25 @@ C.prompt("scheme-define-add-terms");
 C.prompt("scheme-define-mul-terms");
 </script>
 
-<p> This is really all there is to polynomial addition and multiplication. Notice that, since we operate on terms using the generic procedures <tt>add</tt> and <tt>mul</tt>, our polynomial package is automatically able to handle any type of coefficient that is known about by the generic arithmetic package. If we include a coercion mechanism such as one of those discussed in section <a href="2-5-generic.html">2.5.2</a>, then we also are automatically able to handle operations on polynomials of different coefficient types, such as
+<p> This is really all there is to polynomial addition and multiplication. Notice that, since we operate on terms using the generic procedures <code>add</code> and <code>mul</code>, our polynomial package is automatically able to handle any type of coefficient that is known about by the generic arithmetic package. If we include a coercion mechanism such as one of those discussed in section <a href="2-5-generic.html">2.5.2</a>, then we also are automatically able to handle operations on polynomials of different coefficient types, such as
 
 $$
 \left[3x^2 + (2 + 3i)x + 7\right] \cdot \left[ x^4 + \frac{2}{3} x^2 + (5 + 3i) \right]
 $$
 
-<p> Because we installed the polynomial addition and multiplication procedures <tt>add-poly</tt> and <tt>mul-poly</tt> in the generic arithmetic system as the <tt>add</tt> and <tt>mul</tt> operations for type <tt>polynomial</tt>, our system is also automatically able to handle polynomial operations such as
+<p> Because we installed the polynomial addition and multiplication procedures <code>add-poly</code> and <code>mul-poly</code> in the generic arithmetic system as the <code>add</code> and <code>mul</code> operations for type <code>polynomial</code>, our system is also automatically able to handle polynomial operations such as
 
 $$
 \left[(y + 1)x^2 + (y^2 + 1)x + (y - 1)\right] \cdot \left[(y - 2)x + (y^3 + 7)\right]
 $$
 
-<p> The reason is that when the system tries to combine coefficients, it will dispatch through <tt>add</tt> and <tt>mul</tt>. Since the coefficients are themselves polynomials (in y), these will be combined using <tt>add-poly</tt> and <tt>mul-poly</tt>. The result is a kind of ``data-directed recursion'' in which, for example, a call to <tt>mul-poly</tt> will result in recursive calls to <tt>mul-poly</tt> in order to multiply the coefficients. If the coefficients of the coefficients were themselves polynomials (as might be used to represent polynomials in three variables), the data direction would ensure that the system would follow through another level of recursive calls, and so on through as many levels as the structure of the data dictates.<a name="footnote_link_2-57" class="footnote_link" href="#footnote_2-57">57</a>
+<p> The reason is that when the system tries to combine coefficients, it will dispatch through <code>add</code> and <code>mul</code>. Since the coefficients are themselves polynomials (in y), these will be combined using <code>add-poly</code> and <code>mul-poly</code>. The result is a kind of ``data-directed recursion'' in which, for example, a call to <code>mul-poly</code> will result in recursive calls to <code>mul-poly</code> in order to multiply the coefficients. If the coefficients of the coefficients were themselves polynomials (as might be used to represent polynomials in three variables), the data direction would ensure that the system would follow through another level of recursive calls, and so on through as many levels as the structure of the data dictates.<a id="footnote_link_2-57" class="footnote_link" href="#footnote_2-57">57</a>
 
 <h4> Representing term lists </h4>
 
-<p> Finally, we must confront the job of implementing a good representation for term lists. A term list is, in effect, a set of coefficients keyed by the order of the term. Hence, any of the methods for representing sets, as discussed in section <a href="2-3-symbolic.html">2.3.3</a>, can be applied to this task. On the other hand, our procedures <tt>add-terms</tt> and <tt>mul-terms</tt> always access term lists sequentially from highest to lowest order. Thus, we will use some kind of ordered list representation.
+<p> Finally, we must confront the job of implementing a good representation for term lists. A term list is, in effect, a set of coefficients keyed by the order of the term. Hence, any of the methods for representing sets, as discussed in section <a href="2-3-symbolic.html">2.3.3</a>, can be applied to this task. On the other hand, our procedures <code>add-terms</code> and <code>mul-terms</code> always access term lists sequentially from highest to lowest order. Thus, we will use some kind of ordered list representation.
 
-<p> How should we structure the list that represents a term list?  One consideration is the ``density'' of the polynomials we intend to manipulate. A polynomial is said to be <tt>dense</tt> if it has nonzero coefficients in terms of most orders. If it has many zero terms it is said to be <tt>sparse</tt> . For example,
+<p> How should we structure the list that represents a term list?  One consideration is the ``density'' of the polynomials we intend to manipulate. A polynomial is said to be <code>dense</code> if it has nonzero coefficients in terms of most orders. If it has many zero terms it is said to be <code>sparse</code> . For example,
 
 $$
 A : x^5 + 2x^4 + 3x^2 - 2x - 5
@@ -578,7 +575,7 @@ $$
 
 <p> is sparse.
 
-<p> The term lists of dense polynomials are most efficiently represented as lists of the coefficients. For example, A above would be nicely represented as <tt>(1 2 0 3 -2 -5)</tt>. The order of a term in this representation is the length of the sublist beginning with that term's coefficient, decremented by 1.<a name="footnote_link_2-58" class="footnote_link" href="#footnote_2-58">58</a>  This would be a terrible representation for a sparse polynomial such as B: There would be a giant list of zeros punctuated by a few lonely nonzero terms. A more reasonable representation of the term list of a sparse polynomial is as a list of the nonzero terms, where each term is a list containing the order of the term and the coefficient for that order. In such a scheme, polynomial B is efficiently represented as <tt>((100 1) (2 2) (0 1))</tt>. As most polynomial manipulations are performed on sparse polynomials, we will use this method. We will assume that term lists are represented as lists of terms, arranged from highest-order to lowest-order term. Once we have made this decision, implementing the selectors and constructors for terms and term lists is straightforward:<a name="footnote_link_2-59" class="footnote_link" href="#footnote_2-59">59</a>
+<p> The term lists of dense polynomials are most efficiently represented as lists of the coefficients. For example, A above would be nicely represented as <code>(1 2 0 3 -2 -5)</code>. The order of a term in this representation is the length of the sublist beginning with that term's coefficient, decremented by 1.<a id="footnote_link_2-58" class="footnote_link" href="#footnote_2-58">58</a>  This would be a terrible representation for a sparse polynomial such as B: There would be a giant list of zeros punctuated by a few lonely nonzero terms. A more reasonable representation of the term list of a sparse polynomial is as a list of the nonzero terms, where each term is a list containing the order of the term and the coefficient for that order. In such a scheme, polynomial B is efficiently represented as <code>((100 1) (2 2) (0 1))</code>. As most polynomial manipulations are performed on sparse polynomials, we will use this method. We will assume that term lists are represented as lists of terms, arranged from highest-order to lowest-order term. Once we have made this decision, implementing the selectors and constructors for terms and term lists is straightforward:<a id="footnote_link_2-59" class="footnote_link" href="#footnote_2-59">59</a>
 
 <div id="scheme-define-adjoin-term">
 (define (adjoin-term term term-list)
@@ -600,7 +597,7 @@ C.prompt("scheme-define-adjoin-term");
 </script>
 
 
-<p> where <tt>=zero?</tt> is as defined in Exercise 2-80. (See also Exercise 2-87 below.)
+<p> where <code>=zero?</code> is as defined in Exercise 2-80. (See also Exercise 2-87 below.)
 
 <p> Users of the polynomial package will create (tagged) polynomials by means of the procedure:
 
@@ -612,23 +609,23 @@ C.prompt("scheme-define-adjoin-term");
 C.prompt("scheme-define-make-polynomial");
 </script>
 
-<div class="exercise">
-<p> <b>Exercise 2.87:</b> Install <tt>=zero?</tt> for polynomials in the generic arithmetic package. This will allow <tt>adjoin-term</tt> to work for polynomials with coefficients that are themselves polynomials.
+<div class="exercise" id="thm_2.87">
+<p> <b>Exercise 2.87:</b> Install <code>=zero?</code> for polynomials in the generic arithmetic package. This will allow <code>adjoin-term</code> to work for polynomials with coefficients that are themselves polynomials.
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_2.88">
 <p> <b>Exercise 2.88:</b> Extend the polynomial system to include subtraction of polynomials. (Hint: You may find it helpful to define a generic negation operation.)
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_2.89">
 <p> <b>Exercise 2.89:</b> Define procedures that implement the term-list representation described above as appropriate for dense polynomials.
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_2.90">
 <p> <b>Exercise 2.90:</b> Suppose we want to have a polynomial system that is efficient for both sparse and dense polynomials. One way to do this is to allow both kinds of term-list representations in our system. The situation is analogous to the complex-number example of section <a href="2-4-representation.html">2.4</a>, where we allowed both rectangular and polar representations. To do this we must distinguish different types of term lists and make the operations on term lists generic. Redesign the polynomial system to implement this generalization. This is a major effort, not a local change.
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_2.91">
 <p> <b>Exercise 2.91:</b> A univariate polynomial can be divided by another one to produce a polynomial quotient and a polynomial remainder. For example,
 
 <pre>
@@ -639,9 +636,9 @@ x^2 - 1
 
 <p> Division can be performed via long division. That is, divide the highest-order term of the dividend by the highest-order term of the divisor. The result is the first term of the quotient. Next, multiply the result by the divisor, subtract that from the dividend, and produce the rest of the answer by recursively dividing the difference by the divisor. Stop when the order of the divisor exceeds the order of the dividend and declare the dividend to be the remainder. Also, if the dividend ever becomes zero, return zero as both quotient and remainder.
 
-<p> We can design a <tt>div-poly</tt> procedure on the model of <tt>add-poly</tt> and <tt>mul-poly</tt>. The procedure checks to see if the two polys have the same variable. If so, <tt>div-poly</tt> strips off the variable and passes the problem to <tt>div-terms</tt>, which performs the division operation on term lists. <tt>Div-poly</tt> finally reattaches the variable to the result supplied by <tt>div-terms</tt>. It is convenient to design <tt>div-terms</tt> to compute both the quotient and the remainder of a division. <tt>Div-terms</tt> can take two term lists as arguments and return a list of the quotient term list and the remainder term list.
+<p> We can design a <code>div-poly</code> procedure on the model of <code>add-poly</code> and <code>mul-poly</code>. The procedure checks to see if the two polys have the same variable. If so, <code>div-poly</code> strips off the variable and passes the problem to <code>div-terms</code>, which performs the division operation on term lists. <code>Div-poly</code> finally reattaches the variable to the result supplied by <code>div-terms</code>. It is convenient to design <code>div-terms</code> to compute both the quotient and the remainder of a division. <code>Div-terms</code> can take two term lists as arguments and return a list of the quotient term list and the remainder term list.
 
-<p> Complete the following definition of <tt>div-terms</tt> by filling in the missing expressions. Use this to implement <tt>div-poly</tt>, which takes two polys as arguments and returns a list of the quotient and remainder polys.
+<p> Complete the following definition of <code>div-terms</code> by filling in the missing expressions. Use this to implement <code>div-poly</code>, which takes two polys as arguments and returns a list of the quotient and remainder polys.
 
 <div id="scheme-define-div-terms">
 (define (div-terms L1 L2)
@@ -672,13 +669,13 @@ C.prompt("scheme-define-div-terms");
 
 <p> It should not be surprising that controlling coercion is a serious problem in the design of large-scale algebraic-manipulation systems. Much of the complexity of such systems is concerned with relationships among diverse types. Indeed, it is fair to say that we do not yet completely understand coercion. In fact, we do not yet completely understand the concept of a data type. Nevertheless, what we know provides us with powerful structuring and modularity principles to support the design of large systems.
 
-<div class="exercise">
+<div class="exercise" id="thm_2.92">
 <p> <b>Exercise 2.92:</b> By imposing an ordering on variables, extend the polynomial package so that addition and multiplication of polynomials works for polynomials in different variables. (This is not easy!)
 </div>
 
 <h4> Extended exercise: Rational functions </h4>
 
-<p> We can extend our generic arithmetic system to include <tt>rational functions</tt> . These are ``fractions'' whose numerator and denominator are polynomials, such as
+<p> We can extend our generic arithmetic system to include <code>rational functions</code> . These are ``fractions'' whose numerator and denominator are polynomials, such as
 
 $$
 \frac{x+1}{x^3 - 1}
@@ -695,8 +692,8 @@ $$
 
 <p> If we modify our rational-arithmetic package so that it uses generic operations, then it will do what we want, except for the problem of reducing fractions to lowest terms.
 
-<div class="exercise">
-<p> <b>Exercise 2.93:</b> Modify the rational-arithmetic package to use generic operations, but change <tt>make-rat</tt> so that it does not attempt to reduce fractions to lowest terms. Test your system by calling <tt>make-rational</tt> on two polynomials to produce a rational function
+<div class="exercise" id="thm_2.93">
+<p> <b>Exercise 2.93:</b> Modify the rational-arithmetic package to use generic operations, but change <code>make-rat</code> so that it does not attempt to reduce fractions to lowest terms. Test your system by calling <code>make-rational</code> on two polynomials to produce a rational function
 
 <div id="scheme-test-rational-functions">
 (define p1 (make-polynomial 'x '((2 1)(0 1))))
@@ -707,9 +704,9 @@ $$
 C.prompt("scheme-test-rational-functions");
 </script>
 
-<p> Now add <tt>rf</tt> to itself, using <tt>add</tt>. You will observe that this addition procedure does not reduce fractions to lowest terms.
+<p> Now add <code>rf</code> to itself, using <code>add</code>. You will observe that this addition procedure does not reduce fractions to lowest terms.
 
-<p> We can reduce polynomial fractions to lowest terms using the same idea we used with integers: modifying <tt>make-rat</tt> to divide both the numerator and the denominator by their greatest common divisor. The notion of ``greatest common divisor'' makes sense for polynomials. In fact, we can compute the GCD of two polynomials using essentially the same Euclid's Algorithm that works for integers.<a name="footnote_link_2-60" class="footnote_link" href="#footnote_2-60">60</a>  The integer version is
+<p> We can reduce polynomial fractions to lowest terms using the same idea we used with integers: modifying <code>make-rat</code> to divide both the numerator and the denominator by their greatest common divisor. The notion of ``greatest common divisor'' makes sense for polynomials. In fact, we can compute the GCD of two polynomials using essentially the same Euclid's Algorithm that works for integers.<a id="footnote_link_2-60" class="footnote_link" href="#footnote_2-60">60</a>  The integer version is
 
 <div id="scheme-define-gcd">
 (define (gcd a b)
@@ -733,13 +730,13 @@ C.prompt("scheme-define-gcd");
 C.prompt("scheme-define-gcd-terms");
 </script>
 
-<p> where <tt>remainder-terms</tt> picks out the remainder component of the list returned by the term-list division operation <tt>div-terms</tt> that was implemented in Exercise 2-91.
+<p> where <code>remainder-terms</code> picks out the remainder component of the list returned by the term-list division operation <code>div-terms</code> that was implemented in Exercise 2-91.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 2.94:</b> Using <tt>div-terms</tt>, implement the procedure <tt>remainder-terms</tt> and use this to define <tt>gcd-terms</tt> as above. Now write a procedure <tt>gcd-poly</tt> that computes the polynomial GCD of two polys. (The procedure should signal an error if the two polys are not in the same variable.)  Install in the system a generic operation <tt>greatest-common-divisor</tt> that reduces to <tt>gcd-poly</tt> for polynomials and to ordinary <tt>gcd</tt> for ordinary numbers. As a test, try
+<div class="exercise" id="thm_2.94">
+<p> <b>Exercise 2.94:</b> Using <code>div-terms</code>, implement the procedure <code>remainder-terms</code> and use this to define <code>gcd-terms</code> as above. Now write a procedure <code>gcd-poly</code> that computes the polynomial GCD of two polys. (The procedure should signal an error if the two polys are not in the same variable.)  Install in the system a generic operation <code>greatest-common-divisor</code> that reduces to <code>gcd-poly</code> for polynomials and to ordinary <code>gcd</code> for ordinary numbers. As a test, try
 
 <div id="scheme-test-polynomial-gcd">
 (define p1 (make-polynomial 'x '((4 1) (3 -1) (2 -2) (1 2))))
@@ -755,7 +752,7 @@ C.prompt("scheme-test-polynomial-gcd");
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_2.95">
 <p> <b>Exercise 2.95:</b> Define P_1, P_2, and P_3 to be the polynomials
 
 $$
@@ -764,21 +761,21 @@ P_2 : 11x^2 + 7 \\
 P_3 : 13x + 5
 $$
 
-<p> Now define $Q_1$ to be the product of $P_1$ and $P_2$ and $Q_2$ to be the product of $P_1$ and $P_3$, and use <tt>greatest-common-divisor</tt> (Exercise 2-94) to compute the GCD of $Q_1$ and $Q_2$. Note that the answer is not the same as $P_1$. This example introduces noninteger operations into the computation, causing difficulties with the GCD algorithm.<a name="footnote_link_2-61" class="footnote_link" href="#footnote_2-61">61</a>  To understand what is happening, try tracing <tt>gcd-terms</tt> while computing the GCD or try performing the division by hand.
+<p> Now define $Q_1$ to be the product of $P_1$ and $P_2$ and $Q_2$ to be the product of $P_1$ and $P_3$, and use <code>greatest-common-divisor</code> (Exercise 2-94) to compute the GCD of $Q_1$ and $Q_2$. Note that the answer is not the same as $P_1$. This example introduces noninteger operations into the computation, causing difficulties with the GCD algorithm.<a id="footnote_link_2-61" class="footnote_link" href="#footnote_2-61">61</a>  To understand what is happening, try tracing <code>gcd-terms</code> while computing the GCD or try performing the division by hand.
 
 <p> We can solve the problem exhibited in Exercise 2-95 if we use the following modification of the GCD algorithm (which really works only in the case of polynomials with integer coefficients). Before performing any polynomial division in the GCD computation, we multiply the dividend by an integer constant factor, chosen to guarantee that no fractions will arise during the division process. Our answer will thus differ from the actual GCD by an integer constant factor, but this does not matter in the case of reducing rational functions to lowest terms; the GCD will be used to divide both the numerator and denominator, so the integer constant factor will cancel out.
 
-<p> More precisely, if $P$ and $Q$ are polynomials, let $O_1$ be the order of $P$ (i.e., the order of the largest term of $P$) and let $O_2$ be the order of $Q$. Let $c$ be the leading coefficient of $Q$. Then it can be shown that, if we multiply $P$ by the <tt>integerizing factor</tt> $ c^{1 + O_1 - O_2}$, the resulting polynomial can be divided by $Q$ by using the <tt>div-terms</tt> algorithm without introducing any fractions. The operation of multiplying the dividend by this constant and then dividing is sometimes called the <tt>pseudodivision</tt> of $P$ by $Q$. The remainder of the division is called the <tt>pseudoremainder</tt> . </div>
+<p> More precisely, if $P$ and $Q$ are polynomials, let $O_1$ be the order of $P$ (i.e., the order of the largest term of $P$) and let $O_2$ be the order of $Q$. Let $c$ be the leading coefficient of $Q$. Then it can be shown that, if we multiply $P$ by the <code>integerizing factor</code> $ c^{1 + O_1 - O_2}$, the resulting polynomial can be divided by $Q$ by using the <code>div-terms</code> algorithm without introducing any fractions. The operation of multiplying the dividend by this constant and then dividing is sometimes called the <code>pseudodivision</code> of $P$ by $Q$. The remainder of the division is called the <code>pseudoremainder</code> . </div>
 
 <div class="exercise">
 <b>Exercise 2.96:</b>
 <ul>
 <li>
-<p> Implement the procedure <tt>pseudoremainder-terms</tt>, which is just like <tt>remainder-terms</tt> except that it multiplies the dividend by the integerizing factor described above before calling <tt>div-terms</tt>. Modify <tt>gcd-terms</tt> to use <tt>pseudoremainder-terms</tt>, and verify that <tt>greatest-common-divisor</tt> now produces an answer with integer coefficients on the example in Exercise 2-95.
+<p> Implement the procedure <code>pseudoremainder-terms</code>, which is just like <code>remainder-terms</code> except that it multiplies the dividend by the integerizing factor described above before calling <code>div-terms</code>. Modify <code>gcd-terms</code> to use <code>pseudoremainder-terms</code>, and verify that <code>greatest-common-divisor</code> now produces an answer with integer coefficients on the example in Exercise 2-95.
 </li>
 
 <li>
-<p> The GCD now has integer coefficients, but they are larger than those of P_1. Modify <tt>gcd-terms</tt> so that it removes common factors from the coefficients of the answer by dividing all the coefficients by their (integer) greatest common divisor.
+<p> The GCD now has integer coefficients, but they are larger than those of P_1. Modify <code>gcd-terms</code> so that it removes common factors from the coefficients of the answer by dividing all the coefficients by their (integer) greatest common divisor.
 </li>
 </ul>
 
@@ -786,7 +783,7 @@ $$
 
 <ul>
 <li>
-Compute the GCD of the numerator and denominator, using the version of <tt>gcd-terms</tt> from Exercise 2-96.
+Compute the GCD of the numerator and denominator, using the version of <code>gcd-terms</code> from Exercise 2-96.
 </li>
 
 <li>
@@ -803,11 +800,11 @@ Compute the GCD of the numerator and denominator, using the version of <tt>gcd-t
 <b>Exercise 2.97:</b>
 <ul>
 <li>
-<p> Implement this algorithm as a procedure <tt>reduce-terms</tt> that takes two term lists <tt>n</tt> and <tt>d</tt> as arguments and returns a list <tt>nn</tt>, <tt>dd</tt>, which are <tt>n</tt> and <tt>d</tt> reduced to lowest terms via the algorithm given above. Also write a procedure <tt>reduce-poly</tt>, analogous to <tt>add-poly</tt>, that checks to see if the two polys have the same variable. If so, <tt>reduce-poly</tt> strips off the variable and passes the problem to <tt>reduce-terms</tt>, then reattaches the variable to the two term lists supplied by <tt>reduce-terms</tt>.
+<p> Implement this algorithm as a procedure <code>reduce-terms</code> that takes two term lists <code>n</code> and <code>d</code> as arguments and returns a list <code>nn</code>, <code>dd</code>, which are <code>n</code> and <code>d</code> reduced to lowest terms via the algorithm given above. Also write a procedure <code>reduce-poly</code>, analogous to <code>add-poly</code>, that checks to see if the two polys have the same variable. If so, <code>reduce-poly</code> strips off the variable and passes the problem to <code>reduce-terms</code>, then reattaches the variable to the two term lists supplied by <code>reduce-terms</code>.
 </li>
 
 <li>
-<p> Define a procedure analogous to <tt>reduce-terms</tt> that does what the original <tt>make-rat</tt> did for integers:
+<p> Define a procedure analogous to <code>reduce-terms</code> that does what the original <code>make-rat</code> did for integers:
 
 <div id="scheme-define-reduce-integers">
 (define (reduce-integers n d)
@@ -818,7 +815,7 @@ Compute the GCD of the numerator and denominator, using the version of <tt>gcd-t
 C.prompt("scheme-define-reduce-integers");
 </script>
 
-<p> and define <tt>reduce</tt> as a generic operation that calls <tt>apply-generic</tt> to dispatch to either <tt>reduce-poly</tt> (for <tt>polynomial</tt> arguments) or <tt>reduce-integers</tt> (for <tt>scheme-number</tt> arguments). You can now easily make the rational-arithmetic package reduce fractions to lowest terms by having <tt>make-rat</tt> call <tt>reduce</tt> before combining the given numerator and denominator to form a rational number. The system now handles rational expressions in either integers or polynomials. To test your program, try the example at the beginning of this extended exercise:
+<p> and define <code>reduce</code> as a generic operation that calls <code>apply-generic</code> to dispatch to either <code>reduce-poly</code> (for <code>polynomial</code> arguments) or <code>reduce-integers</code> (for <code>scheme-number</code> arguments). You can now easily make the rational-arithmetic package reduce fractions to lowest terms by having <code>make-rat</code> call <code>reduce</code> before combining the given numerator and denominator to form a rational number. The system now handles rational expressions in either integers or polynomials. To test your program, try the example at the beginning of this extended exercise:
 
 <div id="scheme-test-make-rational">
 (define p1 (make-polynomial 'x '((1 1)(0 1))))
@@ -837,7 +834,7 @@ C.prompt("scheme-test-make-rational");
 
 <p> See if you get the correct answer, correctly reduced to lowest terms.
 
-<p> The GCD computation is at the heart of any system that does operations on rational functions. The algorithm used above, although mathematically straightforward, is extremely slow. The slowness is due partly to the large number of division operations and partly to the enormous size of the intermediate coefficients generated by the pseudodivisions. One of the active areas in the development of algebraic-manipulation systems is the design of better algorithms for computing polynomial GCDs.<a name="footnote_link_2-62" class="footnote_link" href="#footnote_2-62">62</a>
+<p> The GCD computation is at the heart of any system that does operations on rational functions. The algorithm used above, although mathematically straightforward, is extremely slow. The slowness is due partly to the large number of division operations and partly to the enormous size of the intermediate coefficients generated by the pseudodivisions. One of the active areas in the development of algebraic-manipulation systems is the design of better algorithms for computing polynomial GCDs.<a id="footnote_link_2-62" class="footnote_link" href="#footnote_2-62">62</a>
 </li>
 </ul>
 </div>
@@ -845,7 +842,7 @@ C.prompt("scheme-test-make-rational");
 
 {{footnotes}}
 <div id="footnote_2-49" class="footnote">
-<p> <a href="#footnote_link_2-49" class="footnote_backlink">49</a> We also have to supply an almost identical procedure to handle the types <tt>(scheme-number complex)</tt>.
+<p> <a href="#footnote_link_2-49" class="footnote_backlink">49</a> We also have to supply an almost identical procedure to handle the types <code>(scheme-number complex)</code>.
 </div>
 
 <div id="footnote_2-50" class="footnote">

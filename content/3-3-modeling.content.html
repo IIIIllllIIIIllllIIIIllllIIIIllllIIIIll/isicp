@@ -3,17 +3,17 @@
 @@
 
 {{main_text}}
-<a href='index.html' style="float:left"> <img src='images/chevron-up.svg' height=64 width=64> </a>
+<a href='index.html' style="float:left"><img src='images/chevron-up.svg' height=64 width=64></a>
 <span style="float:right">
-<a href='3-2-environment.html'> <img src='images/chevron-left.svg' height=64 width=64> </a>
-<a href='3-4-concurrency.html'> <img src='images/chevron-right.svg' height=64 width=64> </a>
+<a href='3-2-environment.html'><img src='images/chevron-left.svg' height=64 width=64></a>
+<a href='3-4-concurrency.html'><img src='images/chevron-right.svg' height=64 width=64></a>
 </span>
 <br> <br>
 <h2> Modeling with Mutable Data </h2>
 
 <hr>
 
-<p> Chapter 2 dealt with compound data as a means for constructing computational objects that have several parts, in order to model real-world objects that have several aspects. In that chapter we introduced the discipline of data abstraction, according to which data structures are specified in terms of constructors, which create data objects, and selectors, which access the parts of compound data objects. But we now know that there is another aspect of data that Chapter 2 did not address. The desire to model systems composed of objects that have changing state leads us to the need to modify compound data objects, as well as to construct and select from them. In order to model compound objects with changing state, we will design data abstractions to include, in addition to selectors and constructors, operations called <tt>mutators</tt> , which modify data objects. For instance, modeling a banking system requires us to change account balances. Thus, a data structure for representing bank accounts might admit an operation
+<p> Chapter 2 dealt with compound data as a means for constructing computational objects that have several parts, in order to model real-world objects that have several aspects. In that chapter we introduced the discipline of data abstraction, according to which data structures are specified in terms of constructors, which create data objects, and selectors, which access the parts of compound data objects. But we now know that there is another aspect of data that Chapter 2 did not address. The desire to model systems composed of objects that have changing state leads us to the need to modify compound data objects, as well as to construct and select from them. In order to model compound objects with changing state, we will design data abstractions to include, in addition to selectors and constructors, operations called <code>mutators</code> , which modify data objects. For instance, modeling a banking system requires us to change account balances. Thus, a data structure for representing bank accounts might admit an operation
 
 <div id="scheme-set-balance">
 (set-balance! &lt;account&gt; &lt;new-value&gt;)
@@ -22,44 +22,43 @@
 C.no_output_frozen_prompt("scheme-set-balance");
 </script>
 
-<p> that changes the balance of the designated account to the designated new value. Data objects for which mutators are defined are known as <tt>mutable data objects</tt>.
+<p> that changes the balance of the designated account to the designated new value. Data objects for which mutators are defined are known as <code>mutable data objects</code>.
 
 <p> Chapter 2 introduced pairs as a general-purpose "glue" for synthesizing compound data. We begin this section by defining basic mutators for pairs, so that pairs can serve as building blocks for constructing mutable data objects. These mutators greatly enhance the representational power of pairs, enabling us to build data structures other than the sequences and trees that we worked with in section <a href="2-2-closure.html">2.2</a>. We also present some examples of simulations in which complex systems are modeled as collections of objects with local state.
 
-<a name="%_sec_3.3.1" />
-<h3> 3.3.1 Mutable List Structure </h3>
+<h3 id="sec_3.3.1"> 3.3.1 Mutable List Structure </h3>
 
-<p> The basic operations on pairs &ndash; <tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt> &ndash; can be used to construct list structure and to select parts from list structure, but they are incapable of modifying list structure. The same is true of the list operations we have used so far, such as <tt>append</tt> and <tt>list</tt>, since these can be defined in terms of <tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt>. To modify list structures we need new operations.
+<p> The basic operations on pairs &ndash; <code>cons</code>, <code>car</code>, and <code>cdr</code> &ndash; can be used to construct list structure and to select parts from list structure, but they are incapable of modifying list structure. The same is true of the list operations we have used so far, such as <code>append</code> and <code>list</code>, since these can be defined in terms of <code>cons</code>, <code>car</code>, and <code>cdr</code>. To modify list structures we need new operations.
 
 <div class="figure">
 <img src="images/ch3-Z-G-13.gif">
-<p> <b>Figure 3.12:</b> Lists <tt>x</tt>: <tt>((a b) c d)</tt> and <tt>y</tt>: <tt>(e f)</tt>.
+<p> <b>Figure 3.12:</b> Lists <code>x</code>: <code>((a b) c d)</code> and <code>y</code>: <code>(e f)</code>.
 </div>
 
 <div class="figure">
 <img src="images/ch3-Z-G-14.gif">
-<p> <b>Figure 3.13:</b> Effect of <tt>(set-car! x y)</tt> on the lists in Figure 3-12.
+<p> <b>Figure 3.13:</b> Effect of <code>(set-car! x y)</code> on the lists in Figure 3-12.
 </div>
 
 <div class="figure">
 <img src="images/ch3-Z-G-15.gif">
-<p> <b>Figure 3.14:</b> Effect of <tt>(define z (cons y (cdr x)))</tt> on the lists in Figure 3-12.
+<p> <b>Figure 3.14:</b> Effect of <code>(define z (cons y (cdr x)))</code> on the lists in Figure 3-12.
 </div>
 
 <div class="figure">
 <img src="images/ch3-Z-G-16.gif">
-<p> <b>Figure 3.15:</b> Effect of <tt>(set-cdr! x y)</tt> on the lists in Figure 3-12.
+<p> <b>Figure 3.15:</b> Effect of <code>(set-cdr! x y)</code> on the lists in Figure 3-12.
 </div>
 
-<p> The primitive mutators for pairs are <tt>set-car!</tt> and <tt>set-cdr!</tt>. <tt>Set-car!</tt> takes two arguments, the first of which must be a pair. It modifies this pair, replacing the <tt>car</tt> pointer by a pointer to the second argument of <tt>set-car!</tt>.<a name="footnote_link_3-16" class="footnote_link" href="#footnote_3-16">16</a>
+<p> The primitive mutators for pairs are <code>set-car!</code> and <code>set-cdr!</code>. <code>Set-car!</code> takes two arguments, the first of which must be a pair. It modifies this pair, replacing the <code>car</code> pointer by a pointer to the second argument of <code>set-car!</code>.<a id="footnote_link_3-16" class="footnote_link" href="#footnote_3-16">16</a>
 
-<p> As an example, suppose that <tt>x</tt> is bound to the list <tt>((a b) c d)</tt> and <tt>y</tt> to the list <tt>(e f)</tt> as illustrated in Figure 3-12. Evaluating the expression <tt>(set-car!  x y)</tt> modifies the pair to which <tt>x</tt> is bound, replacing its <tt>car</tt> by the value of <tt>y</tt>. The result of the operation is shown in Figure 3-13. The structure <tt>x</tt> has been modified and would now be printed as <tt>((e f) c d)</tt>. The pairs representing the list <tt>(a b)</tt>, identified by the pointer that was replaced, are now detached from the original structure.<a name="footnote_link_3-17" class="footnote_link" href="#footnote_3-17">17</a>
+<p> As an example, suppose that <code>x</code> is bound to the list <code>((a b) c d)</code> and <code>y</code> to the list <code>(e f)</code> as illustrated in Figure 3-12. Evaluating the expression <code>(set-car!  x y)</code> modifies the pair to which <code>x</code> is bound, replacing its <code>car</code> by the value of <code>y</code>. The result of the operation is shown in Figure 3-13. The structure <code>x</code> has been modified and would now be printed as <code>((e f) c d)</code>. The pairs representing the list <code>(a b)</code>, identified by the pointer that was replaced, are now detached from the original structure.<a id="footnote_link_3-17" class="footnote_link" href="#footnote_3-17">17</a>
 
-<p> Compare Figure 3-13 with Figure 3-14, which illustrates the result of executing <tt>(define z (cons y (cdr x)))</tt> with <tt>x</tt> and <tt>y</tt> bound to the original lists of Figure 3-12. The variable <tt>z</tt> is now bound to a new pair created by the <tt>cons</tt> operation; the list to which <tt>x</tt> is bound is unchanged.
+<p> Compare Figure 3-13 with Figure 3-14, which illustrates the result of executing <code>(define z (cons y (cdr x)))</code> with <code>x</code> and <code>y</code> bound to the original lists of Figure 3-12. The variable <code>z</code> is now bound to a new pair created by the <code>cons</code> operation; the list to which <code>x</code> is bound is unchanged.
 
-<p> The <tt>set-cdr!</tt> operation is similar to <tt>set-car!</tt>. The only difference is that the <tt>cdr</tt> pointer of the pair, rather than the <tt>car</tt> pointer, is replaced. The effect of executing <tt>(set-cdr! x y)</tt> on the lists of Figure 3-12 is shown in Figure 3-15. Here the <tt>cdr</tt> pointer of <tt>x</tt> has been replaced by the pointer to <tt>(e f)</tt>. Also, the list <tt>(c d)</tt>, which used to be the <tt>cdr</tt> of <tt>x</tt>, is now detached from the structure.
+<p> The <code>set-cdr!</code> operation is similar to <code>set-car!</code>. The only difference is that the <code>cdr</code> pointer of the pair, rather than the <code>car</code> pointer, is replaced. The effect of executing <code>(set-cdr! x y)</code> on the lists of Figure 3-12 is shown in Figure 3-15. Here the <code>cdr</code> pointer of <code>x</code> has been replaced by the pointer to <code>(e f)</code>. Also, the list <code>(c d)</code>, which used to be the <code>cdr</code> of <code>x</code>, is now detached from the structure.
 
-<p> <tt>Cons</tt> builds new list structure by creating new pairs, while <tt>set-car!</tt> and <tt>set-cdr!</tt> modify existing pairs. Indeed, we could implement <tt>cons</tt> in terms of the two mutators, together with a procedure <tt>get-new-pair</tt>, which returns a new pair that is not part of any existing list structure. We obtain the new pair, set its <tt>car</tt> and <tt>cdr</tt> pointers to the designated objects, and return the new pair as the result of the <tt>cons</tt>.<a name="footnote_link_3-18" class="footnote_link" href="#footnote_3-18">18</a>
+<p> <code>Cons</code> builds new list structure by creating new pairs, while <code>set-car!</code> and <code>set-cdr!</code> modify existing pairs. Indeed, we could implement <code>cons</code> in terms of the two mutators, together with a procedure <code>get-new-pair</code>, which returns a new pair that is not part of any existing list structure. We obtain the new pair, set its <code>car</code> and <code>cdr</code> pointers to the designated objects, and return the new pair as the result of the <code>cons</code>.<a id="footnote_link_3-18" class="footnote_link" href="#footnote_3-18">18</a>
 
 <div id="scheme-define-cons-with-set">
 (define (get-new-pair) '(() ()))
@@ -76,7 +75,7 @@ C.prompt("scheme-define-cons-with-set");
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.12">
 <p> <b>Exercise 3.12:</b> The following procedure for appending lists was introduced in section <a href="2-2-closure.html">2.2.1</a>:
 
 <div id="scheme-define-append">
@@ -89,7 +88,7 @@ C.prompt("scheme-define-cons-with-set");
 C.prompt("scheme-define-append");
 </script>
 
-<p> <tt>append</tt> forms a new list by successively <tt>cons</tt>ing the elements of <tt>x</tt> onto <tt>y</tt>. The procedure <tt>append!</tt> is similar to <tt>append</tt>, but it is a mutator rather than a constructor. It appends the lists by splicing them together, modifying the final pair of <tt>x</tt> so that its <tt>cdr</tt> is now <tt>y</tt>. (It is an error to call <tt>append!</tt> with an empty <tt>x</tt>.)
+<p> <code>append</code> forms a new list by successively <code>cons</code>ing the elements of <code>x</code> onto <code>y</code>. The procedure <code>append!</code> is similar to <code>append</code>, but it is a mutator rather than a constructor. It appends the lists by splicing them together, modifying the final pair of <code>x</code> so that its <code>cdr</code> is now <code>y</code>. (It is an error to call <code>append!</code> with an empty <code>x</code>.)
 
 <div id="scheme-define-append-inplace">
 (define (append! x y)
@@ -100,7 +99,7 @@ C.prompt("scheme-define-append");
 C.prompt("scheme-define-append-inplace", ["scheme-define-last-pair"]);
 </script>
 
-<p> Here <tt>last-pair</tt> is a procedure that returns the last pair in its argument:
+<p> Here <code>last-pair</code> is a procedure that returns the last pair in its argument:
 
 <div id="scheme-define-last-pair">
 (define (last-pair x)
@@ -139,13 +138,13 @@ w
 C.no_output_frozen_prompt("scheme-define-test-append-inplace");
 </script>
 
-<p> What are the missing <tt>&lt;response&gt;</tt>s?  Draw box-and-pointer diagrams to explain your answer.
+<p> What are the missing <code>&lt;response&gt;</code>s?  Draw box-and-pointer diagrams to explain your answer.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.13:</b> Consider the following <tt>make-cycle</tt> procedure, which uses the <tt>last-pair</tt> procedure defined in Exercise 3-12:
+<div class="exercise" id="thm_3.13">
+<p> <b>Exercise 3.13:</b> Consider the following <code>make-cycle</code> procedure, which uses the <code>last-pair</code> procedure defined in Exercise 3-12:
 
 <div id="scheme-define-make-cycle">
 (define (make-cycle x)
@@ -156,7 +155,7 @@ C.no_output_frozen_prompt("scheme-define-test-append-inplace");
 C.prompt("scheme-define-make-cycle", ["scheme-define-last-pair"]);
 </script>
 
-<p> Draw a box-and-pointer diagram that shows the structure <tt>z</tt> created by
+<p> Draw a box-and-pointer diagram that shows the structure <code>z</code> created by
 
 <div id="scheme-define-z-cycle">
 (define z (make-cycle (list 'a 'b 'c)))
@@ -165,12 +164,12 @@ C.prompt("scheme-define-make-cycle", ["scheme-define-last-pair"]);
 C.prompt("scheme-define-z-cycle", ["scheme-define-make-cycle"]);
 </script>
 
-<p> What happens if we try to compute <tt>(last-pair z)</tt>?
+<p> What happens if we try to compute <code>(last-pair z)</code>?
 </div>
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.14">
 <p> <b>Exercise 3.14:</b> The following procedure is quite useful, although obscure:
 
 <div id="scheme-define-mystery">
@@ -187,11 +186,11 @@ C.prompt("scheme-define-z-cycle", ["scheme-define-make-cycle"]);
 C.prompt("scheme-define-mystery");
 </script>
 
-<p> <tt>loop</tt> uses the ``temporary'' variable <tt>temp</tt> to hold the old value of the <tt>cdr</tt> of <tt>x</tt>, since the <tt>set-cdr!</tt>  on the next line destroys the <tt>cdr</tt>. Explain what <tt>mystery</tt> does in general. Suppose <tt>v</tt> is defined by <tt>(define v (list 'a 'b 'c 'd))</tt>. Draw the box-and-pointer diagram that represents the list to which <tt>v</tt> is bound. Suppose that we now evaluate <tt>(define w (mystery v))</tt>. Draw box-and-pointer diagrams that show the structures <tt>v</tt> and <tt>w</tt> after evaluating this expression. What would be printed as the values of <tt>v</tt> and <tt>w</tt>? </div>
+<p> <code>loop</code> uses the ``temporary'' variable <code>temp</code> to hold the old value of the <code>cdr</code> of <code>x</code>, since the <code>set-cdr!</code>  on the next line destroys the <code>cdr</code>. Explain what <code>mystery</code> does in general. Suppose <code>v</code> is defined by <code>(define v (list 'a 'b 'c 'd))</code>. Draw the box-and-pointer diagram that represents the list to which <code>v</code> is bound. Suppose that we now evaluate <code>(define w (mystery v))</code>. Draw box-and-pointer diagrams that show the structures <code>v</code> and <code>w</code> after evaluating this expression. What would be printed as the values of <code>v</code> and <code>w</code>? </div>
 
 <h4> Sharing and identity </h4>
 
-<p> We mentioned in section <a href="3-1-assignment.html">3.1.3</a> the theoretical issues of ``sameness'' and ``change'' raised by the introduction of assignment. These issues arise in practice when individual pairs are <tt>shared</tt> among different data objects. For example, consider the structure formed by
+<p> We mentioned in section <a href="3-1-assignment.html">3.1.3</a> the theoretical issues of ``sameness'' and ``change'' raised by the introduction of assignment. These issues arise in practice when individual pairs are <code>shared</code> among different data objects. For example, consider the structure formed by
 
 <div id="scheme-define-x">
 (define x (list 'a 'b))
@@ -207,16 +206,16 @@ C.prompt("scheme-define-x");
 C.prompt("scheme-define-z1", ["scheme-define-x"]);
 </script>
 
-<p> As shown in Figure 3-16, <tt>z1</tt> is a pair whose <tt>car</tt> and <tt>cdr</tt> both point to the same pair <tt>x</tt>. This sharing of <tt>x</tt> by the <tt>car</tt> and <tt>cdr</tt> of <tt>z1</tt> is a consequence of the straightforward way in which <tt>cons</tt> is implemented. In general, using <tt>cons</tt> to construct lists will result in an interlinked structure of pairs in which many individual pairs are shared by many different structures.
+<p> As shown in Figure 3-16, <code>z1</code> is a pair whose <code>car</code> and <code>cdr</code> both point to the same pair <code>x</code>. This sharing of <code>x</code> by the <code>car</code> and <code>cdr</code> of <code>z1</code> is a consequence of the straightforward way in which <code>cons</code> is implemented. In general, using <code>cons</code> to construct lists will result in an interlinked structure of pairs in which many individual pairs are shared by many different structures.
 
 <div class="figure">
 <img src="images/ch3-Z-G-17.gif">
-<p> <b>Figure 3.16:</b> The list <tt>z1</tt> formed by <tt>(cons x x)</tt>.
+<p> <b>Figure 3.16:</b> The list <code>z1</code> formed by <code>(cons x x)</code>.
 </div>
 
 <div class="figure">
 <img src="images/ch3-Z-G-18.gif">
-<p> <b>Figure 3.17:</b> The list <tt>z2</tt> formed by <tt>(cons (list 'a 'b) (list 'a 'b))</tt>.
+<p> <b>Figure 3.17:</b> The list <code>z2</code> formed by <code>(cons (list 'a 'b) (list 'a 'b))</code>.
 </div>
 
 <p> In contrast to Figure 3-16, Figure 3-17 shows the structure created by
@@ -228,9 +227,9 @@ C.prompt("scheme-define-z1", ["scheme-define-x"]);
 C.prompt("scheme-define-z2");
 </script>
 
-<p> In this structure, the pairs in the two <tt>(a b)</tt> lists are distinct, although the actual symbols are shared.<a name="footnote_link_3-19" class="footnote_link" href="#footnote_3-19">19</a>
+<p> In this structure, the pairs in the two <code>(a b)</code> lists are distinct, although the actual symbols are shared.<a id="footnote_link_3-19" class="footnote_link" href="#footnote_3-19">19</a>
 
-<p> When thought of as a list, <tt>z1</tt> and <tt>z2</tt> both represent ``the same''list, <tt>((a b) a b)</tt>. In general, sharing is completely undetectable if we operate on lists using only <tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt>. However, if we allow mutators on list structure, sharing becomes significant. As an example of the difference that sharing can make, consider the following procedure, which modifies the <tt>car</tt> of the structure to which it is applied:
+<p> When thought of as a list, <code>z1</code> and <code>z2</code> both represent ``the same''list, <code>((a b) a b)</code>. In general, sharing is completely undetectable if we operate on lists using only <code>cons</code>, <code>car</code>, and <code>cdr</code>. However, if we allow mutators on list structure, sharing becomes significant. As an example of the difference that sharing can make, consider the following procedure, which modifies the <code>car</code> of the structure to which it is applied:
 
 <div id="scheme-define-set-to-wow">
 (define (set-to-wow! x)
@@ -241,7 +240,7 @@ C.prompt("scheme-define-z2");
 C.prompt("scheme-define-set-to-wow");
 </script>
 
-<p> Even though <tt>z1</tt> and <tt>z2</tt> are "the same" structure, applying <tt>set-to-wow!</tt> to them yields different results. With <tt>z1</tt>, altering the <tt>car</tt> also changes the <tt>cdr</tt>, because in <tt>z1</tt> the <tt>car</tt> and the <tt>cdr</tt> are the same pair. With <tt>z2</tt>, the <tt>car</tt> and <tt>cdr</tt> are distinct, so <tt>set-to-wow!</tt> modifies only the <tt>car</tt>:
+<p> Even though <code>z1</code> and <code>z2</code> are "the same" structure, applying <code>set-to-wow!</code> to them yields different results. With <code>z1</code>, altering the <code>car</code> also changes the <code>cdr</code>, because in <code>z1</code> the <code>car</code> and the <code>cdr</code> are the same pair. With <code>z2</code>, the <code>car</code> and <code>cdr</code> are distinct, so <code>set-to-wow!</code> modifies only the <code>car</code>:
 
 
 <div id="scheme-z1">
@@ -278,18 +277,18 @@ C.prompt("scheme-z2", ["scheme-define-z2"]);
 C.prompt("scheme-test-set-to-wow-z2", ["scheme-define-z2", "scheme-define-set-to-wow"]);
 </script>
 
-<p> One way to detect sharing in list structures is to use the predicate <tt>eq?</tt>, which we introduced in section <a href="2-3-symbolic.html">2.3.1</a> as a way to test whether two symbols are equal. More generally, <tt>(eq?  x y)</tt> tests whether <tt>x</tt> and <tt>y</tt> are the same object (that is, whether <tt>x</tt> and <tt>y</tt> are equal as pointers). Thus, with <tt>z1</tt> and <tt>z2</tt> as defined in figures Figure 3-16 and Figure 3-17, <tt>(eq?  (car z1) (cdr z1))</tt> is true and <tt>(eq? (car z2) (cdr z2))</tt> is false.
+<p> One way to detect sharing in list structures is to use the predicate <code>eq?</code>, which we introduced in section <a href="2-3-symbolic.html">2.3.1</a> as a way to test whether two symbols are equal. More generally, <code>(eq?  x y)</code> tests whether <code>x</code> and <code>y</code> are the same object (that is, whether <code>x</code> and <code>y</code> are equal as pointers). Thus, with <code>z1</code> and <code>z2</code> as defined in figures Figure 3-16 and Figure 3-17, <code>(eq?  (car z1) (cdr z1))</code> is true and <code>(eq? (car z2) (cdr z2))</code> is false.
 
-<p> As will be seen in the following sections, we can exploit sharing to greatly extend the repertoire of data structures that can be represented by pairs. On the other hand, sharing can also be dangerous, since modifications made to structures will also affect other structures that happen to share the modified parts. The mutation operations <tt>set-car!</tt> and <tt>set-cdr!</tt> should be used with care; unless we have a good understanding of how our data objects are shared, mutation can have unanticipated results.<a name="footnote_link_3-20" class="footnote_link" href="#footnote_3-20">20</a>
+<p> As will be seen in the following sections, we can exploit sharing to greatly extend the repertoire of data structures that can be represented by pairs. On the other hand, sharing can also be dangerous, since modifications made to structures will also affect other structures that happen to share the modified parts. The mutation operations <code>set-car!</code> and <code>set-cdr!</code> should be used with care; unless we have a good understanding of how our data objects are shared, mutation can have unanticipated results.<a id="footnote_link_3-20" class="footnote_link" href="#footnote_3-20">20</a>
 
-<div class="exercise">
-<p> <b>Exercise 3.15:</b> Draw box-and-pointer diagrams to explain the effect of <tt>set-to-wow!</tt> on the structures <tt>z1</tt> and <tt>z2</tt> above.
+<div class="exercise" id="thm_3.15">
+<p> <b>Exercise 3.15:</b> Draw box-and-pointer diagrams to explain the effect of <code>set-to-wow!</code> on the structures <code>z1</code> and <code>z2</code> above.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.16:</b> Ben Bitdiddle decides to write a procedure to count the number of pairs in any list structure. "It's easy," he reasons. "The number of pairs in any structure is the number in the <tt>car</tt> plus the number in the <tt>cdr</tt> plus one more to count the current pair."  So Ben writes the following procedure:
+<div class="exercise" id="thm_3.16">
+<p> <b>Exercise 3.16:</b> Ben Bitdiddle decides to write a procedure to count the number of pairs in any list structure. "It's easy," he reasons. "The number of pairs in any structure is the number in the <code>car</code> plus the number in the <code>cdr</code> plus one more to count the current pair."  So Ben writes the following procedure:
 
 <div id="scheme-define-count-pairs">
 (define (count-pairs x)
@@ -308,19 +307,19 @@ C.prompt("scheme-define-count-pairs");
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.17:</b> Devise a correct version of the <tt>count-pairs</tt> procedure of Exercise 3-16 that returns the number of distinct pairs in any structure. (Hint: Traverse the structure, maintaining an auxiliary data structure that is used to keep track of which pairs have already been counted.)
+<div class="exercise" id="thm_3.17">
+<p> <b>Exercise 3.17:</b> Devise a correct version of the <code>count-pairs</code> procedure of Exercise 3-16 that returns the number of distinct pairs in any structure. (Hint: Traverse the structure, maintaining an auxiliary data structure that is used to keep track of which pairs have already been counted.)
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.18:</b> Write a procedure that examines a list and determines whether it contains a cycle, that is, whether a program that tried to find the end of the list by taking successive <tt>cdr</tt>s would go into an infinite loop. Exercise 3-13 constructed such lists.
+<div class="exercise" id="thm_3.18">
+<p> <b>Exercise 3.18:</b> Write a procedure that examines a list and determines whether it contains a cycle, that is, whether a program that tried to find the end of the list by taking successive <code>cdr</code>s would go into an infinite loop. Exercise 3-13 constructed such lists.
 </div>
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.19">
 <p> <b>Exercise 3.19:</b> Redo Exercise 3-18 using an algorithm that takes only a constant amount of space. (This requires a very clever idea.)
 </div>
 
@@ -344,7 +343,7 @@ C.prompt("scheme-define-count-pairs");
 C.prompt("scheme-define-cons");
 </script>
 
-<p> The same observation is true for mutable data. We can implement mutable data objects as procedures using assignment and local state. For instance, we can extend the above pair implementation to handle <tt>set-car!</tt> and <tt>set-cdr!</tt> in a manner analogous to the way we implemented bank accounts using <tt>make-account</tt> in section <a href="3-1-assignment.html">3.1.1</a>:
+<p> The same observation is true for mutable data. We can implement mutable data objects as procedures using assignment and local state. For instance, we can extend the above pair implementation to handle <code>set-car!</code> and <code>set-cdr!</code> in a manner analogous to the way we implemented bank accounts using <code>make-account</code> in section <a href="3-1-assignment.html">3.1.1</a>:
 
 <div id="scheme-define-cons-set-car-cdr">
 (define (cons x y)
@@ -374,9 +373,9 @@ C.prompt("scheme-define-cons");
 C.prompt("scheme-define-cons-set-car-cdr");
 </script>
 
-<p> Assignment is all that is needed, theoretically, to account for the behavior of mutable data. As soon as we admit <tt>set!</tt> to our language, we raise all the issues, not only of assignment, but of mutable data in general.<a name="footnote_link_3-21" class="footnote_link" href="#footnote_3-21">21</a>
+<p> Assignment is all that is needed, theoretically, to account for the behavior of mutable data. As soon as we admit <code>set!</code> to our language, we raise all the issues, not only of assignment, but of mutable data in general.<a id="footnote_link_3-21" class="footnote_link" href="#footnote_3-21">21</a>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.20">
 <p> <b>Exercise 3.20:</b> Draw environment diagrams to illustrate the evaluation of the sequence of expressions
 
 <div id="scheme-test-procedural-set-car-cdr">
@@ -393,12 +392,11 @@ C.prompt("scheme-test-procedural-set-car-cdr", ["scheme-define-cons-set-car-cdr"
 <p> using the procedural implementation of pairs given above. (Compare Exercise 3-11.)
 </div>
 
-<a name="%_sec_3.3.2" />
-<h3> 3.3.2 Representing Queues </h3>
+<h3 id="sec_3.3.2"> 3.3.2 Representing Queues </h3>
 
-<p> The mutators <tt>set-car!</tt> and <tt>set-cdr!</tt> enable us to use pairs to construct data structures that cannot be built with <tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt> alone. This section shows how to use pairs to represent a data structure called a queue. Section <a href="3-3-modeling.html">3.3.3</a> will show how to represent data structures called tables.
+<p> The mutators <code>set-car!</code> and <code>set-cdr!</code> enable us to use pairs to construct data structures that cannot be built with <code>cons</code>, <code>car</code>, and <code>cdr</code> alone. This section shows how to use pairs to represent a data structure called a queue. Section <a href="3-3-modeling.html">3.3.3</a> will show how to represent data structures called tables.
 
-<p> A <tt>queue</tt> is a sequence in which items are inserted at one end (called the <tt>rear</tt> of the queue) and deleted from the other end (the <tt>front</tt> ). Figure 3-18 shows an initially empty queue in which the items <tt>a</tt> and <tt>b</tt> are inserted. Then <tt>a</tt> is removed, <tt>c</tt> and <tt>d</tt> are inserted, and <tt>b</tt> is removed. Because items are always removed in the order in which they are inserted, a queue is sometimes called a <tt>FIFO</tt> (first in, first out) buffer.
+<p> A <code>queue</code> is a sequence in which items are inserted at one end (called the <code>rear</code> of the queue) and deleted from the other end (the <code>front</code> ). Figure 3-18 shows an initially empty queue in which the items <code>a</code> and <code>b</code> are inserted. Then <code>a</code> is removed, <code>c</code> and <code>d</code> are inserted, and <code>b</code> is removed. Because items are always removed in the order in which they are inserted, a queue is sometimes called a <code>FIFO</code> (first in, first out) buffer.
 
 <pre style="margin-left:30%">
 Operation                Resulting Queue
@@ -419,31 +417,31 @@ Operation                Resulting Queue
 <ul>
 
 <li>
-<p> a constructor: <tt>(make-queue)</tt> returns an empty queue (a queue containing no items).
+<p> a constructor: <code>(make-queue)</code> returns an empty queue (a queue containing no items).
 </li>
 
 <li>
 <p> two selectors:
 
-<p> <tt>(empty-queue? &lt;queue&gt;)</tt> tests if the queue is empty.
+<p> <code>(empty-queue? &lt;queue&gt;)</code> tests if the queue is empty.
 
-<p> <tt>(front-queue &lt;queue&gt;)</tt> returns the object at the front of the queue, signaling an error if the queueis empty; it does not modify the queue.
+<p> <code>(front-queue &lt;queue&gt;)</code> returns the object at the front of the queue, signaling an error if the queueis empty; it does not modify the queue.
 </li>
 
 <li>
 <p> two mutators:
 
-<p> <tt> (insert-queue! &lt;queue&gt; &lt;item&gt;)</tt> inserts the item at the rear of the queue and returns the modified queue as its value.
+<p> <code> (insert-queue! &lt;queue&gt; &lt;item&gt;)</code> inserts the item at the rear of the queue and returns the modified queue as its value.
 
-<p> <tt> (delete-queue! &lt;queue&gt;)</tt> removes the item at the front of the queue and returns the modified queue as its value, signaling an error if the queue is empty before the deletion.
+<p> <code> (delete-queue! &lt;queue&gt;)</code> removes the item at the front of the queue and returns the modified queue as its value, signaling an error if the queue is empty before the deletion.
 </li>
 </ul>
 
-<p> Because a queue is a sequence of items, we could certainly represent it as an ordinary list; the front of the queue would be the <tt>car</tt> of the list, inserting an item in the queue would amount to appending a new element at the end of the list, and deleting an item from the queue would just be taking the <tt>cdr</tt> of the list. However, this representation is inefficient, because in order to insert an item we must scan the list until we reach the end. Since the only method we have for scanning a list is by successive <tt>cdr</tt> operations, this scanning requires [theta](n) steps for a list of n items. A simple modification to the list representation overcomes this disadvantage by allowing the queue operations to be implemented so that they require [theta](1) steps; that is, so that the number of steps needed is independent of the length of the queue.
+<p> Because a queue is a sequence of items, we could certainly represent it as an ordinary list; the front of the queue would be the <code>car</code> of the list, inserting an item in the queue would amount to appending a new element at the end of the list, and deleting an item from the queue would just be taking the <code>cdr</code> of the list. However, this representation is inefficient, because in order to insert an item we must scan the list until we reach the end. Since the only method we have for scanning a list is by successive <code>cdr</code> operations, this scanning requires [theta](n) steps for a list of n items. A simple modification to the list representation overcomes this disadvantage by allowing the queue operations to be implemented so that they require [theta](1) steps; that is, so that the number of steps needed is independent of the length of the queue.
 
 <p> The difficulty with the list representation arises from the need to scan to find the end of the list. The reason we need to scan is that, although the standard way of representing a list as a chain of pairs readily provides us with a pointer to the beginning of the list, it gives us no easily accessible pointer to the end. The modification that avoids the drawback is to represent the queue as a list, together with an additional pointer that indicates the final pair in the list. That way, when we go to insert an item, we can consult the rear pointer and so avoid scanning the list.
 
-<p> A queue is represented, then, as a pair of pointers, <tt>front-ptr</tt> and <tt>rear-ptr</tt>, which indicate, respectively, the first and last pairs in an ordinary list. Since we would like the queue to be an identifiable object, we can use <tt>cons</tt> to combine the two pointers. Thus, the queue itself will be the <tt>cons</tt> of the two pointers. Figure 3-19 illustrates this representation.
+<p> A queue is represented, then, as a pair of pointers, <code>front-ptr</code> and <code>rear-ptr</code>, which indicate, respectively, the first and last pairs in an ordinary list. Since we would like the queue to be an identifiable object, we can use <code>cons</code> to combine the two pointers. Thus, the queue itself will be the <code>cons</code> of the two pointers. Figure 3-19 illustrates this representation.
 
 <div class="figure">
 <img src="images/ch3-Z-G-19.gif">
@@ -474,7 +472,7 @@ C.prompt("scheme-define-queue-accessors");
 C.prompt("scheme-define-empty-queue?", ["scheme-define-queue-accessors"]);
 </script>
 
-<p> The <tt>make-queue</tt> constructor returns, as an initially empty queue, a pair whose <tt>car</tt> and <tt>cdr</tt> are both the empty list:
+<p> The <code>make-queue</code> constructor returns, as an initially empty queue, a pair whose <code>car</code> and <code>cdr</code> are both the empty list:
 
 <div id="scheme-define-make-queue">
 (define (make-queue) (cons '() '()))
@@ -483,7 +481,7 @@ C.prompt("scheme-define-empty-queue?", ["scheme-define-queue-accessors"]);
 C.prompt("scheme-define-make-queue", ["scheme-define-empty-queue?"]);
 </script>
 
-<p> To select the item at the front of the queue, we return the <tt>car</tt> of the pair indicated by the front pointer:
+<p> To select the item at the front of the queue, we return the <code>car</code> of the pair indicated by the front pointer:
 
 <div id="scheme-define-front-queue">
 (define (front-queue queue)
@@ -495,11 +493,11 @@ C.prompt("scheme-define-make-queue", ["scheme-define-empty-queue?"]);
 C.prompt("scheme-define-front-queue", ["scheme-define-make-queue"]);
 </script>
 
-<p> To insert an item in a queue, we follow the method whose result is indicated in Figure 3-20. We first create a new pair whose <tt>car</tt> is the item to be inserted and whose <tt>cdr</tt> is the empty list. If the queue was initially empty, we set the front and rear pointers of the queue to this new pair. Otherwise, we modify the final pair in the queue to point to the new pair, and also set the rear pointer to the new pair.
+<p> To insert an item in a queue, we follow the method whose result is indicated in Figure 3-20. We first create a new pair whose <code>car</code> is the item to be inserted and whose <code>cdr</code> is the empty list. If the queue was initially empty, we set the front and rear pointers of the queue to this new pair. Otherwise, we modify the final pair in the queue to point to the new pair, and also set the rear pointer to the new pair.
 
 <div class="figure">
 <img src="images/ch3-Z-G-20.gif">
-<p> <b>Figure 3.20:</b> Result of using <tt>(insert-queue! q 'd)</tt> on the queue of Figure 3-19.
+<p> <b>Figure 3.20:</b> Result of using <code>(insert-queue! q 'd)</code> on the queue of Figure 3-19.
 </div>
 
 <div id="scheme-define-insert-queue">
@@ -518,11 +516,11 @@ C.prompt("scheme-define-front-queue", ["scheme-define-make-queue"]);
 C.prompt("scheme-define-insert-queue", ["scheme-define-front-queue"]);
 </script>
 
-<p> To delete the item at the front of the queue, we merely modify the front pointer so that it now points at the second item in the queue, which can be found by following the <tt>cdr</tt> pointer of the first item (see Figure 3-21):<a name="footnote_link_3-22" class="footnote_link" href="#footnote_3-22">22</a>
+<p> To delete the item at the front of the queue, we merely modify the front pointer so that it now points at the second item in the queue, which can be found by following the <code>cdr</code> pointer of the first item (see Figure 3-21):<a id="footnote_link_3-22" class="footnote_link" href="#footnote_3-22">22</a>
 
 <div class="figure">
 <img src="images/ch3-Z-G-21.gif">
-<p> <b>Figure 3.21:</b> Result of using <tt>(delete-queue! q)</tt> on the queue of Figure 3-20.
+<p> <b>Figure 3.21:</b> Result of using <code>(delete-queue! q)</code> on the queue of Figure 3-20.
 </div>
 
 <p>
@@ -541,7 +539,7 @@ C.prompt("scheme-define-queue", ["scheme-define-insert-queue"]);
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.21">
 <p> <b>Exercise 3.21:</b> Ben Bitdiddle decides to test the queue implementation described above. He types in the procedures to the Lisp interpreter and proceeds to try them out:
 
 <div id="scheme-test-queue">
@@ -559,13 +557,13 @@ C.prompt("scheme-define-queue", ["scheme-define-insert-queue"]);
 C.prompt("scheme-test-queue", ["scheme-define-queue"]);
 </script>
 
-<p> ``It's all wrong!'' he complains. ``The interpreter's response shows that the last item is inserted into the queue twice. And when I delete both items, the second <tt>b</tt> is still there, so the queue isn't empty, even though it's supposed to be.''  Eva Lu Ator suggests that Ben has misunderstood what is happening. ``It's not that the items are going into the queue twice,'' she explains. ``It's just that the standard Lisp printer doesn't know how to make sense of the queue representation. If you want to see the queue printed correctly, you'll have to define your own print procedure for queues.'' Explain what Eva Lu is talking about. In particular, show why Ben's examples produce the printed results that they do. Define a procedure <tt>print-queue</tt> that takes a queue as input and prints the sequence of items in the queue.
+<p> ``It's all wrong!'' he complains. ``The interpreter's response shows that the last item is inserted into the queue twice. And when I delete both items, the second <code>b</code> is still there, so the queue isn't empty, even though it's supposed to be.''  Eva Lu Ator suggests that Ben has misunderstood what is happening. ``It's not that the items are going into the queue twice,'' she explains. ``It's just that the standard Lisp printer doesn't know how to make sense of the queue representation. If you want to see the queue printed correctly, you'll have to define your own print procedure for queues.'' Explain what Eva Lu is talking about. In particular, show why Ben's examples produce the printed results that they do. Define a procedure <code>print-queue</code> that takes a queue as input and prints the sequence of items in the queue.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.22:</b> Instead of representing a queue as a pair of pointers, we can build a queue as a procedure with local state. The local state will consist of pointers to the beginning and the end of an ordinary list. Thus, the <tt>make-queue</tt> procedure will have the form
+<div class="exercise" id="thm_3.22">
+<p> <b>Exercise 3.22:</b> Instead of representing a queue as a pair of pointers, we can build a queue as a procedure with local state. The local state will consist of pointers to the beginning and the end of an ordinary list. Thus, the <code>make-queue</code> procedure will have the form
 
 <div id="scheme-define-make-queue-dispatch">
 (define (make-queue)
@@ -579,21 +577,20 @@ C.prompt("scheme-test-queue", ["scheme-define-queue"]);
 C.prompt("scheme-define-make-queue-dispatch");
 </script>
 
-<p> Complete the definition of <tt>make-queue</tt> and provide implementations of the queue operations using this representation.
+<p> Complete the definition of <code>make-queue</code> and provide implementations of the queue operations using this representation.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.23:</b> A <em>deque</em> ("double-ended queue") is a sequence in which items can be inserted and deleted at either the front or the rear. Operations on deques are the constructor <tt>make-deque</tt>, the predicate <tt>empty-deque?</tt>, selectors <tt>front-deque</tt> and <tt>rear-deque</tt>, and mutators <tt>front-insert-deque!</tt>, <tt>rear-insert-deque!</tt>, <tt>front-delete-deque!</tt>, and <tt>rear-delete-deque!</tt>. Show how to represent deques using pairs, and give implementations of the operations.<a name="footnote_link_3-23" class="footnote_link" href="#footnote_3-23">23</a>  All operations should be accomplished in $\Theta(1)$ steps.
+<div class="exercise" id="thm_3.23">
+<p> <b>Exercise 3.23:</b> A <em>deque</em> ("double-ended queue") is a sequence in which items can be inserted and deleted at either the front or the rear. Operations on deques are the constructor <code>make-deque</code>, the predicate <code>empty-deque?</code>, selectors <code>front-deque</code> and <code>rear-deque</code>, and mutators <code>front-insert-deque!</code>, <code>rear-insert-deque!</code>, <code>front-delete-deque!</code>, and <code>rear-delete-deque!</code>. Show how to represent deques using pairs, and give implementations of the operations.<a id="footnote_link_3-23" class="footnote_link" href="#footnote_3-23">23</a>  All operations should be accomplished in $\Theta(1)$ steps.
 </div>
 
-<a name="%_sec_3.3.3" />
-<h3> 3.3.3 Representing Tables </h3>
+<h3 id="sec_3.3.3"> 3.3.3 Representing Tables </h3>
 
 <p> When we studied various ways of representing sets in Chapter 2, we mentioned in section <a href="2-3-symbolic.html">2.3.3</a> the task of maintaining a table of records indexed by identifying keys. In the implementation of data-directed programming in section <a href="2-4-representation.html">2.4.3</a>, we made extensive use of two-dimensional tables, in which information is stored and retrieved using two keys. Here we see how to build tables as mutable list structures.
 
-<p> We first consider a one-dimensional table, in which each value is stored under a single key. We implement the table as a list of records, each of which is implemented as a pair consisting of a key and the associated value. The records are glued together to form a list by pairs whose <tt>car</tt>s point to successive records. These gluing pairs are called the <tt>backbone</tt> of the table. In order to have a place that we can change when we add a new record to the table, we build the table as a <tt>headed list</tt> . A headed list has a special backbone pair at the beginning, which holds a dummy ``record''---in this case the arbitrarily chosen symbol <tt>*table*</tt>. Figure 3-22 shows the box-and-pointer diagram for the table
+<p> We first consider a one-dimensional table, in which each value is stored under a single key. We implement the table as a list of records, each of which is implemented as a pair consisting of a key and the associated value. The records are glued together to form a list by pairs whose <code>car</code>s point to successive records. These gluing pairs are called the <code>backbone</code> of the table. In order to have a place that we can change when we add a new record to the table, we build the table as a <code>headed list</code> . A headed list has a special backbone pair at the beginning, which holds a dummy ``record''---in this case the arbitrarily chosen symbol <code>*table*</code>. Figure 3-22 shows the box-and-pointer diagram for the table
 
 <pre>
 a:  1
@@ -606,7 +603,7 @@ c:  3
 <p> <b>Figure 3.22:</b> A table represented as a headed list.
 </div>
 
-<p> To extract information from a table we use the <tt>lookup</tt> procedure, which takes a key as argument and returns the associated value (or false if there is no value stored under that key). <tt>Lookup</tt> is defined in terms of the <tt>assoc</tt> operation, which expects a key and a list of records as arguments. Note that <tt>assoc</tt> never sees the dummy record. <tt>Assoc</tt> returns the record that has the given key as its <tt>car</tt>.<a name="footnote_link_3-24" class="footnote_link" href="#footnote_3-24">24</a>  <tt>Lookup</tt> then checks to see that the resulting record returned by <tt>assoc</tt> is not false, and returns the value (the <tt>cdr</tt>) of the record.
+<p> To extract information from a table we use the <code>lookup</code> procedure, which takes a key as argument and returns the associated value (or false if there is no value stored under that key). <code>Lookup</code> is defined in terms of the <code>assoc</code> operation, which expects a key and a list of records as arguments. Note that <code>assoc</code> never sees the dummy record. <code>Assoc</code> returns the record that has the given key as its <code>car</code>.<a id="footnote_link_3-24" class="footnote_link" href="#footnote_3-24">24</a>  <code>Lookup</code> then checks to see that the resulting record returned by <code>assoc</code> is not false, and returns the value (the <code>cdr</code>) of the record.
 
 <div id="scheme-define-lookup">
 (define (lookup key table)
@@ -629,7 +626,7 @@ C.prompt("scheme-define-lookup");
 C.prompt("scheme-define-assoc");
 </script>
 
-<p> To insert a value in a table under a specified key, we first use <tt>assoc</tt> to see if there is already a record in the table with this key. If not, we form a new record by <tt>cons</tt>ing the key with the value, and insert this at the head of the table's list of records, after the dummy record. If there already is a record with this key, we set the <tt>cdr</tt> of this record to the designated new value. The header of the table provides us with a fixed location to modify in order to insert the new record.<a name="footnote_link_3-25" class="footnote_link" href="#footnote_3-25">25</a>
+<p> To insert a value in a table under a specified key, we first use <code>assoc</code> to see if there is already a record in the table with this key. If not, we form a new record by <code>cons</code>ing the key with the value, and insert this at the head of the table's list of records, after the dummy record. If there already is a record with this key, we set the <code>cdr</code> of this record to the designated new value. The header of the table provides us with a fixed location to modify in order to insert the new record.<a id="footnote_link_3-25" class="footnote_link" href="#footnote_3-25">25</a>
 
 <div id="scheme-define-insert-table">
 (define (insert! key value table)
@@ -644,7 +641,7 @@ C.prompt("scheme-define-assoc");
 C.prompt("scheme-define-insert-table", ["scheme-define-lookup", "scheme-define-assoc"]);
 </script>
 
-<p> To construct a new table, we simply create a list containing the symbol <tt>*table*</tt>:
+<p> To construct a new table, we simply create a list containing the symbol <code>*table*</code>:
 
 <div id="scheme-define-table">
 (define (make-table)
@@ -691,7 +688,7 @@ letters:
 C.prompt("scheme-define-lookup-2table");
 </script>
 
-<p> To insert a new item under a pair of keys, we use <tt>assoc</tt> to see if there is a subtable stored under the first key. If not, we build a new subtable containing the single record (<tt>key-2</tt>, <tt>value</tt>) and insert it into the table under the first key. If a subtable already exists for the first key, we insert the new record into this subtable, using the insertion method for one-dimensional tables described above:
+<p> To insert a new item under a pair of keys, we use <code>assoc</code> to see if there is a subtable stored under the first key. If not, we build a new subtable containing the single record (<code>key-2</code>, <code>value</code>) and insert it into the table under the first key. If a subtable already exists for the first key, we insert the new record into this subtable, using the insertion method for one-dimensional tables described above:
 
 <div id="scheme-define-insert-2table">
 (define (insert! key-1 key-2 value table)
@@ -715,7 +712,7 @@ C.prompt("scheme-define-insert-2table", ["scheme-define-assoc", "scheme-define-l
 
 <h4> Creating local tables </h4>
 
-<p> The <tt>lookup</tt> and <tt>insert!</tt> operations defined above take the table as an argument. This enables us to use programs that access more than one table. Another way to deal with multiple tables is to have separate <tt>lookup</tt> and <tt>insert!</tt> procedures for each table. We can do this by representing a table procedurally, as an object that maintains an internal table as part of its local state. When sent an appropriate message, this "table object" supplies the procedure with which to operate on the internal table. Here is a generator for two-dimensional tables represented in this fashion:
+<p> The <code>lookup</code> and <code>insert!</code> operations defined above take the table as an argument. This enables us to use programs that access more than one table. Another way to deal with multiple tables is to have separate <code>lookup</code> and <code>insert!</code> procedures for each table. We can do this by representing a table procedurally, as an object that maintains an internal table as part of its local state. When sent an appropriate message, this "table object" supplies the procedure with which to operate on the internal table. Here is a generator for two-dimensional tables represented in this fashion:
 
 <div id="scheme-define-make-2table">
 (define (make-table)
@@ -752,7 +749,7 @@ C.prompt("scheme-define-insert-2table", ["scheme-define-assoc", "scheme-define-l
 C.prompt("scheme-define-make-2table", ["scheme-define-insert-2table"]);
 </script>
 
-<p> Using <tt>make-table</tt>, we could implement the <tt>get</tt> and <tt>put</tt> operations used in section <a href="2-4-representation.html">2.4.3</a> for data-directed programming, as follows:
+<p> Using <code>make-table</code>, we could implement the <code>get</code> and <code>put</code> operations used in section <a href="2-4-representation.html">2.4.3</a> for data-directed programming, as follows:
 
 <div id="scheme-define-get-put">
 (define operation-table (make-table))
@@ -763,28 +760,28 @@ C.prompt("scheme-define-make-2table", ["scheme-define-insert-2table"]);
 C.prompt("scheme-define-get-put", ["scheme-define-make-2table"]);
 </script>
 
-<p> <tt>Get</tt> takes as arguments two keys, and <tt>put</tt> takes as arguments two keys and a value. Both operations access the same local table, which is encapsulated within the object created by the call to <tt>make-table</tt>.
+<p> <code>Get</code> takes as arguments two keys, and <code>put</code> takes as arguments two keys and a value. Both operations access the same local table, which is encapsulated within the object created by the call to <code>make-table</code>.
 
-<div class="exercise">
-<p> <b>Exercise 3.24:</b> In the table implementations above, the keys are tested for equality using <tt>equal?</tt> (called by <tt>assoc</tt>). This is not always the appropriate test. For instance, we might have a table with numeric keys in which we don't need an exact match to the number we're looking up, but only a number within some tolerance of it. Design a table constructor <tt>make-table</tt> that takes as an argument a <tt>same-key?</tt> procedure that will be used to test ``equality'' of keys. <tt>Make-table</tt> should return a <tt>dispatch</tt> procedure that can be used to access appropriate <tt>lookup</tt> and <tt>insert!</tt> procedures for a local table.
+<div class="exercise" id="thm_3.24">
+<p> <b>Exercise 3.24:</b> In the table implementations above, the keys are tested for equality using <code>equal?</code> (called by <code>assoc</code>). This is not always the appropriate test. For instance, we might have a table with numeric keys in which we don't need an exact match to the number we're looking up, but only a number within some tolerance of it. Design a table constructor <code>make-table</code> that takes as an argument a <code>same-key?</code> procedure that will be used to test ``equality'' of keys. <code>Make-table</code> should return a <code>dispatch</code> procedure that can be used to access appropriate <code>lookup</code> and <code>insert!</code> procedures for a local table.
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.25:</b> Generalizing one- and two-dimensional tables, show how to implement a table in which values are stored under an arbitrary number of keys and different values may be stored under different numbers of keys. The <tt>lookup</tt> and <tt>insert!</tt> procedures should take as input a list of keys used to access the table.
+<div class="exercise" id="thm_3.25">
+<p> <b>Exercise 3.25:</b> Generalizing one- and two-dimensional tables, show how to implement a table in which values are stored under an arbitrary number of keys and different values may be stored under different numbers of keys. The <code>lookup</code> and <code>insert!</code> procedures should take as input a list of keys used to access the table.
 </div>
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.26">
 <p> <b>Exercise 3.26:</b> To search a table as implemented above, one needs to scan through the list of records. This is basically the unordered list representation of section <a href="2-3-symbolic.html">2.3.3</a>. For large tables, it may be more efficient to structure the table in a different manner. Describe a table implementation where the (key, value) records are organized using a binary tree, assuming that keys can be ordered in some way (e.g., numerically or alphabetically). (Compare Exercise 2-66 of Chapter 2.)
 </div>
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.27:</b> <tt>Memoization</tt> (also called <tt>tabulation</tt> ) is a technique that enables a procedure to record, in a local table, values that have previously been computed. This technique can make a vast difference in the performance of a program. A memoized procedure maintains a table in which values of previous calls are stored using as keys the arguments that produced the values. When the memoized procedure is asked to compute a value, it first checks the table to see if the value is already there and, if so, just returns that value. Otherwise, it computes the new value in the ordinary way and stores this in the table. As an example of memoization, recall from section <a href="1-2-procedures.html">1.2.2</a> the exponential process for computing Fibonacci numbers:
+<div class="exercise" id="thm_3.27">
+<p> <b>Exercise 3.27:</b> <code>Memoization</code> (also called <code>tabulation</code> ) is a technique that enables a procedure to record, in a local table, values that have previously been computed. This technique can make a vast difference in the performance of a program. A memoized procedure maintains a table in which values of previous calls are stored using as keys the arguments that produced the values. When the memoized procedure is asked to compute a value, it first checks the table to see if the value is already there and, if so, just returns that value. Otherwise, it computes the new value in the ordinary way and stores this in the table. As an example of memoization, recall from section <a href="1-2-procedures.html">1.2.2</a> the exponential process for computing Fibonacci numbers:
 
 <div id="scheme-define-fib">
 (define (fib n)
@@ -827,21 +824,20 @@ C.prompt("scheme-define-memo-fib", ["scheme-define-memoize"]);
 C.prompt("scheme-define-memoize", ["scheme-define-table"]);
 </script>
 
-<p> Draw an environment diagram to analyze the computation of <tt>(memo-fib 3)</tt>. Explain why <tt>memo-fib</tt> computes the nth Fibonacci number in a number of steps proportional to n. Would the scheme still work if we had simply defined <tt>memo-fib</tt> to be <tt>(memoize fib)</tt>? </div>
+<p> Draw an environment diagram to analyze the computation of <code>(memo-fib 3)</code>. Explain why <code>memo-fib</code> computes the nth Fibonacci number in a number of steps proportional to n. Would the scheme still work if we had simply defined <code>memo-fib</code> to be <code>(memoize fib)</code>? </div>
 
-<a name="%_sec_3.3.4" />
-<h3> 3.3.4 A Simulator for Digital Circuits </h3>
+<h3 id="sec_3.3.4"> 3.3.4 A Simulator for Digital Circuits </h3>
 
 <p> Designing complex digital systems, such as computers, is an important engineering activity. Digital systems are constructed by interconnecting simple elements. Although the behavior of these individual elements is simple, networks of them can have very complex behavior. Computer simulation of proposed circuit designs is an important tool used by digital systems engineers. In this section we design a system for performing digital logic simulations. This system typifies a kind of program called an <em>event-driven simulation</em> , in which actions ("events") trigger further events that happen at a later time, which in turn trigger more events, and so so.
 
-<p> Our computational model of a circuit will be composed of objects that correspond to the elementary components from which the circuit is constructed. There are <tt>wires</tt> , which carry <tt>digital signals</tt> . A digital signal may at any moment have only one of two possible values, 0 and 1. There are also various types of digital <tt>function boxes</tt> , which connect wires carrying input signals to other output wires. Such boxes produce output signals computed from their input signals. The output signal is delayed by a time that depends on the type of the function box. For example, an <tt>inverter</tt> is a primitive function box that inverts its input. If the input signal to an inverter changes to 0, then one inverter-delay later the inverter will change its output signal to 1. If the input signal to an inverter changes to 1, then one inverter-delay later the inverter will change its output signal to 0. We draw an inverter symbolically as in Figure 3-24. An <tt>and-gate</tt> , also shown in Figure 3-24, is a primitive function box with two inputs and one output. It drives its output signal to a value that is the <tt>logical and</tt> of the inputs. That is, if both of its input signals become 1, then one and-gate-delay time later the and-gate will force its output signal to be 1; otherwise the output will be 0. An <tt>or-gate</tt> is a similar two-input primitive function box that drives its output signal to a value that is the <tt>logical or</tt> of the inputs. That is, the output will become 1 if at least one of the input signals is 1; otherwise the output will become 0.
+<p> Our computational model of a circuit will be composed of objects that correspond to the elementary components from which the circuit is constructed. There are <code>wires</code> , which carry <code>digital signals</code> . A digital signal may at any moment have only one of two possible values, 0 and 1. There are also various types of digital <code>function boxes</code> , which connect wires carrying input signals to other output wires. Such boxes produce output signals computed from their input signals. The output signal is delayed by a time that depends on the type of the function box. For example, an <code>inverter</code> is a primitive function box that inverts its input. If the input signal to an inverter changes to 0, then one inverter-delay later the inverter will change its output signal to 1. If the input signal to an inverter changes to 1, then one inverter-delay later the inverter will change its output signal to 0. We draw an inverter symbolically as in Figure 3-24. An <code>and-gate</code> , also shown in Figure 3-24, is a primitive function box with two inputs and one output. It drives its output signal to a value that is the <code>logical and</code> of the inputs. That is, if both of its input signals become 1, then one and-gate-delay time later the and-gate will force its output signal to be 1; otherwise the output will be 0. An <code>or-gate</code> is a similar two-input primitive function box that drives its output signal to a value that is the <code>logical or</code> of the inputs. That is, the output will become 1 if at least one of the input signals is 1; otherwise the output will become 0.
 
 <div class="figure">
 <img src="images/ch3-Z-G-24.gif">
 <p> <b>Figure 3.24:</b> Primitive functions in the digital logic simulator.
 </div>
 
-<p> We can connect primitive functions together to construct more complex functions. To accomplish this we wire the outputs of some function boxes to the inputs of other function boxes. For example, the <tt>half-adder</tt>
+<p> We can connect primitive functions together to construct more complex functions. To accomplish this we wire the outputs of some function boxes to the inputs of other function boxes. For example, the <code>half-adder</code>
 
 <p> circuit shown in Figure 3-25 consists of an or-gate, two and-gates, and an inverter. It takes two input signals, A and B, and has two output signals, S and C. S will become 1 whenever precisely one of A and B is 1, and C will become 1 whenever A and B are both 1. We can see from the figure that, because of the delays involved, the outputs may be generated at different times. Many of the difficulties in the design of digital circuits arise from this fact.
 
@@ -852,7 +848,7 @@ C.prompt("scheme-define-memoize", ["scheme-define-table"]);
 
 <p> We will now build a program for modeling the digital logic circuits we wish to study. The program will construct computational objects modeling the wires, which will ``hold'' the signals. Function boxes will be modeled by procedures that enforce the correct relationships among the signals.
 
-<p> One basic element of our simulation will be a procedure <tt>make-wire</tt>, which constructs wires. For example, we can construct six wires as follows:
+<p> One basic element of our simulation will be a procedure <code>make-wire</code>, which constructs wires. For example, we can construct six wires as follows:
 
 <div id="scheme-define-6-wires">
 (define a (make-wire))
@@ -886,7 +882,7 @@ C.prompt("scheme-define-6-wires", ["scheme-define-make-wire"]);
 C.prompt("scheme-wire-up-wires");
 </script>
 
-<p> Better yet, we can explicitly name this operation by defining a procedure <tt>half-adder</tt> that constructs this circuit, given the four external wires to be attached to the half-adder:
+<p> Better yet, we can explicitly name this operation by defining a procedure <code>half-adder</code> that constructs this circuit, given the four external wires to be attached to the half-adder:
 
 <div id="scheme-define-half-adder">
 (define (half-adder a b s c)
@@ -901,7 +897,7 @@ C.prompt("scheme-wire-up-wires");
 C.prompt("scheme-define-half-adder");
 </script>
 
-<p> The advantage of making this definition is that we can use <tt>half-adder</tt> itself as a building block in creating more complex circuits. Figure 3-26, for example, shows a <tt>full-adder</tt> composed of two half-adders and an or-gate.<a name="footnote_link_3-26" class="footnote_link" href="#footnote_3-26">26</a> We can construct a full-adder as follows:
+<p> The advantage of making this definition is that we can use <code>half-adder</code> itself as a building block in creating more complex circuits. Figure 3-26, for example, shows a <code>full-adder</code> composed of two half-adders and an or-gate.<a id="footnote_link_3-26" class="footnote_link" href="#footnote_3-26">26</a> We can construct a full-adder as follows:
 
 <div id="scheme-define-full-adder">
 (define (full-adder a b c-in sum c-out)
@@ -917,7 +913,7 @@ C.prompt("scheme-define-half-adder");
 C.prompt("scheme-define-full-adder", ["scheme-define-half-adder"]);
 </script>
 
-<p> Having defined <tt>full-adder</tt> as a procedure, we can now use it as a building block for creating still more complex circuits. (For example, see Exercise 3-30.)
+<p> Having defined <code>full-adder</code> as a procedure, we can now use it as a building block for creating still more complex circuits. (For example, see Exercise 3-30.)
 
 <div class="figure">
 <img src="images/ch3-Z-G-26.gif">
@@ -972,9 +968,9 @@ C.no_output_frozen_prompt("scheme-add-action-syntax")
 
 </ul>
 
-<p> In addition, we will make use of a procedure <tt>after-delay</tt> that takes a time delay and a procedure to be run and executes the given procedure after the given delay.
+<p> In addition, we will make use of a procedure <code>after-delay</code> that takes a time delay and a procedure to be run and executes the given procedure after the given delay.
 
-<p> Using these procedures, we can define the primitive digital logic functions. To connect an input to an output through an inverter, we use <tt>add-action!</tt> to associate with the input wire a procedure that will be run whenever the signal on the input wire changes value. The procedure computes the <tt>logical-not</tt> of the input signal, and then, after one <tt>inverter-delay</tt>, sets the output signal to be this new value:
+<p> Using these procedures, we can define the primitive digital logic functions. To connect an input to an output through an inverter, we use <code>add-action!</code> to associate with the input wire a procedure that will be run whenever the signal on the input wire changes value. The procedure computes the <code>logical-not</code> of the input signal, and then, after one <code>inverter-delay</code>, sets the output signal to be this new value:
 
 <div id="scheme-define-inverter">
 (define (inverter input output)
@@ -995,9 +991,9 @@ C.no_output_frozen_prompt("scheme-add-action-syntax")
 C.prompt("scheme-define-inverter");
 </script>
 
-<p> An and-gate is a little more complex. The action procedure must be run if either of the inputs to the gate changes. It computes the <tt>logical-and</tt> (using a procedure analogous to <tt>logical-not</tt>) of the values of the signals on the input wires and sets up a change to the new value to occur on the output wire after one <tt>and-gate-delay</tt>.
+<p> An and-gate is a little more complex. The action procedure must be run if either of the inputs to the gate changes. It computes the <code>logical-and</code> (using a procedure analogous to <code>logical-not</code>) of the values of the signals on the input wires and sets up a change to the new value to occur on the output wire after one <code>and-gate-delay</code>.
 
-<div id="">
+<div>
 (define (and-gate a1 a2 output)
   (define (and-action-procedure)
     (let ((new-value
@@ -1013,16 +1009,16 @@ C.prompt("scheme-define-inverter");
 C.prompt();
 </script>
 
-<div class="exercise">
-<p> <b>Exercise 3.28:</b> Define an or-gate as a primitive function box. Your <tt>or-gate</tt> constructor should be similar to <tt>and-gate</tt>.
+<div class="exercise" id="thm_3.28">
+<p> <b>Exercise 3.28:</b> Define an or-gate as a primitive function box. Your <code>or-gate</code> constructor should be similar to <code>and-gate</code>.
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 3.29:</b> Another way to construct an or-gate is as a compound digital logic device, built from and-gates and inverters. Define a procedure <tt>or-gate</tt> that accomplishes this. What is the delay time of the or-gate in terms of <tt>and-gate-delay</tt> and <tt>inverter-delay</tt>?
+<div class="exercise" id="thm_3.29">
+<p> <b>Exercise 3.29:</b> Another way to construct an or-gate is as a compound digital logic device, built from and-gates and inverters. Define a procedure <code>or-gate</code> that accomplishes this. What is the delay time of the or-gate in terms of <code>and-gate-delay</code> and <code>inverter-delay</code>?
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 3.30:</b> Figure 3-27 shows a <tt>ripple-carry adder</tt> formed by stringing together n full-adders. This is the simplest form of parallel adder for adding two n-bit binary numbers. The inputs A_1, A_2, A_3, ..., A_n and B_1, B_2, B_3, ..., B_n are the two binary numbers to be added (each A_k and B_k is a 0 or a 1). The circuit generates S_1, S_2, S_3, ..., S_n, the n bits of the sum, and C, the carry from the addition. Write a procedure <tt>ripple-carry-adder</tt> that generates this circuit. The procedure should take as arguments three lists of n wires each---the A_k, the B_k, and the S_k---and also another wire C. The major drawback of the ripple-carry adder is the need to wait for the carry signals to propagate. What is the delay needed to obtain the complete output from an n-bit ripple-carry adder, expressed in terms of the delays for and-gates, or-gates, and inverters?
+<div class="exercise" id="thm_3.30">
+<p> <b>Exercise 3.30:</b> Figure 3-27 shows a <code>ripple-carry adder</code> formed by stringing together n full-adders. This is the simplest form of parallel adder for adding two n-bit binary numbers. The inputs A_1, A_2, A_3, ..., A_n and B_1, B_2, B_3, ..., B_n are the two binary numbers to be added (each A_k and B_k is a 0 or a 1). The circuit generates S_1, S_2, S_3, ..., S_n, the n bits of the sum, and C, the carry from the addition. Write a procedure <code>ripple-carry-adder</code> that generates this circuit. The procedure should take as arguments three lists of n wires each---the A_k, the B_k, and the S_k---and also another wire C. The major drawback of the ripple-carry adder is the need to wait for the carry signals to propagate. What is the delay needed to obtain the complete output from an n-bit ripple-carry adder, expressed in terms of the delays for and-gates, or-gates, and inverters?
 </div>
 
 <div class="exercise">
@@ -1046,7 +1042,7 @@ C ------+   |     +-----+   |     +-----+   |     :  ------+   |
 
 <h4> Representing wires </h4>
 
-<p> A wire in our simulation will be a computational object with two local state variables: a <tt>signal-value</tt> (initially taken to be 0) and a collection of <tt>action-procedures</tt> to be run when the signal changes value. We implement the wire, using message-passing style, as a collection of local procedures together with a <tt>dispatch</tt> procedure that selects the appropriate local operation, just as we did with the simple bank-account object in section <a href="3-1-assignment.html">3.1.1</a>:
+<p> A wire in our simulation will be a computational object with two local state variables: a <code>signal-value</code> (initially taken to be 0) and a collection of <code>action-procedures</code> to be run when the signal changes value. We implement the wire, using message-passing style, as a collection of local procedures together with a <code>dispatch</code> procedure that selects the appropriate local operation, just as we did with the simple bank-account object in section <a href="3-1-assignment.html">3.1.1</a>:
 
 <div id="scheme-define-make-wire">
 (define (make-wire)
@@ -1072,7 +1068,7 @@ C ------+   |     +-----+   |     +-----+   |     :  ------+   |
 C.prompt("scheme-define-make-wire", ["scheme-define-call-each"]);
 </script>
 
-<p> The local procedure <tt>set-my-signal!</tt> tests whether the new signal value changes the signal on the wire. If so, it runs each of the action procedures, using the following procedure <tt>call-each</tt>, which calls each of the items in a list of no-argument procedures:
+<p> The local procedure <code>set-my-signal!</code> tests whether the new signal value changes the signal on the wire. If so, it runs each of the action procedures, using the following procedure <code>call-each</code>, which calls each of the items in a list of no-argument procedures:
 
 <div id="scheme-define-call-each">
 (define (call-each procedures)
@@ -1086,9 +1082,9 @@ C.prompt("scheme-define-make-wire", ["scheme-define-call-each"]);
 C.prompt("scheme-define-call-each");
 </script>
 
-<p> The local procedure <tt>accept-action-procedure!</tt> adds the given procedure to the list of procedures to be run, and then runs the new procedure once. (See Exercise 3-31.)
+<p> The local procedure <code>accept-action-procedure!</code> adds the given procedure to the list of procedures to be run, and then runs the new procedure once. (See Exercise 3-31.)
 
-<p> With the local <tt>dispatch</tt> procedure set up as specified, we can provide the following procedures to access the local operations on wires:<a name="footnote_link_3-27" class="footnote_link" href="#footnote_3-27">27</a>
+<p> With the local <code>dispatch</code> procedure set up as specified, we can provide the following procedures to access the local operations on wires:<a id="footnote_link_3-27" class="footnote_link" href="#footnote_3-27">27</a>
 
 <div id="scheme-define-get-set-signal-add-action">
 (define (get-signal wire)
@@ -1104,45 +1100,45 @@ C.prompt("scheme-define-call-each");
 C.prompt("scheme-define-get-set-signal-add-action");
 </script>
 
-<p> Wires, which have time-varying signals and may be incrementally attached to devices, are typical of mutable objects. We have modeled them as procedures with local state variables that are modified by assignment. When a new wire is created, a new set of state variables is allocated (by the <tt>let</tt> expression in <tt>make-wire</tt>) and a new <tt>dispatch</tt> procedure is constructed and returned, capturing the environment with the new state variables.
+<p> Wires, which have time-varying signals and may be incrementally attached to devices, are typical of mutable objects. We have modeled them as procedures with local state variables that are modified by assignment. When a new wire is created, a new set of state variables is allocated (by the <code>let</code> expression in <code>make-wire</code>) and a new <code>dispatch</code> procedure is constructed and returned, capturing the environment with the new state variables.
 
 <p> The wires are shared among the various devices that have been connected to them. Thus, a change made by an interaction with one device will affect all the other devices attached to the wire. The wire communicates the change to its neighbors by calling the action procedures provided to it when the connections were established.
 
 <h4> The agenda </h4>
 
-<p> The only thing needed to complete the simulator is <tt>after-delay</tt>. The idea here is that we maintain a data structure, called an <tt>agenda</tt> , that contains a schedule of things to do. The following operations are defined for agendas:
+<p> The only thing needed to complete the simulator is <code>after-delay</code>. The idea here is that we maintain a data structure, called an <code>agenda</code> , that contains a schedule of things to do. The following operations are defined for agendas:
 
 <ul>
 
 <li>
-<p> <tt>(make-agenda)</tt> returns a new empty agenda.
+<p> <code>(make-agenda)</code> returns a new empty agenda.
 </li>
 
 <li>
-<p> <tt>(empty-agenda? &lt;agenda&gt;)</tt> is true if the specified agenda is
+<p> <code>(empty-agenda? &lt;agenda&gt;)</code> is true if the specified agenda is
 empty.
 </li>
 
 <li>
-<p> <tt>(first-agenda-item &lt;agenda&gt;)</tt> returns the first item on the
+<p> <code>(first-agenda-item &lt;agenda&gt;)</code> returns the first item on the
 agenda.
 </li>
 
 <li>
-<p> <tt>(remove-first-agenda-item! &lt;agenda&gt;)</tt> modifies the agenda by
+<p> <code>(remove-first-agenda-item! &lt;agenda&gt;)</code> modifies the agenda by
 removing the first item.
 </li>
 
 <li>
-<p> <tt>(add-to-agenda! &lt;time&gt; &lt;action&gt; &lt;agenda&gt;)</tt> modifies the agenda by adding the given action procedure to be run at the specified time.
+<p> <code>(add-to-agenda! &lt;time&gt; &lt;action&gt; &lt;agenda&gt;)</code> modifies the agenda by adding the given action procedure to be run at the specified time.
 </li>
 
 <li>
-<p> <tt>(current-time &lt;agenda&gt;)</tt> returns the current simulation time.
+<p> <code>(current-time &lt;agenda&gt;)</code> returns the current simulation time.
 </li>
 </ul>
 
-<p> The particular agenda that we use is denoted by <tt>the-agenda</tt>. The procedure <tt>after-delay</tt> adds new elements to <tt>the-agenda</tt>:
+<p> The particular agenda that we use is denoted by <code>the-agenda</code>. The procedure <code>after-delay</code> adds new elements to <code>the-agenda</code>:
 
 <div id="scheme-define-after-delay">
 (define (after-delay delay action)
@@ -1154,7 +1150,7 @@ removing the first item.
 C.prompt("scheme-define-after-delay");
 </script>
 
-<p> The simulation is driven by the procedure <tt>propagate</tt>, which operates on <tt>the-agenda</tt>, executing each procedure on the agenda in sequence. In general, as the simulation runs, new items will be added to the agenda, and <tt>propagate</tt> will continue the simulation as long as there are items on the agenda:
+<p> The simulation is driven by the procedure <code>propagate</code>, which operates on <code>the-agenda</code>, executing each procedure on the agenda in sequence. In general, as the simulation runs, new items will be added to the agenda, and <code>propagate</code> will continue the simulation as long as there are items on the agenda:
 
 <div id="scheme-define-propagate">
 (define (propagate)
@@ -1173,7 +1169,7 @@ C.prompt("scheme-define-propagate");
 
 <p> The following procedure, which places a ``probe'' on a wire, shows the simulator in action. The probe tells the wire that, whenever its signal changes value, it should print the new signal value, together with the current time and a name that identifies the wire:
 
-<div id="scheme-define-probe">
+<div id="scheme-define-probe-1">
 (define (probe name wire)
   (add-action! wire
                (lambda ()
@@ -1185,7 +1181,7 @@ C.prompt("scheme-define-propagate");
                  (display (get-signal wire)))))
 </div>
 <script>
-C.prompt("scheme-define-probe");
+C.prompt("scheme-define-probe-1");
 </script>
 
 <p> We begin by initializing the agenda and specifying delays for the primitive function boxes:
@@ -1218,7 +1214,7 @@ carry 0  New-value = 0
 C.prompt("scheme-define-four-wires");
 </script>
 
-<p> Next we connect the wires in a half-adder circuit (as in Figure 3-25), set the signal on <tt>input-1</tt> to 1, and run the simulation:
+<p> Next we connect the wires in a half-adder circuit (as in Figure 3-25), set the signal on <code>input-1</code> to 1, and run the simulation:
 
 <div id="scheme-connect-wires">
 (half-adder input-1 input-2 sum carry)
@@ -1235,7 +1231,7 @@ C.prompt("scheme-define-four-wires");
 C.prompt("scheme-connect-wires");
 </script>
 
-<p> The <tt>sum</tt> signal changes to 1 at time 8. We are now eight time units from the beginning of the simulation. At this point, we can set the signal on <tt>input-2</tt> to 1 and allow the values to propagate:
+<p> The <code>sum</code> signal changes to 1 at time 8. We are now eight time units from the beginning of the simulation. At this point, we can set the signal on <code>input-2</code> to 1 and allow the values to propagate:
 
 <div id="scheme-set-signal">
 (set-signal! input-2 1)
@@ -1250,12 +1246,12 @@ C.prompt("scheme-connect-wires");
 C.prompt("scheme-set-signal");
 </script>
 
-<p> The <tt>carry</tt> changes to 1 at time 11 and the <tt>sum</tt> changes to 0 at time 16.
+<p> The <code>carry</code> changes to 1 at time 11 and the <code>sum</code> changes to 0 at time 16.
 
-<div class="exercise">
-<p> <b>Exercise 3.31:</b> The internal procedure <tt>accept-action-procedure!</tt> defined in <tt>make-wire</tt> specifies that when a new action procedure is added to a wire, the procedure is immediately run. Explain why this initialization is necessary. In particular, trace through the half-adder example in the paragraphs above and say how the system's response would differ if we had defined <tt>accept-action-procedure!</tt> as
+<div class="exercise" id="thm_3.31">
+<p> <b>Exercise 3.31:</b> The internal procedure <code>accept-action-procedure!</code> defined in <code>make-wire</code> specifies that when a new action procedure is added to a wire, the procedure is immediately run. Explain why this initialization is necessary. In particular, trace through the half-adder example in the paragraphs above and say how the system's response would differ if we had defined <code>accept-action-procedure!</code> as
 
-<div id="">
+<div>
 (define (accept-action-procedure! proc)
   (set! action-procedures (cons proc action-procedures)))
 </div>
@@ -1268,7 +1264,7 @@ C.prompt();
 
 <p> Finally, we give details of the agenda data structure, which holds the procedures that are scheduled for future execution.
 
-<p> The agenda is made up of <tt>time segments</tt> . Each time segment is a pair consisting of a number (the time) and a queue (see Exercise 3-32) that holds the procedures that are scheduled to be run during that time segment.
+<p> The agenda is made up of <code>time segments</code> . Each time segment is a pair consisting of a number (the time) and a queue (see Exercise 3-32) that holds the procedures that are scheduled to be run during that time segment.
 
 <div id="scheme-define-make-time-segment">
 (define (make-time-segment time queue)
@@ -1284,9 +1280,9 @@ C.prompt("scheme-define-make-time-segment");
 
 <p> We will operate on the time-segment queues using the queue operations described in section <a href="3-3-modeling.html">3.3.2</a>.
 
-<p> The agenda itself is a one-dimensional table of time segments. It differs from the tables described in section <a href="3-3-modeling.html">3.3.3</a> in that the segments will be sorted in order of increasing time. In addition, we store the <tt>current time</tt>
+<p> The agenda itself is a one-dimensional table of time segments. It differs from the tables described in section <a href="3-3-modeling.html">3.3.3</a> in that the segments will be sorted in order of increasing time. In addition, we store the <code>current time</code>
 
-<p> (i.e., the time of the last action that was processed) at the head of the agenda. A newly constructed agenda has no time segments and has a current time of 0:<a name="footnote_link_3-28" class="footnote_link" href="#footnote_3-28">28</a>
+<p> (i.e., the time of the last action that was processed) at the head of the agenda. A newly constructed agenda has no time segments and has a current time of 0:<a id="footnote_link_3-28" class="footnote_link" href="#footnote_3-28">28</a>
 
 <div id="scheme-define-agenda-helpers">
 (define (make-agenda) (list 0))
@@ -1353,9 +1349,9 @@ C.prompt("scheme-define-empty-agenda");
 C.prompt("scheme-define-add-to-agenda");
 </script>
 
-<p> The procedure that removes the first item from the agenda deletes the item at the front of the queue in the first time segment. If this deletion makes the time segment empty, we remove it from the list of segments:<a name="footnote_link_3-29" class="footnote_link" href="#footnote_3-29">29</a>
+<p> The procedure that removes the first item from the agenda deletes the item at the front of the queue in the first time segment. If this deletion makes the time segment empty, we remove it from the list of segments:<a id="footnote_link_3-29" class="footnote_link" href="#footnote_3-29">29</a>
 
-<div id="">
+<div>
 (define (remove-first-agenda-item! agenda)
   (let ((q (segment-queue (first-segment agenda))))
     (delete-queue! q)
@@ -1366,8 +1362,8 @@ C.prompt("scheme-define-add-to-agenda");
 C.prompt();
 </script>
 
-<p> The first agenda item is found at the head of the queue in the first time segment. Whenever we extract an item, we also update the current time:<a name="footnote_link_3-30" class="footnote_link" href="#footnote_3-30">30</a>
-<div id="">
+<p> The first agenda item is found at the head of the queue in the first time segment. Whenever we extract an item, we also update the current time:<a id="footnote_link_3-30" class="footnote_link" href="#footnote_3-30">30</a>
+<div>
 (define (first-agenda-item agenda)
   (if (empty-agenda? agenda)
       (error "Agenda is empty -- FIRST-AGENDA-ITEM")
@@ -1379,13 +1375,12 @@ C.prompt();
 C.prompt();
 </script>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.32">
 <p> <b>Exercise 3.32:</b> The procedures to be run during each time segment of the agenda are kept in a queue. Thus, the procedures for each segment are called in the order in which they were added to the agenda (first in, first out). Explain why this order must be used. In particular, trace the behavior of an and-gate whose inputs change from 0,1 to 1,0 in the same segment and say how the behavior would differ if we stored a segment's procedures in an ordinary list, adding and removing procedures only at the front (last in, first out).
 </div>
 
 
-<a name="%_sec_3.3.5" />
-<h3> 3.3.5 Propagation of Constraints </h3>
+<h3 id="sec_3.3.5"> 3.3.5 Propagation of Constraints </h3>
 
 <p> Computer programs are traditionally organized as one-directional computations, which perform operations on prespecified arguments to produce desired outputs. On the other hand, we often model systems in terms of relations among quantities. For example, a mathematical model of a mechanical structure might include the information that the deflection d of a metal rod is related to the force f on the rod, the length L of the rod, the cross-sectional area A, and the elastic modulus E via the equation
 
@@ -1393,11 +1388,11 @@ C.prompt();
 dAE = FL
 </pre>
 
-<p> Such an equation is not one-directional. Given any four of the quantities, we can use it to compute the fifth. Yet translating the equation into a traditional computer language would force us to choose one of the quantities to be computed in terms of the other four. Thus, a procedure for computing the area A could not be used to compute the deflection d, even though the computations of A and d arise from the same equation.<a name="footnote_link_3-31" class="footnote_link" href="#footnote_3-31">31</a>
+<p> Such an equation is not one-directional. Given any four of the quantities, we can use it to compute the fifth. Yet translating the equation into a traditional computer language would force us to choose one of the quantities to be computed in terms of the other four. Thus, a procedure for computing the area A could not be used to compute the deflection d, even though the computations of A and d arise from the same equation.<a id="footnote_link_3-31" class="footnote_link" href="#footnote_3-31">31</a>
 
-<p> In this section, we sketch the design of a language that enables us to work in terms of relations themselves. The primitive elements of the language are <tt>primitive constraints</tt> , which state that certain relations hold between quantities. For example, <tt>(adder a b c)</tt> specifies that the quantities a, b, and c must be related by the equation a + b = c, <tt>(multiplier x y z)</tt> expresses the constraint xy = z, and <tt>(constant 3.14 x)</tt> says that the value of x must be 3.14.
+<p> In this section, we sketch the design of a language that enables us to work in terms of relations themselves. The primitive elements of the language are <code>primitive constraints</code> , which state that certain relations hold between quantities. For example, <code>(adder a b c)</code> specifies that the quantities a, b, and c must be related by the equation a + b = c, <code>(multiplier x y z)</code> expresses the constraint xy = z, and <code>(constant 3.14 x)</code> says that the value of x must be 3.14.
 
-<p> Our language provides a means of combining primitive constraints in order to express more complex relations. We combine constraints by constructing <tt>constraint networks</tt> , in which constraints are joined by <tt>connectors</tt> . A connector is an object that ``holds'' a value that may participate in one or more constraints. For example, we know that the relationship between Fahrenheit and Celsius temperatures is
+<p> Our language provides a means of combining primitive constraints in order to express more complex relations. We combine constraints by constructing <code>constraint networks</code> , in which constraints are joined by <code>connectors</code> . A connector is an object that ``holds'' a value that may participate in one or more constraints. For example, we know that the relationship between Fahrenheit and Celsius temperatures is
 
 $$
 9C = 5(F - 32)
@@ -1417,7 +1412,7 @@ $$
 
 <h4> Using the constraint system </h4>
 
-<p> To use the constraint system to carry out the temperature computation outlined above, we first create two connectors, <tt>C</tt> and <tt>F</tt>, by calling the constructor <tt>make-connector</tt>, and link <tt>C</tt> and <tt>F</tt> in an appropriate network:
+<p> To use the constraint system to carry out the temperature computation outlined above, we first create two connectors, <code>C</code> and <code>F</code>, by calling the constructor <code>make-connector</code>, and link <code>C</code> and <code>F</code> in an appropriate network:
 
 <div id="define-C-F">
 (define C (make-connector))
@@ -1450,9 +1445,9 @@ C.prompt("define-C-F");
 C.prompt("scheme-define-celsius-fahrenheit-converter");
 </script>
 
-<p> This procedure creates the internal connectors <tt>u</tt>, <tt>v</tt>, <tt>w</tt>, <tt>x</tt>, and <tt>y</tt>, and links them as shown in Figure 3-28 using the primitive constraint constructors <tt>adder</tt>, <tt>multiplier</tt>, and <tt>constant</tt>. Just as with the digital-circuit simulator of section <a href="3-3-modeling.html">3.3.4</a>, expressing these combinations of primitive elements in terms of procedures automatically provides our language with a means of abstraction for compound objects.
+<p> This procedure creates the internal connectors <code>u</code>, <code>v</code>, <code>w</code>, <code>x</code>, and <code>y</code>, and links them as shown in Figure 3-28 using the primitive constraint constructors <code>adder</code>, <code>multiplier</code>, and <code>constant</code>. Just as with the digital-circuit simulator of section <a href="3-3-modeling.html">3.3.4</a>, expressing these combinations of primitive elements in terms of procedures automatically provides our language with a means of abstraction for compound objects.
 
-<p> To watch the network in action, we can place probes on the connectors <tt>C</tt> and <tt>F</tt>, using a <tt>probe</tt> procedure similar to the one we used to monitor wires in section <a href="3-3-modeling.html">3.3.4</a>. Placing a probe on a connector will cause a message to be printed whenever the connector is given a value:
+<p> To watch the network in action, we can place probes on the connectors <code>C</code> and <code>F</code>, using a <code>probe</code> procedure similar to the one we used to monitor wires in section <a href="3-3-modeling.html">3.3.4</a>. Placing a probe on a connector will cause a message to be printed whenever the connector is given a value:
 
 <div id="scheme-probe">
 (probe "Celsius temp" C)
@@ -1462,7 +1457,7 @@ C.prompt("scheme-define-celsius-fahrenheit-converter");
 C.prompt("scheme-probe");
 </script>
 
-<p> Next we set the value of <tt>C</tt> to 25. (The third argument to <tt>set-value!</tt> tells <tt>C</tt> that this directive comes from the <tt>user</tt>.)
+<p> Next we set the value of <code>C</code> to 25. (The third argument to <code>set-value!</code> tells <code>C</code> that this directive comes from the <code>user</code>.)
 
 <div id="scheme-set-C">
 (set-value! C 25 'user)
@@ -1474,9 +1469,9 @@ C.prompt("scheme-probe");
 C.prompt("scheme-set-C");
 </script>
 
-<p> The probe on <tt>C</tt> awakens and reports the value. <tt>C</tt> also propagates its value through the network as described above. This sets <tt>F</tt> to 77, which is reported by the probe on <tt>F</tt>.
+<p> The probe on <code>C</code> awakens and reports the value. <code>C</code> also propagates its value through the network as described above. This sets <code>F</code> to 77, which is reported by the probe on <code>F</code>.
 
-<p> Now we can try to set <tt>F</tt> to a new value, say 212:
+<p> Now we can try to set <code>F</code> to a new value, say 212:
 
 <div id="scheme-set-F">
 (set-value! F 212 'user)
@@ -1486,7 +1481,7 @@ C.prompt("scheme-set-C");
 C.prompt("scheme-set-F");
 </script>
 
-<p> The connector complains that it has sensed a contradiction: Its value is 77, and someone is trying to set it to 212. If we really want to reuse the network with new values, we can tell <tt>C</tt> to forget its old value:
+<p> The connector complains that it has sensed a contradiction: Its value is 77, and someone is trying to set it to 212. If we really want to reuse the network with new values, we can tell <code>C</code> to forget its old value:
 
 <div id="scheme-forget-value">
 (forget-value! C 'user)
@@ -1498,9 +1493,9 @@ C.prompt("scheme-set-F");
 C.prompt("scheme-forget-value");
 </script>
 
-<p> <tt>C</tt> finds that the <tt>user</tt>, who set its value originally, is now retracting that value, so <tt>C</tt> agrees to lose its value, as shown by the probe, and informs the rest of the network of this fact. This information eventually propagates to <tt>F</tt>, which now finds that it has no reason for continuing to believe that its own value is 77. Thus, <tt>F</tt> also gives up its value, as shown by the probe.
+<p> <code>C</code> finds that the <code>user</code>, who set its value originally, is now retracting that value, so <code>C</code> agrees to lose its value, as shown by the probe, and informs the rest of the network of this fact. This information eventually propagates to <code>F</code>, which now finds that it has no reason for continuing to believe that its own value is 77. Thus, <code>F</code> also gives up its value, as shown by the probe.
 
-<p> Now that <tt>F</tt> has no value, we are free to set it to 212:
+<p> Now that <code>F</code> has no value, we are free to set it to 212:
 
 <div id="scheme-set-F-212">
 (set-value! F 212 'user)
@@ -1512,7 +1507,7 @@ C.prompt("scheme-forget-value");
 C.prompt("scheme-set-F-212");
 </script>
 
-<p> This new value, when propagated through the network, forces <tt>C</tt> to have a value of 100, and this is registered by the probe on <tt>C</tt>. Notice that the very same network is being used to compute <tt>C</tt> given <tt>F</tt> and to compute <tt>F</tt> given <tt>C</tt>. This nondirectionality of computation is the distinguishing feature of constraint-based systems.
+<p> This new value, when propagated through the network, forces <code>C</code> to have a value of 100, and this is registered by the probe on <code>C</code>. Notice that the very same network is being used to compute <code>C</code> given <code>F</code> and to compute <code>F</code> given <code>C</code>. This nondirectionality of computation is the distinguishing feature of constraint-based systems.
 
 <h4> Implementing the constraint system </h4>
 
@@ -1523,33 +1518,33 @@ C.prompt("scheme-set-F-212");
 <ul>
 
 <li>
-<p> <tt>(has-value? &lt;connector&gt;)</tt> tells whether the connector has a value.
+<p> <code>(has-value? &lt;connector&gt;)</code> tells whether the connector has a value.
 </li>
 
 <li>
-<p> <tt>(get-value &lt;connector&gt;)</tt> returns the connector's current value.
+<p> <code>(get-value &lt;connector&gt;)</code> returns the connector's current value.
 </li>
 
 <li>
-<p> <tt>(set-value! &lt;connector&gt; &lt;new-value&gt; &lt;informant&gt;)</tt>
+<p> <code>(set-value! &lt;connector&gt; &lt;new-value&gt; &lt;informant&gt;)</code>
 indicates that the informant is requesting the connector to set its value to
 the new value.
 </li>
 
 <li>
-<p> <tt>(forget-value! &lt;connector&gt; &lt;retractor&gt;)</tt> tells the connector
+<p> <code>(forget-value! &lt;connector&gt; &lt;retractor&gt;)</code> tells the connector
 that the retractor is requesting it to forget its value.
 </li>
 
 <li>
-<p> <tt>(connect &lt;connector&gt; &lt;new-constraint&gt;)</tt> tells the connector to participate in the new constraint.
+<p> <code>(connect &lt;connector&gt; &lt;new-constraint&gt;)</code> tells the connector to participate in the new constraint.
 </li>
 
 </ul>
 
-<p> The connectors communicate with the constraints by means of the procedures <tt>inform-about-value</tt>, which tells the given constraint that the connector has a value, and <tt>inform-about-no-value</tt>, which tells the constraint that the connector has lost its value.
+<p> The connectors communicate with the constraints by means of the procedures <code>inform-about-value</code>, which tells the given constraint that the connector has a value, and <code>inform-about-no-value</code>, which tells the constraint that the connector has lost its value.
 
-<p> <tt>Adder</tt> constructs an adder constraint among summand connectors <tt>a1</tt> and <tt>a2</tt> and a <tt>sum</tt> connector. An adder is implemented as a procedure with local state (the procedure <tt>me</tt> below):
+<p> <code>Adder</code> constructs an adder constraint among summand connectors <code>a1</code> and <code>a2</code> and a <code>sum</code> connector. An adder is implemented as a procedure with local state (the procedure <code>me</code> below):
 
 <div id="scheme-define-adder">
 (define (adder a1 a2 sum)
@@ -1587,7 +1582,7 @@ that the retractor is requesting it to forget its value.
 C.prompt("scheme-define-adder");
 </script>
 
-<p> <tt>Adder</tt> connects the new adder to the designated connectors and returns it as its value. The procedure <tt>me</tt>, which represents the adder, acts as a dispatch to the local procedures. The following ``syntax interfaces'' (see footnote Footnote 27 in section <a href="3-3-modeling.html">3.3.4</a>) are used in conjunction with the dispatch:
+<p> <code>Adder</code> connects the new adder to the designated connectors and returns it as its value. The procedure <code>me</code>, which represents the adder, acts as a dispatch to the local procedures. The following ``syntax interfaces'' (see footnote Footnote 27 in section <a href="3-3-modeling.html">3.3.4</a>) are used in conjunction with the dispatch:
 
 <div id="scheme-define-inform-about-value">
 (define (inform-about-value constraint)
@@ -1600,9 +1595,9 @@ C.prompt("scheme-define-adder");
 C.prompt("scheme-define-inform-about-value");
 </script>
 
-<p> The adder's local procedure <tt>process-new-value</tt> is called when the adder is informed that one of its connectors has a value. The adder first checks to see if both <tt>a1</tt> and <tt>a2</tt> have values. If so, it tells <tt>sum</tt> to set its value to the sum of the two addends. The <tt>informant</tt> argument to <tt>set-value!</tt> is <tt>me</tt>, which is the adder object itself. If <tt>a1</tt> and <tt>a2</tt> do not both have values, then the adder checks to see if perhaps <tt>a1</tt> and <tt>sum</tt> have values. If so, it sets <tt>a2</tt> to the difference of these two. Finally, if <tt>a2</tt> and <tt>sum</tt> have values, this gives the adder enough information to set <tt>a1</tt>. If the adder is told that one of its connectors has lost a value, it requests that all of its connectors now lose their values. (Only those values that were set by this adder are actually lost.)  Then it runs <tt>process-new-value</tt>. The reason for this last step is that one or more connectors may still have a value (that is, a connector may have had a value that was not originally set by the adder), and these values may need to be propagated back through the adder.
+<p> The adder's local procedure <code>process-new-value</code> is called when the adder is informed that one of its connectors has a value. The adder first checks to see if both <code>a1</code> and <code>a2</code> have values. If so, it tells <code>sum</code> to set its value to the sum of the two addends. The <code>informant</code> argument to <code>set-value!</code> is <code>me</code>, which is the adder object itself. If <code>a1</code> and <code>a2</code> do not both have values, then the adder checks to see if perhaps <code>a1</code> and <code>sum</code> have values. If so, it sets <code>a2</code> to the difference of these two. Finally, if <code>a2</code> and <code>sum</code> have values, this gives the adder enough information to set <code>a1</code>. If the adder is told that one of its connectors has lost a value, it requests that all of its connectors now lose their values. (Only those values that were set by this adder are actually lost.)  Then it runs <code>process-new-value</code>. The reason for this last step is that one or more connectors may still have a value (that is, a connector may have had a value that was not originally set by the adder), and these values may need to be propagated back through the adder.
 
-<p> A multiplier is very similar to an adder. It will set its <tt>product</tt> to 0 if either of the factors is 0, even if the other factor is not known.
+<p> A multiplier is very similar to an adder. It will set its <code>product</code> to 0 if either of the factors is 0, even if the other factor is not known.
 
 <div id="scheme-define-multiplier">
 (define (multiplier m1 m2 product)
@@ -1643,7 +1638,7 @@ C.prompt("scheme-define-inform-about-value");
 C.prompt("scheme-define-multiplier");
 </script>
 
-<p> A <tt>constant</tt> constructor simply sets the value of the designated connector. Any <tt>I-have-a-value</tt> or <tt>I-lost-my-value</tt> message sent to the constant box will produce an error.
+<p> A <code>constant</code> constructor simply sets the value of the designated connector. Any <code>I-have-a-value</code> or <code>I-lost-my-value</code> message sent to the constant box will produce an error.
 
 <div id="scheme-define-constant">
 (define (constant value connector)
@@ -1659,7 +1654,7 @@ C.prompt("scheme-define-constant");
 
 <p> Finally, a probe prints a message about the setting or unsetting of the designated connector:
 
-<div id="scheme-define-probe">
+<div id="scheme-define-probe-2">
 (define (probe name connector)
   (define (print-probe value)
     (newline)
@@ -1682,12 +1677,12 @@ C.prompt("scheme-define-constant");
   me)
 </div>
 <script>
-C.prompt("scheme-define-probe");
+C.prompt("scheme-define-probe-2");
 </script>
 
 <h4> Representing connectors </h4>
 
-<p> A connector is represented as a procedural object with local state variables <tt>value</tt>, the current value of the connector; <tt>informant</tt>, the object that set the connector's value; and <tt>constraints</tt>, a list of the constraints in which the connector participates.
+<p> A connector is represented as a procedural object with local state variables <code>value</code>, the current value of the connector; <code>informant</code>, the object that set the connector's value; and <code>constraints</code>, a list of the constraints in which the connector participates.
 
 <div id="scheme-define-make-connector">
 (define (make-connector)
@@ -1731,7 +1726,7 @@ C.prompt("scheme-define-probe");
 C.prompt("scheme-define-make-connector");
 </script>
 
-<p> The connector's local procedure <tt>set-my-value</tt> is called when there is a request to set the connector's value. If the connector does not currently have a value, it will set its value and remember as <tt>informant</tt> the constraint that requested the value to be set.<a name="footnote_link_3-32" class="footnote_link" href="#footnote_3-32">32</a>  Then the connector will notify all of its participating constraints except the constraint that requested the value to be set. This is accomplished using the following iterator, which applies a designated procedure to all items in a list except a given one:
+<p> The connector's local procedure <code>set-my-value</code> is called when there is a request to set the connector's value. If the connector does not currently have a value, it will set its value and remember as <code>informant</code> the constraint that requested the value to be set.<a id="footnote_link_3-32" class="footnote_link" href="#footnote_3-32">32</a>  Then the connector will notify all of its participating constraints except the constraint that requested the value to be set. This is accomplished using the following iterator, which applies a designated procedure to all items in a list except a given one:
 
 <div id="scheme-define-for-each-except">
 (define (for-each-except exception procedure list)
@@ -1746,11 +1741,11 @@ C.prompt("scheme-define-make-connector");
 C.prompt("scheme-define-for-each-except");
 </script>
 
-<p> If a connector is asked to forget its value, it runs the local procedure <tt>forget-my-value</tt>, which first checks to make sure that the request is coming from the same object that set the value originally. If so, the connector informs its associated constraints about the loss of the value.
+<p> If a connector is asked to forget its value, it runs the local procedure <code>forget-my-value</code>, which first checks to make sure that the request is coming from the same object that set the value originally. If so, the connector informs its associated constraints about the loss of the value.
 
-<p> The local procedure <tt>connect</tt> adds the designated new constraint to the list of constraints if it is not already in that list. Then, if the connector has a value, it informs the new constraint of this fact.
+<p> The local procedure <code>connect</code> adds the designated new constraint to the list of constraints if it is not already in that list. Then, if the connector has a value, it informs the new constraint of this fact.
 
-<p> The connector's procedure <tt>me</tt> serves as a dispatch to the other internal procedures and also represents the connector as an object. The following procedures provide a syntax interface for the dispatch:
+<p> The connector's procedure <code>me</code> serves as a dispatch to the other internal procedures and also represents the connector as an object. The following procedures provide a syntax interface for the dispatch:
 
 <div id="scheme-define-connector-helpers">
 (define (has-value? connector)
@@ -1772,12 +1767,12 @@ C.prompt("scheme-define-for-each-except");
 C.prompt("scheme-define-connector-helpers");
 </script>
 
-<div class="exercise">
-<p> <b>Exercise 3.33:</b> Using primitive multiplier, adder, and constant constraints, define a procedure <tt>averager</tt> that takes three connectors <tt>a</tt>, <tt>b</tt>, and <tt>c</tt> as inputs and establishes the constraint that the value of <tt>c</tt> is the average of the values of <tt>a</tt> and <tt>b</tt>.
+<div class="exercise" id="thm_3.33">
+<p> <b>Exercise 3.33:</b> Using primitive multiplier, adder, and constant constraints, define a procedure <code>averager</code> that takes three connectors <code>a</code>, <code>b</code>, and <code>c</code> as inputs and establishes the constraint that the value of <code>c</code> is the average of the values of <code>a</code> and <code>b</code>.
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 3.34:</b> Louis Reasoner wants to build a squarer, a constraint device with two terminals such that the value of connector <tt>b</tt> on the second terminal will always be the square of the value <tt>a</tt> on the first terminal. He proposes the following simple device made from a multiplier:
+<div class="exercise" id="thm_3.34">
+<p> <b>Exercise 3.34:</b> Louis Reasoner wants to build a squarer, a constraint device with two terminals such that the value of connector <code>b</code> on the second terminal will always be the square of the value <code>a</code> on the first terminal. He proposes the following simple device made from a multiplier:
 
 <div id="scheme-define-squarer">
 (define (squarer a b)
@@ -1792,7 +1787,7 @@ C.prompt("scheme-define-squarer");
 
 <p> 
 
-<div class="exercise">
+<div class="exercise" id="thm_3.35">
 <p> <b>Exercise 3.35:</b> Ben Bitdiddle tells Louis that one way to avoid the trouble in Exercise 3-34 is to define a squarer as a new primitive constraint. Fill in the missing portions in Ben's outline for a procedure to implement such a constraint:
 
 <div id="scheme-define-squarer-bb">
@@ -1801,11 +1796,11 @@ C.prompt("scheme-define-squarer");
     (if (has-value? b)
         (if (&lt; (get-value b) 0)
             (error "square less than 0 -- SQUARER" (get-value b))
-            <alternative1>)
-        <alternative2>))
-  (define (process-forget-value) <body1>)
-  (define (me request) <body2>)
-  ; <rest of definition>
+            &lt;alternative1&gt;)
+        &lt;alternative2&gt;))
+  (define (process-forget-value) &lt;body1&gt;)
+  (define (me request) &lt;body2&gt;)
+  ; &lt;rest of definition&gt;
   me)
 </div>
 <script>
@@ -1815,7 +1810,7 @@ C.prompt("scheme-define-squarer-bb");
 
 <p>
 
-<div class="exercise">
+<div class="exercise" id="thm_3.36">
 <p> <b>Exercise 3.36:</b> Suppose we evaluate the following sequence of expressions in the global environment:
 
 <div id="scheme-define-ab">
@@ -1827,7 +1822,7 @@ C.prompt("scheme-define-squarer-bb");
 C.prompt("scheme-define-ab");
 </script>
 
-<p> At some time during evaluation of the <tt>set-value!</tt>, the following expression from the connector's local procedure is evaluated:
+<p> At some time during evaluation of the <code>set-value!</code>, the following expression from the connector's local procedure is evaluated:
 
 <div id="scheme-use-for-each-except">
 (for-each-except setter inform-about-value constraints)
@@ -1841,8 +1836,8 @@ C.prompt("scheme-use-for-each-except");
 
 <p>
 
-<div class="exercise">
-<p> <b>Exercise 3.37:</b> The <tt>celsius-fahrenheit-converter</tt> procedure is cumbersome when compared with a more expression-oriented style of definition, such as
+<div class="exercise" id="thm_3.37">
+<p> <b>Exercise 3.37:</b> The <code>celsius-fahrenheit-converter</code> procedure is cumbersome when compared with a more expression-oriented style of definition, such as
 
 <div id="scheme-define-cfc-op">
 (define (celsius-fahrenheit-converter x)
@@ -1857,7 +1852,7 @@ C.prompt("scheme-use-for-each-except");
 C.prompt("scheme-define-cfc-op");
 </script>
 
-<p> Here <tt>c+</tt>, <tt>c*</tt>, etc. are the ``constraint'' versions of the arithmetic operations. For example, <tt>c+</tt> takes two connectors as arguments and returns a connector that is related to these by an adder constraint:
+<p> Here <code>c+</code>, <code>c*</code>, etc. are the ``constraint'' versions of the arithmetic operations. For example, <code>c+</code> takes two connectors as arguments and returns a connector that is related to these by an adder constraint:
 
 <div id="scheme-define-cp">
 (define (c+ x y)
@@ -1869,7 +1864,7 @@ C.prompt("scheme-define-cfc-op");
 C.prompt("scheme-define-cp");
 </script>
 
-<p> Define analogous procedures <tt>c-</tt>, <tt>c*</tt>, <tt>c/</tt>, and <tt>cv</tt> (constant value) that enable us to define compound constraints as in the converter example above.<a name="footnote_link_3-33" class="footnote_link" href="#footnote_3-33">33</a>
+<p> Define analogous procedures <code>c-</code>, <code>c*</code>, <code>c/</code>, and <code>cv</code> (constant value) that enable us to define compound constraints as in the converter example above.<a id="footnote_link_3-33" class="footnote_link" href="#footnote_3-33">33</a>
  </div>
 @@
 
@@ -1879,11 +1874,11 @@ C.prompt("scheme-define-cp");
 </div>
 
 <div id="footnote_3-17" class="footnote">
-<p><a href="#footnote_link_3-17" class="footnote_backlink">17</a> We see from this that mutation operations on lists can create ``garbage'' that is not part of any accessible structure. We will see in section <a href="5-3-storage.html#%_sec_5.3.2">5.3.2</a> that Lisp memory-management systems include a garbage collector, which identifies and recycles the memory space used by unneeded pairs.
+<p><a href="#footnote_link_3-17" class="footnote_backlink">17</a> We see from this that mutation operations on lists can create ``garbage'' that is not part of any accessible structure. We will see in section <a href="5-3-storage.html#sec_5.3.2">5.3.2</a> that Lisp memory-management systems include a garbage collector, which identifies and recycles the memory space used by unneeded pairs.
 </div>
 
 <div id="footnote_3-18" class="footnote">
-<p><a href="#footnote_link_3-18" class="footnote_backlink">18</a> Get-new-pair is one of the operations that must be implemented as part of the memory management required by a Lisp implementation. We will discuss this in section <a href="5-3-storage.html#%_sec_5.3.1">5.3.1</a>.
+<p><a href="#footnote_link_3-18" class="footnote_backlink">18</a> Get-new-pair is one of the operations that must be implemented as part of the memory management required by a Lisp implementation. We will discuss this in section <a href="5-3-storage.html#sec_5.3.1">5.3.1</a>.
 </div>
 
 <div id="footnote_3-19" class="footnote">
@@ -1891,7 +1886,7 @@ C.prompt("scheme-define-cp");
 </div>
 
 <div id="footnote_3-20" class="footnote">
-<p><a href="#footnote_link_3-20" class="footnote_backlink">20</a> The subtleties of dealing with sharing of mutable data objects reflect the underlying issues of ``sameness'' and ``change'' that were raised in section <a href="3-1-assignment.html#%_sec_3.1.3">3.1.3</a>. We mentioned there that admitting change to our language requires that a compound object must have an ``identity'' that is something different from the pieces from which it is composed. In Lisp, we consider this ``identity'' to be the quality that is tested by eq?, i.e., by equality of pointers. Since in most Lisp implementations a pointer is essentially a memory address, we are ``solving the problem'' of defining the identity of objects by stipulating that a data object ``itself'' is the information stored in some particular set of memory locations in the computer. This suffices for simple Lisp programs, but is hardly a general way to resolve the issue of ``sameness'' in computational models.
+<p><a href="#footnote_link_3-20" class="footnote_backlink">20</a> The subtleties of dealing with sharing of mutable data objects reflect the underlying issues of ``sameness'' and ``change'' that were raised in section <a href="3-1-assignment.html#sec_3.1.3">3.1.3</a>. We mentioned there that admitting change to our language requires that a compound object must have an ``identity'' that is something different from the pieces from which it is composed. In Lisp, we consider this ``identity'' to be the quality that is tested by eq?, i.e., by equality of pointers. Since in most Lisp implementations a pointer is essentially a memory address, we are ``solving the problem'' of defining the identity of objects by stipulating that a data object ``itself'' is the information stored in some particular set of memory locations in the computer. This suffices for simple Lisp programs, but is hardly a general way to resolve the issue of ``sameness'' in computational models.
 </div>
 
 <div id="footnote_3-21" class="footnote">
@@ -1923,11 +1918,11 @@ C.prompt("scheme-define-cp");
 </div>
 
 <div id="footnote_3-28" class="footnote">
-<p><a href="#footnote_link_3-28" class="footnote_backlink">28</a> The agenda is a headed list, like the tables in section <a href="3-3-modeling.html#%_sec_3.3.3">3.3.3</a>, but since the list is headed by the time, we do not need an additional dummy header (such as the *table* symbol used with tables).
+<p><a href="#footnote_link_3-28" class="footnote_backlink">28</a> The agenda is a headed list, like the tables in section <a href="3-3-modeling.html#sec_3.3.3">3.3.3</a>, but since the list is headed by the time, we do not need an additional dummy header (such as the *table* symbol used with tables).
 </div>
 
 <div id="footnote_3-29" class="footnote">
-<p><a href="#footnote_link_3-29" class="footnote_backlink">29</a> Observe that the if expression in this procedure has no <alternative> expression. Such a ``one-armed if statement'' is used to decide whether to do something, rather than to select between two expressions. An if expression returns an unspecified value if the predicate is false and there is no <alternative>.
+<p><a href="#footnote_link_3-29" class="footnote_backlink">29</a> Observe that the if expression in this procedure has no &lt;alternative&gt; expression. Such a ``one-armed if statement'' is used to decide whether to do something, rather than to select between two expressions. An if expression returns an unspecified value if the predicate is false and there is no &lt;alternative&gt;.
 </div>
 
 <div id="footnote_3-30" class="footnote">

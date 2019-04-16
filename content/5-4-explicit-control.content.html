@@ -3,20 +3,20 @@
 @@
 
 {{main_text}}
-<a href='index.html' style="float:left"> <img src='images/chevron-up.svg' height=64 width=64> </a>
+<a href='index.html' style="float:left"><img src='images/chevron-up.svg' height=64 width=64></a>
 <span style="float:right">
-<a href='5-3-storage.html'> <img src='images/chevron-left.svg' height=64 width=64> </a>
-<a href='5-5-compilation.html'> <img src='images/chevron-right.svg' height=64 width=64> </a>
+<a href='5-3-storage.html'><img src='images/chevron-left.svg' height=64 width=64></a>
+<a href='5-5-compilation.html'><img src='images/chevron-right.svg' height=64 width=64></a>
 
 </span>
 <br> <br>
 <h2> The Explicit-Control Evaluator </h2>
 
-<p> In section <a href="5-1-register.html">5.1</a> we saw how to transform simple Scheme programs into descriptions of register machines. We will now perform this transformation on a more complex program, the metacircular evaluator of sections 4-1-1-4-1-4, which shows how the behavior of a Scheme interpreter can be described in terms of the procedures <tt>eval</tt> and <tt>apply</tt>. The <tt>explicit-control evaluator</tt> that we develop in this section shows how the underlying procedure-calling and argument-passing mechanisms used in the evaluation process can be described in terms of operations on registers and stacks. In addition, the explicit-control evaluator can serve as an implementation of a Scheme interpreter, written in a language that is very similar to the native machine language of conventional computers. The evaluator can be executed by the register-machine simulator of section <a href="5-2-simulator.html">5.2</a>. Alternatively, it can be used as a starting point for building a machine-language implementation of a Scheme evaluator, or even a special-purpose machine for evaluating Scheme expressions. Figure 5-16 shows such a hardware implementation: a silicon chip that acts as an evaluator for Scheme. The chip designers started with the data-path and controller specifications for a register machine similar to the evaluator described in this section and used design automation programs to construct the integrated-circuit layout.@footnote{See Batali et al. 1982 for more information on the chip and the method by which it was designed.}
+<p> In section <a href="5-1-register.html">5.1</a> we saw how to transform simple Scheme programs into descriptions of register machines. We will now perform this transformation on a more complex program, the metacircular evaluator of sections 4-1-1-4-1-4, which shows how the behavior of a Scheme interpreter can be described in terms of the procedures <code>eval</code> and <code>apply</code>. The <code>explicit-control evaluator</code> that we develop in this section shows how the underlying procedure-calling and argument-passing mechanisms used in the evaluation process can be described in terms of operations on registers and stacks. In addition, the explicit-control evaluator can serve as an implementation of a Scheme interpreter, written in a language that is very similar to the native machine language of conventional computers. The evaluator can be executed by the register-machine simulator of section <a href="5-2-simulator.html">5.2</a>. Alternatively, it can be used as a starting point for building a machine-language implementation of a Scheme evaluator, or even a special-purpose machine for evaluating Scheme expressions. Figure 5-16 shows such a hardware implementation: a silicon chip that acts as an evaluator for Scheme. The chip designers started with the data-path and controller specifications for a register machine similar to the evaluator described in this section and used design automation programs to construct the integrated-circuit layout.@footnote{See Batali et al. 1982 for more information on the chip and the method by which it was designed.}
 
 <h4> Registers and operations </h4>
 
-<p> In designing the explicit-control evaluator, we must specify the operations to be used in our register machine. We described the metacircular evaluator in terms of abstract syntax, using procedures such as <tt>quoted?</tt> and <tt>make-procedure</tt>. In implementing the register machine, we could expand these procedures into sequences of elementary list-structure memory operations, and implement these operations on our register machine. However, this would make our evaluator very long, obscuring the basic structure with details. To clarify the presentation, we will include as primitive operations of the register machine the syntax procedures given in section <a href="4-1-metacircular.html">4.1.2</a> and the procedures for representing environments and other run-time data given in sections 4-1-3 and 4-1-4. In order to completely specify an evaluator that could be programmed in a low-level machine language or implemented in hardware, we would replace these operations by more elementary operations, using the list-structure implementation we described in section 5.3.
+<p> In designing the explicit-control evaluator, we must specify the operations to be used in our register machine. We described the metacircular evaluator in terms of abstract syntax, using procedures such as <code>quoted?</code> and <code>make-procedure</code>. In implementing the register machine, we could expand these procedures into sequences of elementary list-structure memory operations, and implement these operations on our register machine. However, this would make our evaluator very long, obscuring the basic structure with details. To clarify the presentation, we will include as primitive operations of the register machine the syntax procedures given in section <a href="4-1-metacircular.html">4.1.2</a> and the procedures for representing environments and other run-time data given in sections 4-1-3 and 4-1-4. In order to completely specify an evaluator that could be programmed in a low-level machine language or implemented in hardware, we would replace these operations by more elementary operations, using the list-structure implementation we described in section 5.3.
 
 <div class="exercise">
 <b>Figure 5.16:</b> A silicon-chip implementation of an
@@ -26,16 +26,15 @@ evaluator for Scheme.
 
 </div>
 
-<p> Our Scheme evaluator register machine includes a stack and seven registers: <tt>exp</tt>, <tt>env</tt>, <tt>val</tt>, <tt>continue</tt>, <tt>proc</tt>, <tt>argl</tt>, and <tt>unev</tt>. <tt>Exp</tt> is used to hold the expression to be evaluated, and <tt>env</tt> contains the environment in which the evaluation is to be performed. At the end of an evaluation, <tt>val</tt> contains the value obtained by evaluating the expression in the designated environment. The <tt>continue</tt> register is used to implement recursion, as explained in section <a href="5-1-register.html">5.1.4</a>. (The evaluator needs to call itself recursively, since evaluating an expression requires evaluating its subexpressions.)  The registers <tt>proc</tt>, <tt>argl</tt>, and <tt>unev</tt> are used in evaluating combinations.
+<p> Our Scheme evaluator register machine includes a stack and seven registers: <code>exp</code>, <code>env</code>, <code>val</code>, <code>continue</code>, <code>proc</code>, <code>argl</code>, and <code>unev</code>. <code>Exp</code> is used to hold the expression to be evaluated, and <code>env</code> contains the environment in which the evaluation is to be performed. At the end of an evaluation, <code>val</code> contains the value obtained by evaluating the expression in the designated environment. The <code>continue</code> register is used to implement recursion, as explained in section <a href="5-1-register.html">5.1.4</a>. (The evaluator needs to call itself recursively, since evaluating an expression requires evaluating its subexpressions.)  The registers <code>proc</code>, <code>argl</code>, and <code>unev</code> are used in evaluating combinations.
 
 <p> We will not provide a data-path diagram to show how the registers and operations of the evaluator are connected, nor will we give the complete list of machine operations. These are implicit in the evaluator's controller, which will be presented in detail.
 
-<a name="%_sec_5.4.1" />
-<h3> 5.4.1 The Core of the Explicit-Control Evaluator </h3>
+<h3 id="sec_5.4.1"> 5.4.1 The Core of the Explicit-Control Evaluator </h3>
 
-<p> The central element in the evaluator is the sequence of instructions beginning at <tt>eval-dispatch</tt>. This corresponds to the <tt>eval</tt> procedure of the metacircular evaluator described in section <a href="4-1-metacircular.html">4.1.1</a>. When the controller starts at <tt>eval-dispatch</tt>, it evaluates the expression specified by <tt>exp</tt> in the environment specified by <tt>env</tt>. When evaluation is complete, the controller will go to the entry point stored in <tt>continue</tt>, and the <tt>val</tt> register will hold the value of the expression. As with the metacircular <tt>eval</tt>, the structure of <tt>eval-dispatch</tt> is a case analysis on the syntactic type of the expression to be evaluated.@footnote{In our controller, the dispatch is written as a sequence of <tt>test</tt> and <tt>branch</tt> instructions. Alternatively, it could have been written in a data-directed style (and in a real system it probably would have been) to avoid the need to perform sequential tests and to facilitate the definition of new expression types. A machine designed to run Lisp would probably include a <tt>dispatch-on-type</tt> instruction that would efficiently execute such data-directed dispatches.}
+<p> The central element in the evaluator is the sequence of instructions beginning at <code>eval-dispatch</code>. This corresponds to the <code>eval</code> procedure of the metacircular evaluator described in section <a href="4-1-metacircular.html">4.1.1</a>. When the controller starts at <code>eval-dispatch</code>, it evaluates the expression specified by <code>exp</code> in the environment specified by <code>env</code>. When evaluation is complete, the controller will go to the entry point stored in <code>continue</code>, and the <code>val</code> register will hold the value of the expression. As with the metacircular <code>eval</code>, the structure of <code>eval-dispatch</code> is a case analysis on the syntactic type of the expression to be evaluated.@footnote{In our controller, the dispatch is written as a sequence of <code>test</code> and <code>branch</code> instructions. Alternatively, it could have been written in a data-directed style (and in a real system it probably would have been) to avoid the need to perform sequential tests and to facilitate the definition of new expression types. A machine designed to run Lisp would probably include a <code>dispatch-on-type</code> instruction that would efficiently execute such data-directed dispatches.}
 
-<div id="">
+<div>
 eval-dispatch
   (test (op self-evaluating?) (reg exp))
   (branch (label ev-self-eval))
@@ -63,9 +62,9 @@ C.prompt();
 
 <h4> Evaluating simple expressions </h4>
 
-<p> Numbers and strings (which are self-evaluating), variables, quotations, and <tt>lambda</tt> expressions have no subexpressions to be evaluated. For these, the evaluator simply places the correct value in the <tt>val</tt> register and continues execution at the entry point specified by <tt>continue</tt>. Evaluation of simple expressions is performed by the following controller code:
+<p> Numbers and strings (which are self-evaluating), variables, quotations, and <code>lambda</code> expressions have no subexpressions to be evaluated. For these, the evaluator simply places the correct value in the <code>val</code> register and continues execution at the entry point specified by <code>continue</code>. Evaluation of simple expressions is performed by the following controller code:
 
-<div id="">
+<div>
 ev-self-eval
   (assign val (reg exp))
   (goto (reg continue))
@@ -86,15 +85,15 @@ ev-lambda
 C.prompt();
 </script>
 
-<p> Observe how <tt>ev-lambda</tt> uses the <tt>unev</tt> and <tt>exp</tt> registers to hold the parameters and body of the lambda expression so that they can be passed to the <tt>make-procedure</tt> operation, along with the environment in <tt>env</tt>.
+<p> Observe how <code>ev-lambda</code> uses the <code>unev</code> and <code>exp</code> registers to hold the parameters and body of the lambda expression so that they can be passed to the <code>make-procedure</code> operation, along with the environment in <code>env</code>.
 
 <h4> Evaluating procedure applications </h4>
 
-<p> A procedure application is specified by a combination containing an operator and operands. The operator is a subexpression whose value is a procedure, and the operands are subexpressions whose values are the arguments to which the procedure should be applied. The metacircular <tt>eval</tt> handles applications by calling itself recursively to evaluate each element of the combination, and then passing the results to <tt>apply</tt>, which performs the actual procedure application. The explicit-control evaluator does the same thing; these recursive calls are implemented by <tt>goto</tt> instructions, together with use of the stack to save registers that will be restored after the recursive call returns. Before each call we will be careful to identify which registers must be saved (because their values will be needed later).@footnote{This is an important but subtle point in translating algorithms from a procedural language, such as Lisp, to a register-machine language. As an alternative to saving only what is needed, we could save all the registers (except <tt>val</tt>) before each recursive call. This is called a <tt>framed-stack</tt> discipline. This would work but might save more registers than necessary; this could be an important consideration in a system where stack operations are expensive. Saving registers whose contents will not be needed later may also hold onto useless data that could otherwise be garbage-collected, freeing space to be reused.}
+<p> A procedure application is specified by a combination containing an operator and operands. The operator is a subexpression whose value is a procedure, and the operands are subexpressions whose values are the arguments to which the procedure should be applied. The metacircular <code>eval</code> handles applications by calling itself recursively to evaluate each element of the combination, and then passing the results to <code>apply</code>, which performs the actual procedure application. The explicit-control evaluator does the same thing; these recursive calls are implemented by <code>goto</code> instructions, together with use of the stack to save registers that will be restored after the recursive call returns. Before each call we will be careful to identify which registers must be saved (because their values will be needed later).@footnote{This is an important but subtle point in translating algorithms from a procedural language, such as Lisp, to a register-machine language. As an alternative to saving only what is needed, we could save all the registers (except <code>val</code>) before each recursive call. This is called a <code>framed-stack</code> discipline. This would work but might save more registers than necessary; this could be an important consideration in a system where stack operations are expensive. Saving registers whose contents will not be needed later may also hold onto useless data that could otherwise be garbage-collected, freeing space to be reused.}
 
-<p> We begin the evaluation of an application by evaluating the operator to produce a procedure, which will later be applied to the evaluated operands. To evaluate the operator, we move it to the <tt>exp</tt> register and go to <tt>eval-dispatch</tt>. The environment in the <tt>env</tt> register is already the correct one in which to evaluate the operator. However, we save <tt>env</tt> because we will need it later to evaluate the operands. We also extract the operands into <tt>unev</tt> and save this on the stack. We set up <tt>continue</tt> so that <tt>eval-dispatch</tt> will resume at <tt>ev-appl-did-operator</tt> after the operator has been evaluated. First, however, we save the old value of <tt>continue</tt>, which tells the controller where to continue after the application.
+<p> We begin the evaluation of an application by evaluating the operator to produce a procedure, which will later be applied to the evaluated operands. To evaluate the operator, we move it to the <code>exp</code> register and go to <code>eval-dispatch</code>. The environment in the <code>env</code> register is already the correct one in which to evaluate the operator. However, we save <code>env</code> because we will need it later to evaluate the operands. We also extract the operands into <code>unev</code> and save this on the stack. We set up <code>continue</code> so that <code>eval-dispatch</code> will resume at <code>ev-appl-did-operator</code> after the operator has been evaluated. First, however, we save the old value of <code>continue</code>, which tells the controller where to continue after the application.
 
-<div id="">
+<div>
 ev-application
   (save continue)
   (save env)
@@ -108,9 +107,9 @@ ev-application
 C.prompt();
 </script>
 
-<p> Upon returning from evaluating the operator subexpression, we proceed to evaluate the operands of the combination and to accumulate the resulting arguments in a list, held in <tt>argl</tt>. First we restore the unevaluated operands and the environment. We initialize <tt>argl</tt> to an empty list. Then we assign to the <tt>proc</tt> register the procedure that was produced by evaluating the operator. If there are no operands, we go directly to <tt>apply-dispatch</tt>. Otherwise we save <tt>proc</tt> on the stack and start the argument-evaluation loop:@footnote{We add to the evaluator data-structure procedures in section <a href="4-1-metacircular.html">4.1.3</a> the following two procedures for manipulating argument lists:
+<p> Upon returning from evaluating the operator subexpression, we proceed to evaluate the operands of the combination and to accumulate the resulting arguments in a list, held in <code>argl</code>. First we restore the unevaluated operands and the environment. We initialize <code>argl</code> to an empty list. Then we assign to the <code>proc</code> register the procedure that was produced by evaluating the operator. If there are no operands, we go directly to <code>apply-dispatch</code>. Otherwise we save <code>proc</code> on the stack and start the argument-evaluation loop:@footnote{We add to the evaluator data-structure procedures in section <a href="4-1-metacircular.html">4.1.3</a> the following two procedures for manipulating argument lists:
 
-<div id="">
+<div>
 (define (empty-arglist) '())
 
 (define (adjoin-arg arg arglist)
@@ -122,7 +121,7 @@ C.prompt();
 
 <p> We also use an additional syntax procedure to test for the last operand in a combination:
 
-<div id="">
+<div>
 (define (last-operand? ops)
   (null? (cdr ops)))
 </div>
@@ -131,7 +130,7 @@ C.prompt();
 </script>
 }
 
-<div id="">
+<div>
 ev-appl-did-operator
   (restore unev)                  ; the operands
   (restore env)
@@ -145,9 +144,9 @@ ev-appl-did-operator
 C.prompt();
 </script>
 
-<p> Each cycle of the argument-evaluation loop evaluates an operand from the list in <tt>unev</tt> and accumulates the result into <tt>argl</tt>. To evaluate an operand, we place it in the <tt>exp</tt> register and go to <tt>eval-dispatch</tt>, after setting <tt>continue</tt> so that execution will resume with the argument-accumulation phase. But first we save the arguments accumulated so far (held in <tt>argl</tt>), the environment (held in <tt>env</tt>), and the remaining operands to be evaluated (held in <tt>unev</tt>). A special case is made for the evaluation of the last operand, which is handled at <tt>ev-appl-last-arg</tt>.
+<p> Each cycle of the argument-evaluation loop evaluates an operand from the list in <code>unev</code> and accumulates the result into <code>argl</code>. To evaluate an operand, we place it in the <code>exp</code> register and go to <code>eval-dispatch</code>, after setting <code>continue</code> so that execution will resume with the argument-accumulation phase. But first we save the arguments accumulated so far (held in <code>argl</code>), the environment (held in <code>env</code>), and the remaining operands to be evaluated (held in <code>unev</code>). A special case is made for the evaluation of the last operand, which is handled at <code>ev-appl-last-arg</code>.
 
-<div id="">
+<div>
 ev-appl-operand-loop
   (save argl)
   (assign exp (op first-operand) (reg unev))
@@ -162,9 +161,9 @@ ev-appl-operand-loop
 C.prompt();
 </script>
 
-<p> When an operand has been evaluated, the value is accumulated into the list held in <tt>argl</tt>. The operand is then removed from the list of unevaluated operands in <tt>unev</tt>, and the argument-evaluation continues.
+<p> When an operand has been evaluated, the value is accumulated into the list held in <code>argl</code>. The operand is then removed from the list of unevaluated operands in <code>unev</code>, and the argument-evaluation continues.
 
-<div id="">
+<div>
 ev-appl-accumulate-arg
   (restore unev)
   (restore env)
@@ -177,9 +176,9 @@ ev-appl-accumulate-arg
 C.prompt();
 </script>
 
-<p> Evaluation of the last argument is handled differently. There is no need to save the environment or the list of unevaluated operands before going to <tt>eval-dispatch</tt>, since they will not be required after the last operand is evaluated. Thus, we return from the evaluation to a special entry point <tt>ev-appl-accum-last-arg</tt>, which restores the argument list, accumulates the new argument, restores the saved procedure, and goes off to perform the application.@footnote{The optimization of treating the last operand specially is known as <tt>evlis tail recursion</tt> (see Wand 1980). We could be somewhat more efficient in the argument evaluation loop if we made evaluation of the first operand a special case too. This would permit us to postpone initializing <tt>argl</tt> until after evaluating the first operand, so as to avoid saving <tt>argl</tt> in this case. The compiler in section <a href="5-5-compilation.html">5.5</a> performs this optimization. (Compare the <tt>construct-arglist</tt> procedure of section <a href="5-5-compilation.html">5.5.3</a>.)}
+<p> Evaluation of the last argument is handled differently. There is no need to save the environment or the list of unevaluated operands before going to <code>eval-dispatch</code>, since they will not be required after the last operand is evaluated. Thus, we return from the evaluation to a special entry point <code>ev-appl-accum-last-arg</code>, which restores the argument list, accumulates the new argument, restores the saved procedure, and goes off to perform the application.@footnote{The optimization of treating the last operand specially is known as <code>evlis tail recursion</code> (see Wand 1980). We could be somewhat more efficient in the argument evaluation loop if we made evaluation of the first operand a special case too. This would permit us to postpone initializing <code>argl</code> until after evaluating the first operand, so as to avoid saving <code>argl</code> in this case. The compiler in section <a href="5-5-compilation.html">5.5</a> performs this optimization. (Compare the <code>construct-arglist</code> procedure of section <a href="5-5-compilation.html">5.5.3</a>.)}
 
-<div id="">
+<div>
 ev-appl-last-arg
   (assign continue (label ev-appl-accum-last-arg))
   (goto (label eval-dispatch))
@@ -193,13 +192,13 @@ ev-appl-accum-last-arg
 C.prompt();
 </script>
 
-<p> The details of the argument-evaluation loop determine the order in which the interpreter evaluates the operands of a combination (e.g., left to right or right to left---see Exercise 3-8). This order is not determined by the metacircular evaluator, which inherits its control structure from the underlying Scheme in which it is implemented.@footnote{The order of operand evaluation in the metacircular evaluator is determined by the order of evaluation of the arguments to <tt>cons</tt> in the procedure <tt>list-of-values</tt> of section <a href="4-1-metacircular.html">4.1.1</a> (see Exercise 4-1).} Because the <tt>first-operand</tt> selector (used in <tt>ev-appl-operand-loop</tt> to extract successive operands from <tt>unev</tt>) is implemented as <tt>car</tt> and the <tt>rest-operands</tt> selector is implemented as <tt>cdr</tt>, the explicit-control evaluator will evaluate the operands of a combination in left-to-right order.
+<p> The details of the argument-evaluation loop determine the order in which the interpreter evaluates the operands of a combination (e.g., left to right or right to left---see Exercise 3-8). This order is not determined by the metacircular evaluator, which inherits its control structure from the underlying Scheme in which it is implemented.@footnote{The order of operand evaluation in the metacircular evaluator is determined by the order of evaluation of the arguments to <code>cons</code> in the procedure <code>list-of-values</code> of section <a href="4-1-metacircular.html">4.1.1</a> (see Exercise 4-1).} Because the <code>first-operand</code> selector (used in <code>ev-appl-operand-loop</code> to extract successive operands from <code>unev</code>) is implemented as <code>car</code> and the <code>rest-operands</code> selector is implemented as <code>cdr</code>, the explicit-control evaluator will evaluate the operands of a combination in left-to-right order.
 
 <h4> Procedure application </h4>
 
-<p> The entry point <tt>apply-dispatch</tt> corresponds to the <tt>apply</tt> procedure of the metacircular evaluator. By the time we get to <tt>apply-dispatch</tt>, the <tt>proc</tt> register contains the procedure to apply and <tt>argl</tt> contains the list of evaluated arguments to which it must be applied. The saved value of <tt>continue</tt> (originally passed to <tt>eval-dispatch</tt> and saved at <tt>ev-application</tt>), which tells where to return with the result of the procedure application, is on the stack. When the application is complete, the controller transfers to the entry point specified by the saved <tt>continue</tt>, with the result of the application in <tt>val</tt>. As with the metacircular <tt>apply</tt>, there are two cases to consider. Either the procedure to be applied is a primitive or it is a compound procedure.
+<p> The entry point <code>apply-dispatch</code> corresponds to the <code>apply</code> procedure of the metacircular evaluator. By the time we get to <code>apply-dispatch</code>, the <code>proc</code> register contains the procedure to apply and <code>argl</code> contains the list of evaluated arguments to which it must be applied. The saved value of <code>continue</code> (originally passed to <code>eval-dispatch</code> and saved at <code>ev-application</code>), which tells where to return with the result of the procedure application, is on the stack. When the application is complete, the controller transfers to the entry point specified by the saved <code>continue</code>, with the result of the application in <code>val</code>. As with the metacircular <code>apply</code>, there are two cases to consider. Either the procedure to be applied is a primitive or it is a compound procedure.
 
-<div id="">
+<div>
 apply-dispatch
   (test (op primitive-procedure?) (reg proc))
   (branch (label primitive-apply))
@@ -211,9 +210,9 @@ apply-dispatch
 C.prompt();
 </script>
 
-<p> We assume that each primitive is implemented so as to obtain its arguments from <tt>argl</tt> and place its result in <tt>val</tt>. To specify how the machine handles primitives, we would have to provide a sequence of controller instructions to implement each primitive and arrange for <tt>primitive-apply</tt> to dispatch to the instructions for the primitive identified by the contents of <tt>proc</tt>. Since we are interested in the structure of the evaluation process rather than the details of the primitives, we will instead just use an <tt>apply-primitive-procedure</tt> operation that applies the procedure in <tt>proc</tt> to the arguments in <tt>argl</tt>. For the purpose of simulating the evaluator with the simulator of section <a href="5-2-simulator.html">5.2</a> we use the procedure <tt>apply-primitive-procedure</tt>, which calls on the underlying Scheme system to perform the application, just as we did for the metacircular evaluator in section <a href="4-1-metacircular.html">4.1.4</a>. After computing the value of the primitive application, we restore <tt>continue</tt> and go to the designated entry point.
+<p> We assume that each primitive is implemented so as to obtain its arguments from <code>argl</code> and place its result in <code>val</code>. To specify how the machine handles primitives, we would have to provide a sequence of controller instructions to implement each primitive and arrange for <code>primitive-apply</code> to dispatch to the instructions for the primitive identified by the contents of <code>proc</code>. Since we are interested in the structure of the evaluation process rather than the details of the primitives, we will instead just use an <code>apply-primitive-procedure</code> operation that applies the procedure in <code>proc</code> to the arguments in <code>argl</code>. For the purpose of simulating the evaluator with the simulator of section <a href="5-2-simulator.html">5.2</a> we use the procedure <code>apply-primitive-procedure</code>, which calls on the underlying Scheme system to perform the application, just as we did for the metacircular evaluator in section <a href="4-1-metacircular.html">4.1.4</a>. After computing the value of the primitive application, we restore <code>continue</code> and go to the designated entry point.
 
-<div id="">
+<div>
 primitive-apply
   (assign val (op apply-primitive-procedure)
               (reg proc)
@@ -225,9 +224,9 @@ primitive-apply
 C.prompt();
 </script>
 
-<p> To apply a compound procedure, we proceed just as with the metacircular evaluator. We construct a frame that binds the procedure's parameters to the arguments, use this frame to extend the environment carried by the procedure, and evaluate in this extended environment the sequence of expressions that forms the body of the procedure. <tt>Ev-sequence</tt>, described below in section <a href="5-4-explicit-control.html">5.4.2</a>, handles the evaluation of the sequence.
+<p> To apply a compound procedure, we proceed just as with the metacircular evaluator. We construct a frame that binds the procedure's parameters to the arguments, use this frame to extend the environment carried by the procedure, and evaluate in this extended environment the sequence of expressions that forms the body of the procedure. <code>Ev-sequence</code>, described below in section <a href="5-4-explicit-control.html">5.4.2</a>, handles the evaluation of the sequence.
 
-<div id="">
+<div>
 compound-apply
   (assign unev (op procedure-parameters) (reg proc))
   (assign env (op procedure-environment) (reg proc))
@@ -240,16 +239,15 @@ compound-apply
 C.prompt();
 </script>
 
-<p> <tt>Compound-apply</tt> is the only place in the interpreter where the <tt>env</tt> register is ever assigned a new value. Just as in the metacircular evaluator, the new environment is constructed from the environment carried by the procedure, together with the argument list and the corresponding list of variables to be bound.
+<p> <code>Compound-apply</code> is the only place in the interpreter where the <code>env</code> register is ever assigned a new value. Just as in the metacircular evaluator, the new environment is constructed from the environment carried by the procedure, together with the argument list and the corresponding list of variables to be bound.
 
-<a name="%_sec_5.4.2" />
-<h3> 5.4.2 Sequence Evaluation and Tail Recursion </h3>
+<h3 id="sec_5.4.2"> 5.4.2 Sequence Evaluation and Tail Recursion </h3>
 
-<p> The portion of the explicit-control evaluator at <tt>ev-sequence</tt> is analogous to the metacircular evaluator's <tt>eval-sequence</tt> procedure. It handles sequences of expressions in procedure bodies or in explicit <tt>begin</tt> expressions.
+<p> The portion of the explicit-control evaluator at <code>ev-sequence</code> is analogous to the metacircular evaluator's <code>eval-sequence</code> procedure. It handles sequences of expressions in procedure bodies or in explicit <code>begin</code> expressions.
 
-<p> Explicit <tt>begin</tt> expressions are evaluated by placing the sequence of expressions to be evaluated in <tt>unev</tt>, saving <tt>continue</tt> on the stack, and jumping to <tt>ev-sequence</tt>.
+<p> Explicit <code>begin</code> expressions are evaluated by placing the sequence of expressions to be evaluated in <code>unev</code>, saving <code>continue</code> on the stack, and jumping to <code>ev-sequence</code>.
 
-<div id="">
+<div>
 ev-begin
   (assign unev (op begin-actions) (reg exp))
   (save continue)
@@ -259,13 +257,13 @@ ev-begin
 C.prompt();
 </script>
 
-<p> The implicit sequences in procedure bodies are handled by jumping to <tt>ev-sequence</tt> from <tt>compound-apply</tt>, at which point <tt>continue</tt> is already on the stack, having been saved at <tt>ev-application</tt>.
+<p> The implicit sequences in procedure bodies are handled by jumping to <code>ev-sequence</code> from <code>compound-apply</code>, at which point <code>continue</code> is already on the stack, having been saved at <code>ev-application</code>.
 
-<p> The entries at <tt>ev-sequence</tt> and <tt>ev-sequence-continue</tt> form a loop that successively evaluates each expression in a sequence. The list of unevaluated expressions is kept in <tt>unev</tt>. Before evaluating each expression, we check to see if there are additional expressions to be evaluated in the sequence. If so, we save the rest of the unevaluated expressions (held in <tt>unev</tt>) and the environment in which these must be evaluated (held in <tt>env</tt>) and call <tt>eval-dispatch</tt> to evaluate the expression. The two saved registers are restored upon the return from this evaluation, at <tt>ev-sequence-continue</tt>.
+<p> The entries at <code>ev-sequence</code> and <code>ev-sequence-continue</code> form a loop that successively evaluates each expression in a sequence. The list of unevaluated expressions is kept in <code>unev</code>. Before evaluating each expression, we check to see if there are additional expressions to be evaluated in the sequence. If so, we save the rest of the unevaluated expressions (held in <code>unev</code>) and the environment in which these must be evaluated (held in <code>env</code>) and call <code>eval-dispatch</code> to evaluate the expression. The two saved registers are restored upon the return from this evaluation, at <code>ev-sequence-continue</code>.
 
-<p> The final expression in the sequence is handled differently, at the entry point <tt>ev-sequence-last-exp</tt>. Since there are no more expressions to be evaluated after this one, we need not save <tt>unev</tt> or <tt>env</tt> before going to <tt>eval-dispatch</tt>. The value of the whole sequence is the value of the last expression, so after the evaluation of the last expression there is nothing left to do except continue at the entry point currently held on the stack (which was saved by <tt>ev-application</tt> or <tt>ev-begin</tt>.)  Rather than setting up <tt>continue</tt> to arrange for <tt>eval-dispatch</tt> to return here and then restoring <tt>continue</tt> from the stack and continuing at that entry point, we restore <tt>continue</tt> from the stack before going to <tt>eval-dispatch</tt>, so that <tt>eval-dispatch</tt> will continue at that entry point after evaluating the expression.
+<p> The final expression in the sequence is handled differently, at the entry point <code>ev-sequence-last-exp</code>. Since there are no more expressions to be evaluated after this one, we need not save <code>unev</code> or <code>env</code> before going to <code>eval-dispatch</code>. The value of the whole sequence is the value of the last expression, so after the evaluation of the last expression there is nothing left to do except continue at the entry point currently held on the stack (which was saved by <code>ev-application</code> or <code>ev-begin</code>.)  Rather than setting up <code>continue</code> to arrange for <code>eval-dispatch</code> to return here and then restoring <code>continue</code> from the stack and continuing at that entry point, we restore <code>continue</code> from the stack before going to <code>eval-dispatch</code>, so that <code>eval-dispatch</code> will continue at that entry point after evaluating the expression.
 
-<div id="">
+<div>
 ev-sequence
   (assign exp (op first-exp) (reg unev))
   (test (op last-exp?) (reg unev))
@@ -291,7 +289,7 @@ C.prompt();
 
 <p> In Chapter 1 we said that the process described by a procedure such as
 
-<div id="">
+<div>
 (define (sqrt-iter guess x)
   (if (good-enough? guess x)
       guess
@@ -303,13 +301,13 @@ C.prompt();
 </script>
 
 
-<p> is an iterative process. Even though the procedure is syntactically recursive (defined in terms of itself), it is not logically necessary for an evaluator to save information in passing from one call to <tt>sqrt-iter</tt> to the next.@footnote{We saw in section <a href="5-1-register.html">5.1</a> how to implement such a process with a register machine that had no stack; the state of the process was stored in a fixed set of registers.} An evaluator that can execute a procedure such as <tt>sqrt-iter</tt> without requiring increasing storage as the procedure continues to call itself is called a <tt>tail-recursive</tt> evaluator. The metacircular implementation of the evaluator in Chapter 4 does not specify whether the evaluator is tail-recursive, because that evaluator inherits its mechanism for saving state from the underlying Scheme. With the explicit-control evaluator, however, we can trace through the evaluation process to see when procedure calls cause a net accumulation of information on the stack.
+<p> is an iterative process. Even though the procedure is syntactically recursive (defined in terms of itself), it is not logically necessary for an evaluator to save information in passing from one call to <code>sqrt-iter</code> to the next.@footnote{We saw in section <a href="5-1-register.html">5.1</a> how to implement such a process with a register machine that had no stack; the state of the process was stored in a fixed set of registers.} An evaluator that can execute a procedure such as <code>sqrt-iter</code> without requiring increasing storage as the procedure continues to call itself is called a <code>tail-recursive</code> evaluator. The metacircular implementation of the evaluator in Chapter 4 does not specify whether the evaluator is tail-recursive, because that evaluator inherits its mechanism for saving state from the underlying Scheme. With the explicit-control evaluator, however, we can trace through the evaluation process to see when procedure calls cause a net accumulation of information on the stack.
 
-<p> Our evaluator is tail-recursive, because in order to evaluate the final expression of a sequence we transfer directly to <tt>eval-dispatch</tt> without saving any information on the stack. Hence, evaluating the final expression in a sequence---even if it is a procedure call (as in <tt>sqrt-iter</tt>, where the <tt>if</tt> expression, which is the last expression in the procedure body, reduces to a call to <tt>sqrt-iter</tt>)---will not cause any information to be accumulated on the stack.@footnote{This implementation of tail recursion in <tt>ev-sequence</tt> is one variety of a well-known optimization technique used by many compilers. In compiling a procedure that ends with a procedure call, one can replace the call by a jump to the called procedure's entry point. Building this strategy into the interpreter, as we have done in this section, provides the optimization uniformly throughout the language.}
+<p> Our evaluator is tail-recursive, because in order to evaluate the final expression of a sequence we transfer directly to <code>eval-dispatch</code> without saving any information on the stack. Hence, evaluating the final expression in a sequence---even if it is a procedure call (as in <code>sqrt-iter</code>, where the <code>if</code> expression, which is the last expression in the procedure body, reduces to a call to <code>sqrt-iter</code>)---will not cause any information to be accumulated on the stack.@footnote{This implementation of tail recursion in <code>ev-sequence</code> is one variety of a well-known optimization technique used by many compilers. In compiling a procedure that ends with a procedure call, one can replace the call by a jump to the called procedure's entry point. Building this strategy into the interpreter, as we have done in this section, provides the optimization uniformly throughout the language.}
 
-<p> If we did not think to take advantage of the fact that it was unnecessary to save information in this case, we might have implemented <tt>eval-sequence</tt> by treating all the expressions in a sequence in the same way---saving the registers, evaluating the expression, returning to restore the registers, and repeating this until all the expressions have been evaluated:@footnote{We can define <tt>no-more-exps?</tt> as follows:
+<p> If we did not think to take advantage of the fact that it was unnecessary to save information in this case, we might have implemented <code>eval-sequence</code> by treating all the expressions in a sequence in the same way---saving the registers, evaluating the expression, returning to restore the registers, and repeating this until all the expressions have been evaluated:@footnote{We can define <code>no-more-exps?</code> as follows:
 
-<div id="">
+<div>
 (define (no-more-exps? seq) (null? seq))
 </div>
 <script>
@@ -317,7 +315,7 @@ C.prompt();
 </script>
 }
 
-<div id="">
+<div>
 ev-sequence
   (test (op no-more-exps?) (reg unev))
   (branch (label ev-sequence-end))
@@ -339,9 +337,9 @@ ev-sequence-end
 C.prompt();
 </script>
 
-<p> This may seem like a minor change to our previous code for evaluation of a sequence: The only difference is that we go through the save-restore cycle for the last expression in a sequence as well as for the others. The interpreter will still give the same value for any expression. But this change is fatal to the tail-recursive implementation, because we must now return after evaluating the final expression in a sequence in order to undo the (useless) register saves. These extra saves will accumulate during a nest of procedure calls. Consequently, processes such as <tt>sqrt-iter</tt> will require space proportional to the number of iterations rather than requiring constant space. This difference can be significant. For example, with tail recursion, an infinite loop can be expressed using only the procedure-call mechanism:
+<p> This may seem like a minor change to our previous code for evaluation of a sequence: The only difference is that we go through the save-restore cycle for the last expression in a sequence as well as for the others. The interpreter will still give the same value for any expression. But this change is fatal to the tail-recursive implementation, because we must now return after evaluating the final expression in a sequence in order to undo the (useless) register saves. These extra saves will accumulate during a nest of procedure calls. Consequently, processes such as <code>sqrt-iter</code> will require space proportional to the number of iterations rather than requiring constant space. This difference can be significant. For example, with tail recursion, an infinite loop can be expressed using only the procedure-call mechanism:
 
-<div id="">
+<div>
 (define (count n)
   (newline)
   (display n)
@@ -353,14 +351,13 @@ C.prompt();
 
 <p> Without tail recursion, such a procedure would eventually run out of stack space, and expressing a true iteration would require some control mechanism other than procedure call.
 
-<a name="%_sec_5.4.3" />
-<h3> 5.4.3 Conditionals, Assignments, and Definitions </h3>
+<h3 id="sec_5.4.3"> 5.4.3 Conditionals, Assignments, and Definitions </h3>
 
-<p> As with the metacircular evaluator, special forms are handled by selectively evaluating fragments of the expression. For an <tt>if</tt> expression, we must evaluate the predicate and decide, based on the value of predicate, whether to evaluate the consequent or the alternative.
+<p> As with the metacircular evaluator, special forms are handled by selectively evaluating fragments of the expression. For an <code>if</code> expression, we must evaluate the predicate and decide, based on the value of predicate, whether to evaluate the consequent or the alternative.
 
-<p> Before evaluating the predicate, we save the <tt>if</tt> expression itself so that we can later extract the consequent or alternative. We also save the environment, which we will need later in order to evaluate the consequent or the alternative, and we save <tt>continue</tt>, which we will need later in order to return to the evaluation of the expression that is waiting for the value of the <tt>if</tt>.
+<p> Before evaluating the predicate, we save the <code>if</code> expression itself so that we can later extract the consequent or alternative. We also save the environment, which we will need later in order to evaluate the consequent or the alternative, and we save <code>continue</code>, which we will need later in order to return to the evaluation of the expression that is waiting for the value of the <code>if</code>.
 
-<div id="">
+<div>
 ev-if
   (save exp)                    ; save expression for later
   (save env)
@@ -373,9 +370,9 @@ ev-if
 C.prompt();
 </script>
 
-<p> When we return from evaluating the predicate, we test whether it was true or false and, depending on the result, place either the consequent or the alternative in <tt>exp</tt> before going to <tt>eval-dispatch</tt>. Notice that restoring <tt>env</tt> and <tt>continue</tt> here sets up <tt>eval-dispatch</tt> to have the correct environment and to continue at the right place to receive the value of the <tt>if</tt> expression.
+<p> When we return from evaluating the predicate, we test whether it was true or false and, depending on the result, place either the consequent or the alternative in <code>exp</code> before going to <code>eval-dispatch</code>. Notice that restoring <code>env</code> and <code>continue</code> here sets up <code>eval-dispatch</code> to have the correct environment and to continue at the right place to receive the value of the <code>if</code> expression.
 
-<div id="">
+<div>
 ev-if-decide
   (restore continue)
   (restore env)
@@ -396,9 +393,9 @@ C.prompt();
 
 <h4> Assignments and definitions </h4>
 
-<p> Assignments are handled by <tt>ev-assignment</tt>, which is reached from <tt>eval-dispatch</tt> with the assignment expression in <tt>exp</tt>. The code at <tt>ev-assignment</tt> first evaluates the value part of the expression and then installs the new value in the environment. <tt>Set-variable-value!</tt> is assumed to be available as a machine operation.
+<p> Assignments are handled by <code>ev-assignment</code>, which is reached from <code>eval-dispatch</code> with the assignment expression in <code>exp</code>. The code at <code>ev-assignment</code> first evaluates the value part of the expression and then installs the new value in the environment. <code>Set-variable-value!</code> is assumed to be available as a machine operation.
 
-<div id="">
+<div>
 ev-assignment
   (assign unev (op assignment-variable) (reg exp))
   (save unev)                   ; save variable for later
@@ -422,7 +419,7 @@ C.prompt();
 
 <p> Definitions are handled in a similar way:
 
-<div id="">
+<div>
 ev-definition
   (assign unev (op definition-variable) (reg exp))
   (save unev)                   ; save variable for later
@@ -444,27 +441,26 @@ ev-definition-1
 C.prompt();
 </script>
 
-<div class="exercise">
-<p> <b>Exercise 5.23:</b> Extend the evaluator to handle derived expressions such as <tt>cond</tt>, <tt>let</tt>, and so on (section <a href="4-1-metacircular.html">4.1.2</a>). You may ``cheat'' and assume that the syntax transformers such as <tt>cond->if</tt> are available as machine operations.@footnote{This isn't really cheating. In an actual implementation built from scratch, we would use our explicit-control evaluator to interpret a Scheme program that performs source-level transformations like <tt>cond->if</tt> in a syntax phase that runs before execution.}
+<div class="exercise" id="thm_5.23">
+<p> <b>Exercise 5.23:</b> Extend the evaluator to handle derived expressions such as <code>cond</code>, <code>let</code>, and so on (section <a href="4-1-metacircular.html">4.1.2</a>). You may ``cheat'' and assume that the syntax transformers such as <code>cond->if</code> are available as machine operations.@footnote{This isn't really cheating. In an actual implementation built from scratch, we would use our explicit-control evaluator to interpret a Scheme program that performs source-level transformations like <code>cond->if</code> in a syntax phase that runs before execution.}
 </div>
 
-<div class="exercise">
-<p> <b>Exercise 5.24:</b> Implement <tt>cond</tt> as a new basic special form without reducing it to <tt>if</tt>. You will have to construct a loop that tests the predicates of successive <tt>cond</tt> clauses until you find one that is true, and then use <tt>ev-sequence</tt> to evaluate the actions of the clause.
+<div class="exercise" id="thm_5.24">
+<p> <b>Exercise 5.24:</b> Implement <code>cond</code> as a new basic special form without reducing it to <code>if</code>. You will have to construct a loop that tests the predicates of successive <code>cond</code> clauses until you find one that is true, and then use <code>ev-sequence</code> to evaluate the actions of the clause.
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_5.25">
 <p> <b>Exercise 5.25:</b> Modify the evaluator so that it uses normal-order evaluation, based on the lazy evaluator of section <a href="4-2-lazy.html">4.2</a>. </div>
 
-<a name="%_sec_5.4.4" />
-<h3> 5.4.4 Running the Evaluator </h3>
+<h3 id="sec_5.4.4"> 5.4.4 Running the Evaluator </h3>
 
 <p> With the implementation of the explicit-control evaluator we come to the end of a development, begun in Chapter 1, in which we have explored successively more precise models of the evaluation process. We started with the relatively informal substitution model, then extended this in Chapter 3 to the environment model, which enabled us to deal with state and change. In the metacircular evaluator of Chapter 4, we used Scheme itself as a language for making more explicit the environment structure constructed during evaluation of an expression. Now, with register machines, we have taken a close look at the evaluator's mechanisms for storage management, argument passing, and control. At each new level of description, we have had to raise issues and resolve ambiguities that were not apparent at the previous, less precise treatment of evaluation. To understand the behavior of the explicit-control evaluator, we can simulate it and monitor its performance.
 
-<p> We will install a driver loop in our evaluator machine. This plays the role of the <tt>driver-loop</tt> procedure of section <a href="4-1-metacircular.html">4.1.4</a>. The evaluator will repeatedly print a prompt, read an expression, evaluate the expression by going to <tt>eval-dispatch</tt>, and print the result. The following instructions form the beginning of the explicit-control evaluator's controller sequence:@footnote{We assume here that <tt>read</tt> and the various printing operations are available as primitive machine operations, which is useful for our simulation, but completely unrealistic in practice. These are actually extremely complex operations. In practice, they would be implemented using low-level input-output operations such as transferring single characters to and from a device.
+<p> We will install a driver loop in our evaluator machine. This plays the role of the <code>driver-loop</code> procedure of section <a href="4-1-metacircular.html">4.1.4</a>. The evaluator will repeatedly print a prompt, read an expression, evaluate the expression by going to <code>eval-dispatch</code>, and print the result. The following instructions form the beginning of the explicit-control evaluator's controller sequence:@footnote{We assume here that <code>read</code> and the various printing operations are available as primitive machine operations, which is useful for our simulation, but completely unrealistic in practice. These are actually extremely complex operations. In practice, they would be implemented using low-level input-output operations such as transferring single characters to and from a device.
 
-<p> To support the <tt>get-global-environment</tt> operation we define
+<p> To support the <code>get-global-environment</code> operation we define
 
-<div id="">
+<div>
 (define the-global-environment (setup-environment))
 
 (define (get-global-environment)
@@ -475,7 +471,7 @@ C.prompt();
 </script>
 }
 
-<div id="">
+<div>
 read-eval-print-loop
   (perform (op initialize-stack))
   (perform
@@ -494,15 +490,15 @@ print-result
 C.prompt();
 </script>
 
-<p> When we encounter an error in a procedure (such as the ``unknown procedure type error'' indicated at <tt>apply-dispatch</tt>), we print an error message and return to the driver loop.@footnote{There are other errors that we would like the interpreter to handle, but these are not so simple. See Exercise 5-30.}
+<p> When we encounter an error in a procedure (such as the ``unknown procedure type error'' indicated at <code>apply-dispatch</code>), we print an error message and return to the driver loop.@footnote{There are other errors that we would like the interpreter to handle, but these are not so simple. See Exercise 5-30.}
 
-<div id="">
+<div>
 unknown-expression-type
   (assign val (const unknown-expression-type-error))
   (goto (label signal-error))
 
 unknown-procedure-type
-  (restore continue)    ; clean up stack (from <tt>apply-dispatch</tt>)
+  (restore continue)    ; clean up stack (from <code>apply-dispatch</code>)
   (assign val (const unknown-procedure-type-error))
   (goto (label signal-error))
 
@@ -518,14 +514,14 @@ C.prompt();
 
 <p> If we combine all the code fragments presented in sections 5-4-1-5-4-4, we can create an evaluator machine model that we can run using the register-machine simulator of section 5.2.
 
-<div id="">
+<div>
 (define eceval
   (make-machine
    '(exp env val proc argl continue unev)
    eceval-operations
   '(
     read-eval-print-loop
-      <<em>entire machine controller as given above</em>>
+      &lt;<em>entire machine controller as given above</em>&gt;
    )))
 </div>
 <script>
@@ -534,10 +530,10 @@ C.prompt();
 
 <p> We must define Scheme procedures to simulate the operations used as primitives by the evaluator. These are the same procedures we used for the metacircular evaluator in section <a href="4-1-metacircular.html">4.1</a>, together with the few additional ones defined in footnotes throughout section 5.4.
 
-<div id="">
+<div>
 (define eceval-operations
   (list (list 'self-evaluating? self-evaluating)
-        <<em>complete list of operations for eceval machine</em>>))
+        &lt;<em>complete list of operations for eceval machine</em>&gt;))
 </div>
 <script>
 C.prompt();
@@ -545,7 +541,7 @@ C.prompt();
 
 <p> Finally, we can initialize the global environment and run the evaluator:
 
-<div id="">
+<div>
 (define the-global-environment (setup-environment))
 
 (start eceval)
@@ -572,9 +568,9 @@ C.prompt();
 
 <h4> Monitoring the performance of the evaluator </h4>
 
-<p> Simulation can be a powerful tool to guide the implementation of evaluators. Simulations make it easy not only to explore variations of the register-machine design but also to monitor the performance of the simulated evaluator. For example, one important factor in performance is how efficiently the evaluator uses the stack. We can observe the number of stack operations required to evaluate various expressions by defining the evaluator register machine with the version of the simulator that collects statistics on stack use (section <a href="5-2-simulator.html">5.2.4</a>), and adding an instruction at the evaluator's <tt>print-result</tt> entry point to print the statistics:
+<p> Simulation can be a powerful tool to guide the implementation of evaluators. Simulations make it easy not only to explore variations of the register-machine design but also to monitor the performance of the simulated evaluator. For example, one important factor in performance is how efficiently the evaluator uses the stack. We can observe the number of stack operations required to evaluate various expressions by defining the evaluator register machine with the version of the simulator that collects statistics on stack use (section <a href="5-2-simulator.html">5.2.4</a>), and adding an instruction at the evaluator's <code>print-result</code> entry point to print the statistics:
 
-<div id="">
+<div>
 print-result
   (perform (op print-stack-statistics)); added instruction
   (perform
@@ -587,7 +583,7 @@ C.prompt();
 
 <p> Interactions with the evaluator now look like this:
 
-<div id="">
+<div>
 ;;; EC-Eval input:
 (define (factorial n)
   (if (= n 1)
@@ -612,10 +608,10 @@ C.prompt();
 <div class="exercise">
 <b>Exercise 5.26:</b> Use the monitored stack to
 explore the tail-recursive property of the evaluator (section <a href="5-4-explicit-control.html">5.4.2</a>).
-Start the evaluator and define the iterative <tt>factorial</tt> procedure from
+Start the evaluator and define the iterative <code>factorial</code> procedure from
 section <a href="1-2-procedures.html">1.2.1</a>:
 
-<div id="">
+<div>
 (define (factorial n)
   (define (iter product counter)
     (if (> counter n)
@@ -641,10 +637,10 @@ Determine from your data a formula in terms of n for the total number of push op
 </ul>
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_5.27">
 <p> <b>Exercise 5.27:</b> For comparison with Exercise 5-26, explore the behavior of the following procedure for computing factorials recursively:
 
-<div id="">
+<div>
 (define (factorial n)
   (if (= n 1)
       1
@@ -669,16 +665,16 @@ factorial
 <p> The maximum depth is a measure of the amount of space used by the evaluator in carrying out the computation, and the number of pushes correlates well with the time required.
  </div>
 
-<div class="exercise">
-<p> <b>Exercise 5.28:</b> Modify the definition of the evaluator by changing <tt>eval-sequence</tt> as described in section <a href="5-4-explicit-control.html">5.4.2</a> so that the evaluator is no longer tail-recursive. Rerun your experiments from Exercise 5-26 and Exercise 5-27 to demonstrate that both versions of the <tt>factorial</tt> procedure now require space that grows linearly with their input.
+<div class="exercise" id="thm_5.28">
+<p> <b>Exercise 5.28:</b> Modify the definition of the evaluator by changing <code>eval-sequence</code> as described in section <a href="5-4-explicit-control.html">5.4.2</a> so that the evaluator is no longer tail-recursive. Rerun your experiments from Exercise 5-26 and Exercise 5-27 to demonstrate that both versions of the <code>factorial</code> procedure now require space that grows linearly with their input.
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_5.29">
 <p> <b>Exercise 5.29:</b> Monitor the stack operations in the tree-recursive Fibonacci computation:
 
-<div id="">
+<div>
 (define (fib n)
-  (if (< n 2)
+  (if (&lt; n 2)
       n
       (+ (fib (- n 1)) (fib (- n 2)))))
 </div>
@@ -697,16 +693,16 @@ Give a formula for the total number of pushes used to compute <em>Fib</em>(n) fo
 </ul>
 </div>
 
-<div class="exercise">
+<div class="exercise" id="thm_5.30">
 <p> <b>Exercise 5.30:</b> Our evaluator currently catches and signals only two kinds of errors---unknown expression types and unknown procedure types. Other errors will take us out of the evaluator read-eval-print loop. When we run the evaluator using the register-machine simulator, these errors are caught by the underlying Scheme system. This is analogous to the computer crashing when a user program makes an error.@footnote{Regrettably, this is the normal state of affairs in conventional compiler-based language systems such as C. In @acronym{UNIX}(tm) the system ``dumps core,'' and in @acronym{DOS}/Windows(tm) it becomes catatonic. The Macintosh(tm) displays a picture of an exploding bomb and offers you the opportunity to reboot the computer---if you're lucky.}  It is a large project to make a real error system work, but it is well worth the effort to understand what is involved here.
 
 <ul>
 <li>
-Errors that occur in the evaluation process, such as an attempt to access an unbound variable, could be caught by changing the lookup operation to make it return a distinguished condition code, which cannot be a possible value of any user variable. The evaluator can test for this condition code and then do what is necessary to go to <tt>signal-error</tt>. Find all of the places in the evaluator where such a change is necessary and fix them. This is lots of work.
+Errors that occur in the evaluation process, such as an attempt to access an unbound variable, could be caught by changing the lookup operation to make it return a distinguished condition code, which cannot be a possible value of any user variable. The evaluator can test for this condition code and then do what is necessary to go to <code>signal-error</code>. Find all of the places in the evaluator where such a change is necessary and fix them. This is lots of work.
 </li>
 
 <li>
-Much worse is the problem of handling errors that are signaled by applying primitive procedures, such as an attempt to divide by zero or an attempt to extract the <tt>car</tt> of a symbol. In a professionally written high-quality system, each primitive application is checked for safety as part of the primitive. For example, every call to <tt>car</tt> could first check that the argument is a pair. If the argument is not a pair, the application would return a distinguished condition code to the evaluator, which would then report the failure. We could arrange for this in our register-machine simulator by making each primitive procedure check for applicability and returning an appropriate distinguished condition code on failure. Then the <tt>primitive-apply</tt> code in the evaluator can check for the condition code and go to <tt>signal-error</tt> if necessary. Build this structure and make it work. This is a major project.
+Much worse is the problem of handling errors that are signaled by applying primitive procedures, such as an attempt to divide by zero or an attempt to extract the <code>car</code> of a symbol. In a professionally written high-quality system, each primitive application is checked for safety as part of the primitive. For example, every call to <code>car</code> could first check that the argument is a pair. If the argument is not a pair, the application would return a distinguished condition code to the evaluator, which would then report the failure. We could arrange for this in our register-machine simulator by making each primitive procedure check for applicability and returning an appropriate distinguished condition code on failure. Then the <code>primitive-apply</code> code in the evaluator can check for the condition code and go to <code>signal-error</code> if necessary. Build this structure and make it work. This is a major project.
 </li>
 </ul>
 </div>
